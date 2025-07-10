@@ -152,13 +152,13 @@ const MobileNav = () => {
 
         <div className="w-1/3 flex items-center justify-end">
           <ul className="flex gap-3 text-black-1 items-center justify-center *:cursor-pointer">
-            <li>
-              <Link href="/cart" className="relative">
+            <li className="relative">
+              <Link href="/cart">
                 <BsHandbagFill className="size-4.5 text-darkTeal" />
-                <span className="absolute -top-1 -right-1 text-[10px] leading-2.5 bg-roseGold rounded-full p-1 text-ivory">
-                  {cart.length}
-                </span>
               </Link>
+              <span className="absolute -top-1.5 -right-1.5 text-[10px] leading-2.5 bg-roseGold rounded-full p-1 text-ivory">
+                {cart.length}
+              </span>
             </li>
             <li>
               <HiUser className="size-5 text-darkTeal" />

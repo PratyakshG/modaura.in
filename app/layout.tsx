@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { ImageKitProvider } from "@imagekit/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,12 +52,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${satoshi.variable} ${urbanist.variable} ${melodrama.variable} ${dmSans.variable} bg-ivory antialiased relative flex flex-col items-center w-screen min-h-dvh`}
       >
-        <Navbar />
-        <main className="font-dmSans min-h-fit w-screen overflow-hidden flex flex-col space-y-10 lg:space-y-16 px-5 lg:px-10 items-start justify-start">
-          {children}
-        </main>
-        <Footer />
-        <Toaster />
+        <ImageKitProvider urlEndpoint="https://ik.imagekit.io/modaura">
+          <Navbar />
+          <main className="font-dmSans min-h-fit w-screen overflow-hidden flex flex-col space-y-10 lg:space-y-16 px-5 lg:px-10 items-start justify-start">
+            {children}
+          </main>
+          <Footer />
+          <Toaster />
+        </ImageKitProvider>
       </body>
     </html>
   );

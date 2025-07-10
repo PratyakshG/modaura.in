@@ -1,7 +1,7 @@
 "use client";
 
 import CallToActionBtn from "@/components/ui/callToActionBtn";
-import Image from "next/image";
+import { Image } from "@imagekit/next";
 // import { useParams } from "next/navigation";
 import { IoMdAdd, IoMdHeart } from "react-icons/io";
 import { MdCancel, MdLocalShipping } from "react-icons/md";
@@ -35,9 +35,7 @@ const Page = ({
 }) => {
   const { id } = use(params);
   const [product, setProduct] = useState<productTypes>();
-
   const [quantity, setQuantity] = useState(1);
-
   const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
@@ -61,9 +59,10 @@ const Page = ({
                 <Image
                   key={image}
                   src={image}
+                  loading="lazy"
                   alt="product image"
-                  width={540}
-                  height={540}
+                  width={300}
+                  height={300}
                   className="object-cover aspect-square cursor-pointer size-16 lg:size-20"
                   onMouseEnter={() => {
                     api?.scrollTo(index, true);
@@ -82,13 +81,14 @@ const Page = ({
             >
               <CarouselContent className="-ml-0 aspect-square">
                 {product?.images.map((image, index) => (
-                  <CarouselItem className="pl-0" key={index}>
+                  <CarouselItem className="pl-0 basis-full" key={index}>
                     <Image
+                      loading="lazy"
                       key={index}
                       src={image}
                       alt="product image"
-                      width={540}
-                      height={540}
+                      width={300}
+                      height={300}
                       className="object-cover aspect-square size-full xl:w-[540px]"
                     />
                   </CarouselItem>

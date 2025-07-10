@@ -2,8 +2,9 @@
 
 import useCartStore from "@/app/stores/useCartStore";
 import { productTypes } from "@/models/Product";
-import displayImage from "@/public/products/product 1.jpg";
-import Image from "next/image";
+// import displayImage from "@/public/products/product 1.jpg";
+// import Image from "next/image";
+import { Image } from "@imagekit/next";
 import Link from "next/link";
 import { BiCart } from "react-icons/bi";
 import { IoMdHeartEmpty } from "react-icons/io";
@@ -22,10 +23,12 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
         <div className="size-[calc(100dvw/2-30px)] md:size-[200px] lg:size-[250px] 2xl:size-[300px] bg-neutral-200 rounded-lg lg:rounded-xl overflow-hidden flex items-center justify-center cursor-pointer transition-all duration-200 ease-in-out relative">
           {/* image of the product */}
           <Image
-            src={images ? images[0] : displayImage}
+            src={images && images[0]}
             alt="product"
             width={300}
             height={300}
+            responsive={false}
+            loading="lazy"
             className={`object-cover transition-all hover:scale-120 duration-150 ease-in-out absolute`}
           />
           <IoMdHeartEmpty className="absolute right-2 top-2 lg:right-5 lg:top-5 border size-6 p-1 lg:size-8 rounded-full bg-white opacity-70 text-darkTeal hover:opacity-100 transition-all duration-200" />
