@@ -1,3 +1,4 @@
+import useCartStore from "@/app/stores/useCartStore";
 import { auth } from "@/auth"; // Auth.js v5 auth method
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
@@ -8,6 +9,7 @@ export async function POST(req: NextRequest) {
   if (!session || !session.user?.id)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  console.log("cart :", useCartStore.getState().cart);
   const { cartItems } = await req.json();
   await connectDB();
 

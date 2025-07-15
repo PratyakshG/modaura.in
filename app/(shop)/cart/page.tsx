@@ -11,7 +11,6 @@ import { toast } from "sonner";
 
 const CartPage = () => {
   const { cart, removeFromCart, updateQuantity } = useCartStore();
-  // const [cartSubtotal, setCartSubtotal] = useState<number>(0);
   const [promoCode, setPromoCode] = useState<string>("");
   const session = useSession();
 
@@ -31,7 +30,10 @@ const CartPage = () => {
     );
 
   const handleUpdateCart = async () => {
-    if (session) {
+    if (session.data?.user) {
+      //retrieve the latest cart state to remove the delay in updation to the API
+      const cart = useCartStore.getState().cart;
+
       await fetch("/api/cart", {
         method: "POST",
         headers: {
@@ -113,9 +115,12 @@ const CartPage = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center justify-between gap-1 lg:gap-2 max-sm:text-xs">
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         if (product.quantity > 1) {
                           updateQuantity(product._id, product.quantity - 1);
+                          await new Promise((resolve) =>
+                            setTimeout(resolve, 1000)
+                          );
                           handleUpdateCart();
                           toast(`${product.name} quantity is reduced`);
                         }
@@ -128,8 +133,11 @@ const CartPage = () => {
                       {product.quantity}
                     </div>
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         updateQuantity(product._id, product.quantity + 1);
+                        await new Promise((resolve) =>
+                          setTimeout(resolve, 1000)
+                        );
                         handleUpdateCart();
                         toast(`${product.name} quantity is increased`);
                       }}
@@ -140,9 +148,10 @@ const CartPage = () => {
                   </div>
                   <div
                     className="cursor-pointer font-medium opacity-60 hover:opacity-100 transition max-sm:text-xs"
-                    onClick={() => {
-                      handleUpdateCart();
+                    onClick={async () => {
                       removeFromCart(product._id);
+                      await new Promise((resolve) => setTimeout(resolve, 1000));
+                      handleUpdateCart();
                     }}
                   >
                     Remove

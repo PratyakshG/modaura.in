@@ -8,12 +8,14 @@ import { productTypes } from "../types/index";
 import CallToActionBtn from "./ui/callToActionBtn";
 
 const AddToCartButton = ({ _id, name }: productTypes) => {
-  const { cart, addToCart } = useCartStore();
+  const { addToCart } = useCartStore();
   const [loading, setLoading] = useState(false);
   const session = useSession();
 
   const handleAddToCart = async () => {
     if (session?.data?.user) {
+      const cart = useCartStore.getState().cart;
+
       await fetch("/api/cart", {
         method: "POST",
         headers: {
