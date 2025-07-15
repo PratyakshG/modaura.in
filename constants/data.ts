@@ -49,16 +49,16 @@ const homePageSections = [
     sectionId: "necklace-section",
   },
   {
-    section: "Bracelet",
-    sectionId: "bracelet-section",
+    section: "Ring",
+    sectionId: "ring-section",
   },
   {
     section: "Earring",
     sectionId: "earring-section",
   },
   {
-    section: "Ring",
-    sectionId: "ring-section",
+    section: "Bracelet",
+    sectionId: "bracelet-section",
   },
 ];
 

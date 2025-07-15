@@ -1,11 +1,15 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Urbanist, DM_Sans } from "next/font/google";
-import localFont from "next/font/local";
-import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
+import Annoucements from "@/components/layout/Annoucements";
 import Footer from "@/components/layout/Footer";
+import MobileNav from "@/components/layout/MobileNav";
+import Navbar from "@/components/layout/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { ImageKitProvider } from "@imagekit/next";
+import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
+import { DM_Sans, Geist, Geist_Mono, Urbanist } from "next/font/google";
+import localFont from "next/font/local";
+import "./globals.css";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,14 +56,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${satoshi.variable} ${urbanist.variable} ${melodrama.variable} ${dmSans.variable} bg-ivory antialiased relative flex flex-col items-center w-screen min-h-dvh`}
       >
-        <ImageKitProvider urlEndpoint="https://ik.imagekit.io/modaura">
-          <Navbar />
-          <main className="font-dmSans min-h-fit w-screen overflow-hidden flex flex-col space-y-10 lg:space-y-16 px-5 lg:px-10 items-start justify-start">
-            {children}
-          </main>
-          <Footer />
-          <Toaster />
-        </ImageKitProvider>
+        <SessionProvider>
+          <ImageKitProvider
+            urlEndpoint={process.env.NEXT_IMAGEKIT_PUBLIC_URL_ENDPOINT}
+          >
+            <Annoucements />
+            <Navbar />
+            <MobileNav />
+            <main className="font-dmSans min-h-fit w-screen overflow-hidden flex flex-col space-y-10 lg:space-y-16 px-5 lg:px-10 items-start justify-start">
+              {children}
+            </main>
+            <Footer />
+            <Toaster />
+          </ImageKitProvider>
+        </SessionProvider>
       </body>
     </html>
   );

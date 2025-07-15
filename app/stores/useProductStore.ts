@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { productTypes } from "@/models/Product";
+
+import { productTypes } from "@/types/index";
 import { create } from "zustand";
 
 interface ProductStateTypes {
@@ -8,10 +9,15 @@ interface ProductStateTypes {
   addProduct: (product: productTypes) => void;
   removeProduct: (productId: string) => void;
   clearProducts: () => void;
+  loading: boolean;
+  setLoading: (status: boolean) => void;
 }
 
 const useProductStore = create<ProductStateTypes>((set) => ({
   products: [],
+  loading: true,
+
+  setLoading: (status) => set({ loading: status }),
 
   // Set all products at once
   setProducts: (items) => set({ products: items }),

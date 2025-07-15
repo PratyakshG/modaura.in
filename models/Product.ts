@@ -1,18 +1,5 @@
-import mongoose, { model, models, Schema } from "mongoose";
-
-export interface productTypes {
-  _id: mongoose.Types.ObjectId;
-  name: string;
-  category: string;
-  description: string;
-  price: {
-    mrp: number;
-    sellingPrice: number;
-  };
-  images: string[];
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import { model, models, Schema } from "mongoose";
+import { productTypes } from "../types/index";
 
 const ProductSchema = new Schema<productTypes>(
   {

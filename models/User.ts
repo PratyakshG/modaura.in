@@ -1,16 +1,13 @@
 import bcrypt from "bcryptjs";
-import mongoose, { model, models, Schema } from "mongoose";
-
-export interface UserTypes {
-  email: string;
-  password: string;
-  _id?: mongoose.Types.ObjectId;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import { model, models, Schema } from "mongoose";
+import { UserTypes } from "../types/index";
 
 const userSchema = new Schema<UserTypes>(
   {
+    name: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -18,12 +15,15 @@ const userSchema = new Schema<UserTypes>(
     },
     password: {
       type: String,
+    },
+    cartItems: {
+      type: [Object],
       required: true,
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 //pre() is a hook to process the password just before saving the user in the database.

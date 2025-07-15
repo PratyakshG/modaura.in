@@ -1,11 +1,24 @@
-import React from 'react'
+"use client";
+import { login } from "@/lib/actions";
+import { FcGoogle } from "react-icons/fc";
 
-const page = () => {
+const Login = () => {
   return (
-    <div>
-      login
-    </div>
-  )
-}
+    <div className="w-full place-items-center p-10">
+      <div className="w-[50vw] border flex flex-col items-center justify-around rounded-3xl gap-10 p-10 shadow-xl">
+        <span className="text-black-1 text-4xl font-semibold">
+          Welcome To Modaura
+        </span>
 
-export default page
+        <button
+          onClick={() => login()}
+          className="flex items-center justify-center border border-darkTeal px-5 py-3 gap-3 rounded-xl hover:shadow-lg hover:-translate-y-1 transition"
+        >
+          <FcGoogle className="size-5" /> Login With Google
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Login;

@@ -1,18 +1,31 @@
 "use client";
 
 import useCartStore from "@/app/stores/useCartStore";
-import { productTypes } from "@/models/Product";
-// import displayImage from "@/public/products/product 1.jpg";
-// import Image from "next/image";
+import { productTypes } from "@/types/index";
 import { Image } from "@imagekit/next";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { BiCart } from "react-icons/bi";
 import { IoMdHeartEmpty } from "react-icons/io";
-import CallToActionBtn from "../ui/callToActionBtn";
 import { toast } from "sonner";
+import CallToActionBtn from "../ui/callToActionBtn";
 
 const ProductCard = ({ _id, name, price, images }: productTypes) => {
-  const { addToCart } = useCartStore();
+  const { data: session } = useSession();
+  const { cart, addToCart } = useCartStore();
+
+  const handleAddToCart = async () => {
+    if (session) {
+      await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cartItems: cart }),
+      });
+    }
+    console.log(cart);
+  };
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2">
@@ -56,8 +69,10 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
       {/* Add to cart button */}
       <CallToActionBtn
         text="Add to Cart"
-        onClick={() => {
-          addToCart(_id);
+        onClick={async () => {
+          await addToCart(_id);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          handleAddToCart();
           toast(`${name} is added to cart.`);
         }}
         className="w-full flex items-center justify-center gap-2 bg-darkTeal text-ivory rounded-lg lg:rounded-xl py-3 lg:py-3 lg:px-4 hover:opacity-90 transition-all duration-200 ease-in-out"

@@ -1,28 +1,30 @@
 "use client";
 
+import useCartStore from "@/app/stores/useCartStore";
 import logo from "@/public/logo-color.svg";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { HiUser } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
-// import { LiaShoppingBagSolid } from "react-icons/lia";
-import { BsHandbagFill } from "react-icons/bs";
-// import { Separator } from "../ui/separator";
-import MobileNav from "./MobileNav";
-import useCartStore from "@/app/stores/useCartStore";
+import { PiUserCircle } from "react-icons/pi";
+import { VscAccount } from "react-icons/vsc";
+
+import { logout } from "@/lib/actions";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
+import { LuShoppingBag } from "react-icons/lu";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const hasWindow = typeof window !== "undefined";
-  const [width, setWidth] = useState(hasWindow ? window.innerWidth : 768);
   const { cart } = useCartStore();
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [width]);
+  const session = useSession();
+  const router = useRouter();
 
   const ScrollIntoView = (id: string) => {
     window.scrollTo({
@@ -31,14 +33,11 @@ const Navbar = () => {
     });
   };
 
-  return width > 768 ? (
-    <>
+  return (
+    <nav className="hidden lg:block sticky top-0 z-10">
       {/* Announcements */}
-      <div className="w-full flex items-center justify-center border-b border-neutral-400 py-3 text-center text-ivory bg-darkTeal text-sm font-urbanist">
-        New Offers Of The Day!!!
-      </div>
 
-      <nav className="h-[10dvh] flex justify-center items-center px-10 py-3 sticky top-0 z-10 bg-ivory font-urbanist">
+      <div className="h-[10dvh] flex justify-center items-center px-10 py-3 sticky top-0 z-10 bg-ivory font-urbanist">
         <div className="w-1/3">
           <ul className="flex space-x-5 text-black-1 text-sm uppercase *:hover:text-darkTeal tracking-wide">
             <li className="relative cursor-pointer">
@@ -89,28 +88,55 @@ const Navbar = () => {
         </div>
 
         <div className="w-1/3 flex items-center justify-end">
-          <ul className="flex gap-5 text-black-1 items-center justify-center *:cursor-pointer">
-            <li className="h-fit w-fit font-medium relative">
-              <Link href="/cart" className="relative">
-                <BsHandbagFill className="size-auto lg:size-6 fill-darkTeal" />{" "}
+          <ul className="flex gap-6 text-black-1 items-center justify-center *:cursor-pointer">
+            <li className="relative">
+              <Link href="/cart">
+                <LuShoppingBag className="size-auto lg:size-6 stroke-darkTeal" />
               </Link>
-              <span className="absolute -top-1 -right-1 text-[10px] leading-2.5 bg-roseGold rounded-full p-1 text-ivory">
-                {cart.length}
-              </span>
+              <div className="absolute -top-2 -right-2 size-5 flex items-center justify-center bg-roseGold rounded-full p-1 shadow-md">
+                <span className="text-[12px] text-ivory">{cart.length}</span>
+              </div>
             </li>
 
             {/* 
               check for the current user from session in next-auth, if user is logged in, redirect to user profile else redirect to sign-in page
             */}
-            <li className="">
-              <HiUser className="size-auto lg:size-7 fill-darkTeal" />
+            <li>
+              {session.data?.user ? (
+                <div className="font-dmSans flex items-center justify-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex gap-1 items-center">
+                      <PiUserCircle className="size-6" />
+                      {session.data.user.name}
+                      <IoIosArrowDown />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                        <Link href="/profile">Profile</Link>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem
+                        onClick={() => {
+                          logout();
+                          router.refresh();
+                        }}
+                      >
+                        Sign Out
+                      </DropdownMenuItem>
+                      <DropdownMenuArrow />
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              ) : (
+                <Link href="/login">
+                  <VscAccount className="size-6 fill-darkTeal" />
+                </Link>
+              )}
             </li>
           </ul>
         </div>
-      </nav>
-    </>
-  ) : (
-    <MobileNav />
+      </div>
+    </nav>
   );
 };
 

@@ -7,6 +7,7 @@ import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 
 import useProductStore from "@/app/stores/useProductStore";
 import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
 
 const HomePageSection = ({
   section,
@@ -15,7 +16,7 @@ const HomePageSection = ({
   section: string;
   sectionId: string;
 }) => {
-  const { products } = useProductStore();
+  const { products, loading } = useProductStore();
 
   const items = products.filter(
     (product) => product.category.toUpperCase() === section.toUpperCase()
@@ -42,15 +43,25 @@ const HomePageSection = ({
           >
             <CarouselContent className="lg:w-full h-full lg:justify-between -ml-0">
               {items.slice(0, 6).map((item) => (
-                <CarouselItem className="pl-0" key={item._id.toString()}>
-                  <ProductCard
-                    _id={item._id}
-                    name={item.name}
-                    images={item.images}
-                    price={item.price}
-                    category={""}
-                    description={""}
-                  />
+                <CarouselItem
+                  className="pl-0"
+                  key={item._id.toString()}
+                >
+                  {loading === true ? (
+                    <Skeleton
+                      key={item._id.toString()}
+                      className="h-[200px] w-[200px]"
+                    />
+                  ) : (
+                    <ProductCard
+                      _id={item._id}
+                      name={item.name}
+                      images={item.images}
+                      price={item.price}
+                      category={""}
+                      description={""}
+                    />
+                  )}
                 </CarouselItem>
               ))}
             </CarouselContent>

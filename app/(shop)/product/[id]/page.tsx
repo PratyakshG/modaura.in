@@ -74,6 +74,7 @@ const Page = ({
             <Carousel
               setApi={setApi}
               opts={{
+                loop : true,
                 align: "center",
               }}
               plugins={[WheelGesturesPlugin()]}

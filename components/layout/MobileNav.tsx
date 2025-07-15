@@ -49,7 +49,6 @@ const categoryList = [
 
 const MobileNav = () => {
   const { cart } = useCartStore();
-
   const [open, setOpen] = useState(false);
 
   const ScrollIntoView = (id: string) => {
@@ -60,12 +59,8 @@ const MobileNav = () => {
   };
 
   return (
-    <>
-      <div className="w-full py-2 bg-darkTeal text-center text-ivory text-xs lg:text-base font-dmSans border-b border-neutral-400">
-        New Offers Of The Day!!!
-      </div>
-
-      <nav className="flex justify-between items-center px-4 py-4 sticky top-0 z-10 bg-ivory">
+    <nav className="block lg:hidden sticky top-0 z-10 bg-ivory">
+      <div className="flex justify-between items-center px-4 py-4">
         <div className="w-1/3 relative flex items-center justify-start">
           <Drawer direction="left" open={open} onOpenChange={setOpen}>
             <DrawerTrigger>
@@ -165,8 +160,8 @@ const MobileNav = () => {
             </li>
           </ul>
         </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   );
 };
 

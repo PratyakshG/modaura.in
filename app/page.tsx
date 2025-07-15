@@ -6,10 +6,12 @@ import Latest from "@/components/layout/Latest";
 import Popular from "@/components/layout/Popular";
 import { homePageSections } from "@/constants/data";
 import { useEffect } from "react";
+import useCartStore from "./stores/useCartStore";
 import useProductStore from "./stores/useProductStore";
 
-export default function Home() {
-  const { setProducts } = useProductStore();
+const Home = () => {
+  const { setProducts, setLoading } = useProductStore();
+  const { setCart } = useCartStore();
 
   useEffect(() => {
     async function fetchProducts() {
@@ -17,8 +19,23 @@ export default function Home() {
       const data = await res.json();
       setProducts(data);
     }
+
     fetchProducts();
-  }, [setProducts]);
+
+    setLoading(false);
+  }, [setProducts, setLoading]);
+
+  //function to fetch cart items
+
+  useEffect(() => {
+    async function getCartItems() {
+      const res = await fetch("/api/cart");
+      const data = await res.json();
+      console.log(data.cartItems);
+      setCart([...data.cartItems]);
+    }
+    getCartItems();
+  }, [setCart]);
 
   return (
     <>
@@ -35,4 +52,6 @@ export default function Home() {
       ))}
     </>
   );
-}
+};
+
+export default Home;

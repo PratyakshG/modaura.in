@@ -1,6 +1,7 @@
 "use client";
 
 import useCartStore from "@/app/stores/useCartStore";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -12,18 +13,35 @@ const CartPage = () => {
   const { cart, removeFromCart, updateQuantity } = useCartStore();
   // const [cartSubtotal, setCartSubtotal] = useState<number>(0);
   const [promoCode, setPromoCode] = useState<string>("");
+  const session = useSession();
 
-  //calculate cart value
-  const subTotal = cart.reduce(
-    (acc, product) => acc + product.price.mrp * product.quantity,
-    0
-  );
+  const subTotal =
+    cart.length > 0
+      ? cart.reduce(
+          (acc, product) => acc + product.price.mrp * product.quantity,
+          0
+        )
+      : 0;
+
   const discount =
     subTotal -
     cart.reduce(
       (acc, product) => acc + product.price.sellingPrice * product.quantity,
       0
     );
+
+  const handleUpdateCart = async () => {
+    if (session) {
+      await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cartItems: cart }),
+      });
+    }
+    console.log(cart);
+  };
 
   return (
     <>
@@ -62,7 +80,7 @@ const CartPage = () => {
             {cart.map((product) => (
               <div
                 key={product?._id?.toString()}
-                className="bg-white rounded-2xl lg:rounded-3xl overflow-hidden flex flex-col w-full h-full p-2 lg:p-5 gap-2 lg:gap-5"
+                className="bg-white rounded-2xl lg:rounded-3xl overflow-hidden flex flex-col w-full h-full p-2 lg:p-5 gap-2 lg:gap-5 shadow-lg"
               >
                 <div className="flex w-full h-full">
                   <Image
@@ -97,10 +115,8 @@ const CartPage = () => {
                     <button
                       onClick={() => {
                         if (product.quantity > 1) {
-                          updateQuantity(
-                            product._id.toString(),
-                            product.quantity - 1
-                          );
+                          updateQuantity(product._id, product.quantity - 1);
+                          handleUpdateCart();
                           toast(`${product.name} quantity is reduced`);
                         }
                       }}
@@ -113,10 +129,8 @@ const CartPage = () => {
                     </div>
                     <button
                       onClick={() => {
-                        updateQuantity(
-                          product._id.toString(),
-                          product.quantity + 1
-                        );
+                        updateQuantity(product._id, product.quantity + 1);
+                        handleUpdateCart();
                         toast(`${product.name} quantity is increased`);
                       }}
                       className="p-1 lg:p-2 rounded-full border cursor-pointer hover:border-neutral-500"
@@ -126,7 +140,10 @@ const CartPage = () => {
                   </div>
                   <div
                     className="cursor-pointer font-medium opacity-60 hover:opacity-100 transition max-sm:text-xs"
-                    onClick={() => removeFromCart(product._id.toString())}
+                    onClick={() => {
+                      handleUpdateCart();
+                      removeFromCart(product._id);
+                    }}
                   >
                     Remove
                   </div>
@@ -136,8 +153,8 @@ const CartPage = () => {
           </div>
 
           {/* Subtotal Section */}
-          <div className="lg:w-1/3 sticky top-0">
-            <ul className="*:flex flex flex-col *:justify-between gap-3 w-full py-3">
+          <div className="lg:w-1/3 sticky top-0 bg-white h-fit p-5 rounded-2xl shadow-lg">
+            <ul className="*:flex flex flex-col *:justify-between gap-3 w-full">
               <li>
                 <p>Subtotal</p>
                 <p>₹ {subTotal}</p>
@@ -163,11 +180,11 @@ const CartPage = () => {
 
             <div className="flex flex-col gap-2 pt-5">
               <span className="text-sm">Do you have a promotional code?</span>
-              <div className="flex bg-white rounded-full">
+              <div className="flex bg-gray-200 rounded-full">
                 <input
                   type="text"
                   name="apply promo code"
-                  className="py-2 w-full rounded-full px-3 placeholder:text-sm focus:outline-none"
+                  className="py-2 w-full rounded-full pl-5 placeholder:text-sm focus:outline-none"
                   onChange={(e) => {
                     e.preventDefault();
                     setPromoCode(e.target.value);
