@@ -9,13 +9,14 @@ import { BiCart } from "react-icons/bi";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { toast } from "sonner";
 import CallToActionBtn from "../ui/callToActionBtn";
+import AddToCartButton from "../AddToCartButton";
 
 const ProductCard = ({ _id, name, price, images }: productTypes) => {
   const { data: session } = useSession();
   const { cart, addToCart } = useCartStore();
 
   const handleAddToCart = async () => {
-    if (session) {
+    if (session?.user) {
       await fetch("/api/cart", {
         method: "POST",
         headers: {
@@ -67,7 +68,8 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
       </Link>
 
       {/* Add to cart button */}
-      <CallToActionBtn
+      <AddToCartButton _id={_id} name={name} />
+      {/* <CallToActionBtn
         text="Add to Cart"
         onClick={async () => {
           await addToCart(_id);
@@ -78,7 +80,7 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
         className="w-full flex items-center justify-center gap-2 bg-darkTeal text-ivory rounded-lg lg:rounded-xl py-3 lg:py-3 lg:px-4 hover:opacity-90 transition-all duration-200 ease-in-out"
       >
         <BiCart size={16} />
-      </CallToActionBtn>
+      </CallToActionBtn> */}
     </div>
   );
 };
