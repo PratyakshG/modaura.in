@@ -10,6 +10,8 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
+export const runtime = "nodejs";
+
 export async function connectDB() {
   // if connection is already present
   if (cached.conn) return cached.conn;
