@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import { model, models, Schema } from "mongoose";
 import { UserTypes } from "../types/index";
 
+export const runtime = "nodejs";
+
 const userSchema = new Schema<UserTypes>(
   {
     name: {
