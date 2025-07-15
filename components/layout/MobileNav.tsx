@@ -9,11 +9,13 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import logo from "@/public/logo-color.svg";
-import Image from "next/image";
-import { useState } from "react";
-import { HiUser } from "react-icons/hi";
-import { IoIosMenu } from "react-icons/io";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import {
   Accordion,
@@ -21,35 +23,31 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+
+import logo from "@/public/logo-color.svg";
+import Image from "next/image";
+import { useState } from "react";
+import { IoIosMenu } from "react-icons/io";
+
+import useCartStore from "@/app/stores/useCartStore";
+
+import { homePageSections } from "@/constants/data";
+import { logout } from "@/lib/actions";
+import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { BsHandbagFill } from "react-icons/bs";
 import { FaInstagram, FaTwitter } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import { VscAccount } from "react-icons/vsc";
 import { Separator } from "../ui/separator";
-import useCartStore from "@/app/stores/useCartStore";
-
-const categoryList = [
-  {
-    name: "rings",
-    link: "/productByCategory/rings",
-  },
-  {
-    name: "necklaces",
-    link: "/productByCategory/necklaces",
-  },
-  {
-    name: "bracelets",
-    link: "/productByCategory/bracelets",
-  },
-  {
-    name: "earrings",
-    link: "/productByCategory/earrings",
-  },
-];
 
 const MobileNav = () => {
   const { cart } = useCartStore();
   const [open, setOpen] = useState(false);
+  const session = useSession();
+  const router = useRouter();
 
   const ScrollIntoView = (id: string) => {
     window.scrollTo({
@@ -77,18 +75,18 @@ const MobileNav = () => {
                       Categories
                     </AccordionTrigger>
 
-                    {categoryList.map((category, _) => (
+                    {homePageSections.map((category, _) => (
                       <AccordionContent
                         key={_}
                         className="py-1 pl-3"
                         onClick={() => setOpen(false)}
                       >
-                        <Link
-                          className="text-lg capitalize"
-                          href={category.link}
+                        <span
+                          onClick={() => ScrollIntoView(category.sectionId)}
+                          className="text-lg"
                         >
-                          {category.name}
-                        </Link>
+                          {category.section}
+                        </span>
                       </AccordionContent>
                     ))}
                   </AccordionItem>
@@ -115,15 +113,6 @@ const MobileNav = () => {
                   Latest
                 </DrawerTitle>
                 <Separator />
-
-                <DrawerTitle
-                  onClick={() => {
-                    setOpen(false);
-                  }}
-                >
-                  <Link href="/product/1">Combo-Packs</Link>
-                </DrawerTitle>
-                <Separator />
               </DrawerHeader>
               <DrawerFooter>
                 <ul className="flex **:size-5 gap-3 **:stroke-1 **:fill-ivory">
@@ -146,17 +135,52 @@ const MobileNav = () => {
         </div>
 
         <div className="w-1/3 flex items-center justify-end">
-          <ul className="flex gap-3 text-black-1 items-center justify-center *:cursor-pointer">
+          <ul className="flex gap-4 text-black-1 items-center justify-center *:cursor-pointer">
             <li className="relative">
               <Link href="/cart">
-                <BsHandbagFill className="size-4.5 text-darkTeal" />
+                <BsHandbagFill size={22} className="text-darkTeal" />
               </Link>
               <span className="absolute -top-1.5 -right-1.5 text-[10px] leading-2.5 bg-roseGold rounded-full p-1 text-ivory">
                 {cart.length}
               </span>
             </li>
             <li>
-              <HiUser className="size-5 text-darkTeal" />
+              {session.data?.user ? (
+                <div className="font-dmSans flex items-center justify-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex gap-1 items-center">
+                      {session.data?.user.image && (
+                        <Image
+                          src={session.data.user.image}
+                          alt="user-image"
+                          width={24}
+                          height={24}
+                          className="rounded-full"
+                        />
+                      )}
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                        <Link href="/profile">Profile</Link>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuItem
+                        onClick={() => {
+                          logout();
+                          router.refresh();
+                        }}
+                      >
+                        Sign Out
+                      </DropdownMenuItem>
+                      <DropdownMenuArrow />
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              ) : (
+                <Link href="/login">
+                  <VscAccount className="size-6 fill-darkTeal" />
+                </Link>
+              )}
             </li>
           </ul>
         </div>
