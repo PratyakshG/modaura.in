@@ -26,7 +26,7 @@ import { use, useEffect, useState } from "react";
 import { BiSolidOffer } from "react-icons/bi";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import mongoose from "mongoose";
-import { productTypes } from "@/models/Product";
+import { productTypes } from "@/types/index";
 
 const Page = ({
   params,
@@ -74,7 +74,7 @@ const Page = ({
             <Carousel
               setApi={setApi}
               opts={{
-                loop : true,
+                loop: true,
                 align: "center",
               }}
               plugins={[WheelGesturesPlugin()]}
