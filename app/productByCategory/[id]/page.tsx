@@ -15,7 +15,7 @@ const CategoryProduct = ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <main className="w-full h-full space-y-5 lg:space-y-10">
-      <h3 className="text-3xl lg:text-5xl">{id}s</h3>
+      <h3 className="text-3xl lg:text-5xl capitalize">{id}s</h3>
 
       <div className="w-full text-end lg:text-lg">{items.length} products</div>
 

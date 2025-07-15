@@ -23,11 +23,8 @@ const HomePageSection = ({
   );
 
   return (
-    <section className="w-full space-y-5">
-      <div
-        id={sectionId}
-        className="w-full flex flex-col space-y-3 lg:space-y-8 text-center"
-      >
+    <section id={sectionId} className="w-full space-y-5">
+      <div className="w-full flex flex-col space-y-3 lg:space-y-8 text-center">
         <h3 className="text-xl lg:text-5xl tracking-tighter">
           Shop For <span className="font-semibold">{section}s</span>
         </h3>
@@ -43,10 +40,7 @@ const HomePageSection = ({
           >
             <CarouselContent className="lg:w-full h-full lg:justify-between -ml-0">
               {items.slice(0, 6).map((item) => (
-                <CarouselItem
-                  className="pl-0"
-                  key={item._id.toString()}
-                >
+                <CarouselItem className="pl-0" key={item._id.toString()}>
                   {loading === true ? (
                     <Skeleton
                       key={item._id.toString()}
