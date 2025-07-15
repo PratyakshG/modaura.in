@@ -1,33 +1,12 @@
 "use client";
 
-import useCartStore from "@/app/stores/useCartStore";
 import { productTypes } from "@/types/index";
 import { Image } from "@imagekit/next";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { BiCart } from "react-icons/bi";
 import { IoMdHeartEmpty } from "react-icons/io";
-import { toast } from "sonner";
-import CallToActionBtn from "../ui/callToActionBtn";
 import AddToCartButton from "../AddToCartButton";
 
 const ProductCard = ({ _id, name, price, images }: productTypes) => {
-  const { data: session } = useSession();
-  const { cart, addToCart } = useCartStore();
-
-  const handleAddToCart = async () => {
-    if (session?.user) {
-      await fetch("/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cartItems: cart }),
-      });
-    }
-    console.log(cart);
-  };
-
   return (
     <div className="w-full h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2">
       <Link
@@ -68,19 +47,17 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
       </Link>
 
       {/* Add to cart button */}
-      <AddToCartButton _id={_id} name={name} />
-      {/* <CallToActionBtn
-        text="Add to Cart"
-        onClick={async () => {
-          await addToCart(_id);
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          handleAddToCart();
-          toast(`${name} is added to cart.`);
+      <AddToCartButton
+        _id={_id}
+        name={name}
+        category={""}
+        description={""}
+        price={{
+          mrp: 0,
+          sellingPrice: 0,
         }}
-        className="w-full flex items-center justify-center gap-2 bg-darkTeal text-ivory rounded-lg lg:rounded-xl py-3 lg:py-3 lg:px-4 hover:opacity-90 transition-all duration-200 ease-in-out"
-      >
-        <BiCart size={16} />
-      </CallToActionBtn> */}
+        images={[]}
+      />
     </div>
   );
 };
