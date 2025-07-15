@@ -1,6 +1,7 @@
 import { CartItems, productTypes } from "@/types/index";
 import mongoose from "mongoose";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface CartStateTypes {
   cart: Array<CartItems & productTypes>;
@@ -26,43 +27,48 @@ const getProduct = async (_id: mongoose.Types.ObjectId) => {
   }
 };
 
-const useCartStore = create<CartStateTypes>((set) => ({
-  cart: [],
+const useCartStore = create(
+  persist<CartStateTypes>(
+    (set) => ({
+      cart: [],
 
-  setCart: (items) => set({ cart: [...items] }),
+      setCart: (items) => set({ cart: [...items] }),
 
-  addToCart: (_id) => {
-    getProduct(_id).then((product) => {
-      set((state) => {
-        const exists = state.cart.find((item) => item._id === product._id);
-        if (exists) {
-          return {
-            cart: state.cart.map((item) =>
-              item._id === product?._id
-                ? { ...item, quantity: item.quantity + 1 }
-                : item
-            ),
-          };
-        } else {
-          return { cart: [...state.cart, { ...product, quantity: 1 }] };
-        }
-      });
-    });
-  },
+      addToCart: (_id) => {
+        getProduct(_id).then((product) => {
+          set((state) => {
+            const exists = state.cart.find((item) => item._id === product._id);
+            if (exists) {
+              return {
+                cart: state.cart.map((item) =>
+                  item._id === product?._id
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+                ),
+              };
+            } else {
+              return { cart: [...state.cart, { ...product, quantity: 1 }] };
+            }
+          });
+        });
+      },
 
-  removeFromCart: (_id) =>
-    set((state) => ({
-      cart: state.cart.filter((item) => item._id !== _id),
-    })),
+      removeFromCart: (_id) =>
+        set((state) => ({
+          cart: state.cart.filter((item) => item._id !== _id),
+        })),
 
-  updateQuantity: (_id, quantity) =>
-    set((state) => ({
-      cart: state.cart.map((item) =>
-        item._id === _id ? { ...item, quantity } : item
-      ),
-    })),
+      updateQuantity: (_id, quantity) =>
+        set((state) => ({
+          cart: state.cart.map((item) =>
+            item._id === _id ? { ...item, quantity } : item
+          ),
+        })),
 
-  clearCart: () => set({ cart: [] }),
-}));
+      clearCart: () => set({ cart: [] }),
+    }),
+    { name: "cartStorage" }
+  )
+);
 
 export default useCartStore;
