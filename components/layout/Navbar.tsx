@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { IoIosArrowDown } from "react-icons/io";
-import { PiUserCircle } from "react-icons/pi";
 import { VscAccount } from "react-icons/vsc";
 
 import { logout } from "@/lib/actions";
@@ -17,9 +16,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { homePageSections } from "@/constants/data";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
-import { LuShoppingBag } from "react-icons/lu";
 import { useRouter } from "next/navigation";
+import { LuShoppingBag } from "react-icons/lu";
 
 const Navbar = () => {
   const { cart } = useCartStore();
@@ -48,18 +48,11 @@ const Navbar = () => {
 
               <div className="absolute top-6 bg-ivory border px-4 py-6 rounded-lg opacity-0 hover:opacity-100 peer-hover:opacity-100 invisible hover:visible peer-hover:visible transition-all duration-300 ease-in-out shadow-xl">
                 <ul className="space-y-2 cursor-auto *:cursor-pointer text-black-1 *:hover:text-darkTeal *:tracking-wide">
-                  <li>
-                    <Link href="/productByCategory/rings">rings</Link>
-                  </li>
-                  <li>
-                    <Link href="/productByCategory/necklaces">necklaces</Link>
-                  </li>
-                  <li>
-                    <Link href="/productByCategory/bracelets">bracelets</Link>
-                  </li>
-                  <li>
-                    <Link href="/productByCategory/earrings">earrings</Link>
-                  </li>
+                  {homePageSections.map((item, _) => (
+                    <li onClick={() => ScrollIntoView(item.sectionId)} key={_}>
+                      {item.section}s
+                    </li>
+                  ))}
                 </ul>
               </div>
             </li>
@@ -105,8 +98,16 @@ const Navbar = () => {
               {session.data?.user ? (
                 <div className="font-dmSans flex items-center justify-center">
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex gap-1 items-center">
-                      <PiUserCircle className="size-6" />
+                    <DropdownMenuTrigger className="flex gap-2 items-center font-satoshi">
+                      {session.data?.user.image && (
+                        <Image
+                          src={session.data.user.image}
+                          alt="user-image"
+                          width={25}
+                          height={25}
+                          className="rounded-full"
+                        />
+                      )}
                       {session.data.user.name}
                       <IoIosArrowDown />
                     </DropdownMenuTrigger>
