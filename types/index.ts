@@ -29,3 +29,25 @@ export interface CartItems {
   _id: mongoose.Types.ObjectId;
   quantity: number;
 }
+
+export interface orderTypes {
+  _id: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
+  createdAt: Date;
+  items: [CartItems];
+  amount: number;
+  address: {
+    name: string;
+    phone_number: string;
+    pincode: string;
+    street: string;
+    city: string;
+    state: string;
+    locality?: string;
+    landmark?: string;
+  };
+}
+
+export interface delhiveryTypes {
+  total_amount: number;
+}
