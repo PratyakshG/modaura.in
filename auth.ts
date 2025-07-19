@@ -28,15 +28,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
 
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
+    async jwt({ token }) {
+      await connectDB();
+
+      // Fetch the user from DB using the email from the token
+      const dbUser = await User.findOne({ email: token.email });
+
+      if (dbUser) {
+        token.id = dbUser._id.toString();
       }
       return token;
     },
 
     async session({ session, token }) {
-      if (token) {
+      if (session.user && token) {
         session.user.id = token.id as string;
       }
       return session;
