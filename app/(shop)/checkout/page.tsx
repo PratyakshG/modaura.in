@@ -53,7 +53,7 @@ type AddressType = z.infer<typeof addressSchema>;
 
 const CheckoutPage = () => {
   const session = useSession();
-  const { cart } = useCartStore();
+  const { cart, setCart } = useCartStore();
   const { subTotal, discount, totalAmount } = useAmountStore();
   const { pincode } = useDeliveryStore();
   const { deliveryCharge, paymentMethod } = useDeliveryStore();
@@ -66,6 +66,22 @@ const CheckoutPage = () => {
   });
 
   const router = useRouter();
+
+  const updateCart = async () => {
+    if (session.data?.user) {
+      //retrieve the latest cart state to remove the delay in updation to the API
+      const cart = useCartStore.getState().cart;
+
+      await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cartItems: cart }),
+      });
+    }
+    console.log(cart);
+  };
 
   const onSubmit = async (data: AddressType) => {
     const cart = useCartStore.getState().cart;
@@ -118,6 +134,9 @@ const CheckoutPage = () => {
     }
 
     if (res.ok) {
+      setCart([]);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      updateCart();
       console.log("order placed");
     }
   };

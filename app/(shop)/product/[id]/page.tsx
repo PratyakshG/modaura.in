@@ -1,14 +1,11 @@
 "use client";
 
-import CallToActionBtn from "@/components/ui/callToActionBtn";
 import { Image } from "@imagekit/next";
-// import { useParams } from "next/navigation";
-import { IoMdAdd, IoMdHeart } from "react-icons/io";
 import { MdCancel, MdLocalShipping } from "react-icons/md";
-import { RiSubtractLine } from "react-icons/ri";
 
 import { FAQs } from "@/constants/data";
 
+import AddToCartButton from "@/components/AddToCartButton";
 import Popular from "@/components/layout/Popular";
 import {
   Accordion,
@@ -22,12 +19,11 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { use, useEffect, useState } from "react";
-import { BiSolidOffer } from "react-icons/bi";
+import { productTypes } from "@/types/index";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import mongoose from "mongoose";
-import { productTypes } from "@/types/index";
-import AddToCartButton from "@/components/AddToCartButton";
+import { use, useEffect, useState } from "react";
+import { BiSolidOffer } from "react-icons/bi";
 
 const Page = ({
   params,
@@ -35,8 +31,10 @@ const Page = ({
   params: Promise<{ id: mongoose.Types.ObjectId }>;
 }) => {
   const { id } = use(params);
+  // const { cart, updateQuantity } = useCartStore();
+  // const session = useSession();
   const [product, setProduct] = useState<productTypes>();
-  const [quantity, setQuantity] = useState(1);
+  
   const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
@@ -48,6 +46,22 @@ const Page = ({
     }
     getProduct();
   }, [id]);
+
+  // const handleUpdateCart = async () => {
+  //   if (session.data?.user) {
+  //     //retrieve the latest cart state to remove the delay in updation to the API
+  //     const cart = useCartStore.getState().cart;
+
+  //     await fetch("/api/cart", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ cartItems: cart }),
+  //     });
+  //   }
+  //   console.log(cart);
+  // };
 
   return (
     <>
@@ -129,7 +143,7 @@ const Page = ({
           </ul>
 
           {/* Quantity of the product */}
-          <div className="w-full flex h-full *:border *:border-darkTeal">
+          {/* <div className="w-full flex h-full *:border *:border-darkTeal">
             <button
               className="h-10 w-10 flex items-center justify-center bg-darkTeal text-ivory rounded-l"
               onClick={() => {
@@ -151,7 +165,7 @@ const Page = ({
             >
               <IoMdAdd size={20} />
             </button>
-          </div>
+          </div> */}
 
           <div className="w-full space-y-2">
             {product && (
@@ -168,19 +182,13 @@ const Page = ({
               />
             )}
 
-            <CallToActionBtn
-              text="Add To Cart"
-              className="w-full bg-linear-to-r from-darkTeal to-teal-500 py-3 text-ivory uppercase tracking-wide font-medium rounded-md lg:text-lg transition-all duration-300 ease-in-out"
-              variant="default"
-            />
-
-            <CallToActionBtn
+            {/* <CallToActionBtn
               text="Add To Wishlist"
               className="w-full bg-ivory border-2 border-darkTeal py-3 text-darkTeal font-semibold uppercase tracking-wide rounded-md flex gap-2 "
               variant="default"
             >
               <IoMdHeart size={20} />
-            </CallToActionBtn>
+            </CallToActionBtn> */}
           </div>
 
           <div className="w-full flex flex-col items-center justify-center">
@@ -190,17 +198,15 @@ const Page = ({
             <ul className="w-full flex flex-col *:py-2 border border-darkTeal rounded-b-md *:border-b *:border-darkTeal *:last:border-b-0">
               <li className="text-sm text-center">
                 <h5>
-                  Flat <span className="font-bold">Rs. 500</span> off on
-                  purchases over Rs. 1999
+                  Flat <span className="font-bold">10 %</span> off on purchases
+                  over Rs. 1499
                 </h5>
-                <span className="font-bold">Use MODAURA500</span>
               </li>
               <li className="text-sm text-center">
                 <h5>
-                  Flat <span className="font-bold">Rs. 500</span> off on
-                  purchases over Rs. 1999
+                  Free <span className="font-bold">delivery</span> on purchases
+                  over Rs. 999
                 </h5>
-                <span className="font-bold">Use MODAURA500</span>
               </li>
             </ul>
           </div>
@@ -214,27 +220,6 @@ const Page = ({
               cumque voluptates quibusdam quisquam voluptatibus cumque
               voluptates quibusdam.
             </p>
-          </div>
-
-          <div className="grid grid-cols-2 space-y-2">
-            <div className="flex flex-col">
-              <span className="font-semibold">Color</span>
-              <span className="text-sm text-gray-500">Silver</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-semibold">Material</span>
-              <span className="text-sm text-gray-500">
-                Copper With Electroplating
-              </span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-semibold">Diameter</span>
-              <span className="text-sm text-gray-500">0.7cm (Adjustable)</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-semibold">Category</span>
-              <span className="text-sm text-gray-500">Bracelet</span>
-            </div>
           </div>
 
           <Accordion

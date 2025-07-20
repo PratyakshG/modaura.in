@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     // add razorpay details to order schema
     const newOrder = await Order.create({
       userId,
-      razorpayOrderID: razorpayOrder.id,
+      razorpayOrderId: razorpayOrder.id,
       createdAt,
       items,
       amount,
@@ -86,7 +86,6 @@ export async function POST(request: NextRequest) {
         dbOrderId: newOrder._id,
         razorpayOrderId: razorpayOrder.id,
         orderAmount: amount,
-        message: "Order placed successfully",
       },
       { status: 200 }
     );

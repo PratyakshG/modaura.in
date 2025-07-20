@@ -54,7 +54,7 @@ const AddToCartButton = ({ _id, name }: productTypes) => {
       ) : (
         <CallToActionBtn
           text="Login to add to Cart"
-          className="w-full flex items-center justify-center gap-2 bg-neutral-400 opacity-80 text-ivory rounded-lg lg:rounded-xl py-3 lg:py-3 lg:px-4"
+          className={`w-full flex items-center justify-center gap-2 bg-neutral-400 opacity-80 text-ivory rounded-lg lg:rounded-xl py-3 lg:py-3 lg:px-4`}
         />
       )}
     </>

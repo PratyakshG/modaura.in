@@ -249,7 +249,7 @@ const CartPage = () => {
               </li>
               <li>
                 <p>Delivery</p>
-                <p className="">Rs. {deliveryCharge}</p>
+                <p className="">Rs. {deliveryCharge ? deliveryCharge : 0}</p>
               </li>
             </ul>
             <div className="flex items-center justify-between font-semibold py-4 border-t border-b border-dotted border-neutral-500">
@@ -358,12 +358,18 @@ const CartPage = () => {
 
             {session.status === "authenticated" ? (
               <div className="w-full flex items-end justify-end pt-5">
-                <Link
-                  href="/checkout"
-                  className="bg-darkTeal px-5 py-2 text-ivory rounded-full"
-                >
-                  Proceed to Checkout
-                </Link>
+                {pincode.length !== 6 ? (
+                  <span className="text-red-500">
+                    Enter Pincode To Proceed To Checkout
+                  </span>
+                ) : (
+                  <Link
+                    href="/checkout"
+                    className="bg-darkTeal px-5 py-2 text-ivory rounded-full"
+                  >
+                    Proceed to Checkout
+                  </Link>
+                )}
               </div>
             ) : (
               <>
