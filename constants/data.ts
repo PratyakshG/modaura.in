@@ -62,4 +62,27 @@ const homePageSections = [
   },
 ];
 
-export { FAQs, latestProducts, popularProducts, homePageSections };
+const mobileCarousel = [
+  "/images/M-1.jpg",
+  "/images/M-2.jpg",
+  "/images/M-3.jpg",
+  "/images/M-4.jpg",
+  "/images/M-5.jpg",
+];
+
+const desktopCarousel = [
+  "/images/D-1.jpg",
+  "/images/D-2.jpg",
+  "/images/D-3.jpg",
+  "/images/D-4.jpg",
+  "/images/D-5.jpg",
+];
+
+export {
+  FAQs,
+  latestProducts,
+  popularProducts,
+  homePageSections,
+  mobileCarousel,
+  desktopCarousel,
+};
