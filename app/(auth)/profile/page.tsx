@@ -4,21 +4,25 @@ import { logout } from "@/lib/actions";
 // import { auth } from "@/auth";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 // import { useState } from "react";
 
 const ProfilePage = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   //   const [isEditing, setIsEditing] = useState();
 
   const submitHandler = () => {};
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-10">
-      <h1 className="text-4xl font-semibold">Personal Information</h1>
+      <h1 className="text-3xl lg:text-4xl font-semibold">
+        Personal Information
+      </h1>
 
       <form
         onSubmit={submitHandler}
-        className="bg-neutral-200 w-1/3 flex flex-col gap-5 rounded-2xl p-10 shadow-lg"
+        className="bg-neutral-200 w-full lg:w-1/3 flex flex-col gap-5 rounded-2xl p-5 lg:p-10 shadow-lg"
       >
         <div className="flex items-center justify-between">
           <div className="py-3 flex flex-col rounded-lg">
@@ -51,16 +55,20 @@ const ProfilePage = () => {
         </div> */}
       </form>
 
-      <button
-        onClick={() => logout()}
-        className="text-shadow text-red-500 font-medium"
-      >
-        Sign Out
-      </button>
+      <div className="w-full flex items-center justify-center gap-2 *:rounded-md">
+        <button
+          onClick={async () => {
+            await logout().then(() => router.push("/"));
+          }}
+          className="text-shadow font-medium border max-sm:w-full py-2 px-5 bg-red-400 text-white hover:bg-red-500 transition"
+        >
+          Sign Out
+        </button>
 
-      <button className="text-shadow text-red-500 font-medium">
-        Delete Account
-      </button>
+        {/* <button className="w-full text-shadow text-red-500 font-medium py-2 bg-white">
+          Delete Account
+        </button> */}
+      </div>
     </div>
   );
 };

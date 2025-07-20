@@ -20,6 +20,7 @@ import { homePageSections } from "@/constants/data";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
 import { LuShoppingBag } from "react-icons/lu";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const { cart } = useCartStore();
@@ -116,9 +117,15 @@ const Navbar = () => {
                         <Link href="/profile">Profile</Link>
                       </DropdownMenuItem>
 
+                      <DropdownMenuItem>
+                        <Link href="/orders">Orders</Link>
+                      </DropdownMenuItem>
+
                       <DropdownMenuItem
-                        onClick={async () => {
-                          await logout();
+                        onClick={() => {
+                          logout().then(() => {
+                            toast("You have been logged out");
+                          });
                           router.refresh();
                         }}
                       >

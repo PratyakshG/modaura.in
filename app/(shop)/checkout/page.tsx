@@ -98,7 +98,7 @@ const CheckoutPage = () => {
           amount: totalAmount,
           currency: "INR",
           name: "Modaura",
-          description: ``,
+          description: `Modaura Pre-paid order`,
           order_id: razorpayOrderId,
           handler: function () {
             toast("Payment successful!");
@@ -278,8 +278,13 @@ const CheckoutPage = () => {
           />
 
           <div className="w-full flex justify-end">
-            <Button type="submit" className="bg-darkTeal font-urbanist">
-              Proceed to Payment
+            <Button
+              type="submit"
+              className="bg-darkTeal opacity-80 font-urbanist hover:opacity-100"
+            >
+              {paymentMethod === "Pre-paid"
+                ? "Proceed to Payment"
+                : "Place Order"}
             </Button>
           </div>
         </form>

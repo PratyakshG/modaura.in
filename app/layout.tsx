@@ -67,7 +67,7 @@ export default function RootLayout({
             <Annoucements />
             <Navbar />
             <MobileNav />
-            <main className="font-dmSans min-h-fit w-screen overflow-hidden flex flex-col space-y-10 lg:space-y-16 px-5 lg:px-10 items-start justify-start">
+            <main className="font-dmSans min-h-fit w-screen flex flex-col space-y-10 lg:space-y-16 px-5 lg:px-10 items-start justify-start">
               {children}
             </main>
             <Footer />

@@ -34,7 +34,7 @@ export interface orderTypes {
   _id: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   createdAt: Date;
-  items: [CartItems];
+  items: [CartItems & productTypes];
   amount: number;
   paymentMode: "COD" | "Pre-paid";
   paymentStatus: "pending" | "completed" | "failed";

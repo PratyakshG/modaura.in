@@ -147,7 +147,7 @@ const CartPage = () => {
           </Link>
         </div>
       ) : (
-        <div className="w-full h-full lg:max-h-[82dvh] overflow-scroll max-md:flex-col flex justify-between gap-5 font-urbanist relative">
+        <div className="w-full h-full lg:max-h-[82dvh] overflow-scroll max-md:flex-col flex justify-between gap-5 font-dmSans relative">
           {/* item subtotal section */}
           <div className="lg:w-2/3 h-full bg-[#ececec] rounded-xl lg:rounded-4xl flex flex-col gap-2 lg:gap-5 p-3 lg:p-10">
             <span className="text-xl lg:text-3xl font-medium">
@@ -176,10 +176,10 @@ const CartPage = () => {
                           {product.name}
                         </span>
                         <span className="font-light text-xs lg:text-sm line-through">
-                          ₹ {product?.price?.mrp}
+                          Rs. {product?.price?.mrp}
                         </span>
                         <span className="font-semibold lg:text-xl">
-                          ₹ {product?.price?.sellingPrice}
+                          Rs. {product?.price?.sellingPrice}
                         </span>
                       </div>
                     </div>
@@ -241,15 +241,15 @@ const CartPage = () => {
             <ul className="*:flex flex flex-col *:justify-between gap-3 w-full">
               <li>
                 <p>Subtotal</p>
-                <p>₹ {subTotal}</p>
+                <p>Rs. {subTotal}</p>
               </li>
               <li>
                 <p>Discount</p>
-                <p className="text-green-600">- ₹ {discount}</p>
+                <p className="text-green-600">- Rs. {discount}</p>
               </li>
               <li>
                 <p>Delivery</p>
-                <p className="">₹ {deliveryCharge}</p>
+                <p className="">Rs. {deliveryCharge}</p>
               </li>
             </ul>
             <div className="flex items-center justify-between font-semibold py-4 border-t border-b border-dotted border-neutral-500">
@@ -273,7 +273,7 @@ const CartPage = () => {
                   type="submit"
                   className="px-5 text-nowrap bg-darkTeal rounded-full text-white"
                 >
-                  apply code
+                  Apply Code
                 </button>
               </div>
 

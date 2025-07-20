@@ -4,6 +4,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -38,7 +39,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BsHandbagFill } from "react-icons/bs";
-import { FaInstagram, FaTwitter } from "react-icons/fa6";
+import { FaFacebook, FaInstagram } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { VscAccount } from "react-icons/vsc";
 import { Separator } from "../ui/separator";
@@ -49,10 +50,21 @@ const MobileNav = () => {
   const session = useSession();
   const router = useRouter();
 
+  // const ScrollIntoView = (id: string) => {
+  //   const element = document.getElementById(id);
+  //   if (element) {
+  //     element.scrollIntoView({ behavior: "smooth", block: "center" });
+  //   }
+  // };
+
   const ScrollIntoView = (id: string) => {
-    window.scrollTo({
-      top: document.getElementById(id)!.offsetTop - 100,
+    if (typeof window === "undefined") return; // SSR safety
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.scrollIntoView({
       behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -102,6 +114,8 @@ const MobileNav = () => {
                 >
                   Popular
                 </DrawerTitle>
+                <DrawerDescription className="hidden" />
+
                 <Separator />
 
                 <DrawerTitle
@@ -112,16 +126,25 @@ const MobileNav = () => {
                 >
                   Latest
                 </DrawerTitle>
+                <DrawerDescription className="hidden" />
+
                 <Separator />
               </DrawerHeader>
               <DrawerFooter>
                 <ul className="flex **:size-5 gap-3 **:stroke-1 **:fill-ivory">
-                  <li>
+                  <Link
+                    href="https://www.instagram.com/_modaura.in/"
+                    target="_blank"
+                  >
                     <FaInstagram />
-                  </li>
-                  <li>
-                    <FaTwitter />
-                  </li>
+                  </Link>
+
+                  <Link
+                    href="https://www.facebook.com/people/ModAura/61574557487011/?ref=pl_edit_xav_ig_profile_page_web#"
+                    target="_blank"
+                  >
+                    <FaFacebook />
+                  </Link>
                 </ul>
               </DrawerFooter>
             </DrawerContent>

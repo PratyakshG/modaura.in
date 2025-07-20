@@ -13,11 +13,8 @@ const Popular = () => {
     popularProducts.includes(product._id.toString())
   );
   return (
-    <section className="w-full">
-      <div
-        id="popular-section"
-        className="w-full flex flex-col space-y-3 lg:space-y-10"
-      >
+    <section className="w-full" id="popular-section">
+      <div className="w-full flex flex-col space-y-3 lg:space-y-10">
         <h3 className="text-xl lg:text-5xl text-center tracking-tighter">
           <span className="font-semibold">Popular</span> Collection
         </h3>

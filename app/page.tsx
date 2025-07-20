@@ -8,10 +8,12 @@ import { homePageSections } from "@/constants/data";
 import { useEffect } from "react";
 import useCartStore from "./stores/useCartStore";
 import useProductStore from "./stores/useProductStore";
+import { useSession } from "next-auth/react";
 
 const Home = () => {
   const { setProducts, setLoading } = useProductStore();
   const { setCart } = useCartStore();
+  const session = useSession();
 
   useEffect(() => {
     async function fetchProducts() {
@@ -26,8 +28,9 @@ const Home = () => {
   }, [setProducts, setLoading]);
 
   //function to fetch cart items
-
   useEffect(() => {
+    if (!session.data?.user) return;
+
     async function getCartItems() {
       const res = await fetch("/api/cart");
 
@@ -37,7 +40,7 @@ const Home = () => {
       setCart([...data.cartItems]);
     }
     getCartItems();
-  }, [setCart]);
+  }, [setCart, session]);
 
   return (
     <>

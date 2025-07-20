@@ -1,10 +1,6 @@
-import React from "react";
-import {
-  FaFacebook,
-  FaInstagram,
-  FaLinkedinIn,
-  FaXTwitter,
-} from "react-icons/fa6";
+import { homePageSections } from "@/constants/data";
+import Link from "next/link";
+import { FaFacebook, FaInstagram } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -15,13 +11,14 @@ const Footer = () => {
             <h4 className="text-lg lg:text-xl font-semibold uppercase">
               All Jewellery
             </h4>
-            <ul className="text-sm lg:text-base space-y-1 xl:space-y-2 *:hover:underline-offset-2 *:hover:underline *:w-fit" >
-              <li>Earrings</li>
-              <li>Necklaces</li>
-              <li>Bracelets</li>
-              <li>Rings</li>
-              <li>Gift Boxes</li>
-              <li>Personalised Jewellery</li>
+            <ul className="text-sm lg:text-base space-y-1 xl:space-y-2 *:hover:underline-offset-2 *:hover:underline *:w-fit">
+              {homePageSections.map((item, index) => (
+                <li key={index}>
+                  <Link href={`/productByCategory/${item.section}`}>
+                    {item.section}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -58,16 +55,20 @@ const Footer = () => {
           </h4>
           <ul className="flex flex-row gap-4 lg:gap-8 text-sm lg:text-base space-y-1 lg:space-y-0 *:hover:bg-ivory *:hover:border-ivory *:hover:text-black-1 *:transition-all *:duration-300 *:ease-in-out *:aspect-square">
             <li className="size-auto p-2 border border-black-1 rounded-full">
-              <FaLinkedinIn />
+              <Link
+                href="https://www.instagram.com/_modaura.in/"
+                target="_blank"
+              >
+                <FaInstagram />
+              </Link>
             </li>
             <li className="size-auto p-2 border border-black-1 rounded-full">
-              <FaFacebook />
-            </li>
-            <li className="size-auto p-2 border border-black-1 rounded-full">
-              <FaInstagram />
-            </li>
-            <li className="size-8 p-2 border border-black-1 rounded-full place-items-center">
-              <FaXTwitter />
+              <Link
+                href="https://www.facebook.com/people/ModAura/61574557487011/?ref=pl_edit_xav_ig_profile_page_web#"
+                target="_blank"
+              >
+                <FaFacebook />
+              </Link>
             </li>
           </ul>
         </div>
