@@ -85,10 +85,11 @@ const CheckoutPage = () => {
       }),
     });
 
-    const { orderId, orderAmount } = await res.json();
+    const { dbOrderId, razorpayOrderId, orderAmount } = await res.json();
 
-    console.log(orderId);
+    console.log(dbOrderId);
     console.log(orderAmount);
+    console.log(razorpayOrderId);
 
     if (paymentMethod === "Pre-paid") {
       try {
@@ -98,10 +99,10 @@ const CheckoutPage = () => {
           currency: "INR",
           name: "Modaura",
           description: ``,
-          order_id: orderId,
+          order_id: razorpayOrderId,
           handler: function () {
             toast("Payment successful!");
-            router.push("/orders");
+            router.push("/");
           },
           prefill: {
             email: session.data?.user.email,

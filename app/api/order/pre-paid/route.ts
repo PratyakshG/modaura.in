@@ -83,7 +83,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        orderId: newOrder._id,
+        dbOrderId: newOrder._id,
+        razorpayOrderId: razorpayOrder.id,
         orderAmount: amount,
         message: "Order placed successfully",
       },
