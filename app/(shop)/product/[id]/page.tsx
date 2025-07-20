@@ -27,6 +27,7 @@ import { BiSolidOffer } from "react-icons/bi";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import mongoose from "mongoose";
 import { productTypes } from "@/types/index";
+import AddToCartButton from "@/components/AddToCartButton";
 
 const Page = ({
   params,
@@ -153,6 +154,20 @@ const Page = ({
           </div>
 
           <div className="w-full space-y-2">
+            {product && (
+              <AddToCartButton
+                _id={product?._id}
+                name={product.name}
+                category={""}
+                description={""}
+                price={{
+                  mrp: 0,
+                  sellingPrice: 0,
+                }}
+                images={[]}
+              />
+            )}
+
             <CallToActionBtn
               text="Add To Cart"
               className="w-full bg-linear-to-r from-darkTeal to-teal-500 py-3 text-ivory uppercase tracking-wide font-medium rounded-md lg:text-lg transition-all duration-300 ease-in-out"

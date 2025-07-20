@@ -15,6 +15,18 @@ const OrderSchema = new Schema<orderTypes>({
   },
   items: Array<CartItems>,
   amount: Number,
+  paymentMode: {
+    type: String,
+    required: true,
+    enum: ["COD", "Pre-paid"],
+  },
+  paymentStatus: {
+    type: String,
+    enum: ["pending", "completed", "failed"],
+    default: "pending",
+  },
+  razorpayOrderId: { type: String },
+  razorpayPaymentId: { type: String },
   address: {
     name: String,
     phone_number: String,

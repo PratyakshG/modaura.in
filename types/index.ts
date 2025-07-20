@@ -36,6 +36,10 @@ export interface orderTypes {
   createdAt: Date;
   items: [CartItems];
   amount: number;
+  paymentMode: "COD" | "Pre-paid";
+  paymentStatus: "pending" | "completed" | "failed";
+  razorpayOrderId: string;
+  razorpayPaymentId?: string;
   address: {
     name: string;
     phone_number: string;
@@ -46,8 +50,4 @@ export interface orderTypes {
     locality?: string;
     landmark?: string;
   };
-}
-
-export interface delhiveryTypes {
-  total_amount: number;
 }

@@ -4,11 +4,14 @@ import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   return (
-    <div className="w-full place-items-center p-10">
-      <div className="w-[50vw] border flex flex-col items-center justify-around rounded-3xl gap-10 p-10 shadow-xl">
-        <span className="text-black-1 text-4xl font-semibold">
-          Welcome To Modaura
-        </span>
+    <div className="w-full place-items-center p-10 text-center">
+      <div className="lg:w-[50vw] border flex flex-col items-center justify-around rounded-3xl gap-10 p-10 shadow-xl">
+        <div className="flex flex-col">
+          <span className="font-medium text-3xl">
+            Welcome To
+          </span>
+          <span className="font-semibold text-4xl">Modaura</span>
+        </div>
 
         <button
           onClick={() => login()}

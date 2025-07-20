@@ -117,8 +117,8 @@ const Navbar = () => {
                       </DropdownMenuItem>
 
                       <DropdownMenuItem
-                        onClick={() => {
-                          logout();
+                        onClick={async () => {
+                          await logout();
                           router.refresh();
                         }}
                       >

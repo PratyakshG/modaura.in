@@ -30,7 +30,9 @@ const Home = () => {
   useEffect(() => {
     async function getCartItems() {
       const res = await fetch("/api/cart");
-      const data = await res.json();
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const data: any = await res.json();
       console.log(data.cartItems);
       setCart([...data.cartItems]);
     }

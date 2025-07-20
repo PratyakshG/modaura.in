@@ -2,14 +2,20 @@ import { auth } from "@/auth";
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
 import { NextRequest, NextResponse } from "next/server";
+import Razorpay from "razorpay";
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
 
 export async function POST(request: NextRequest) {
-  const session = await auth();
-
-  if (!session || !session.user?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   try {
+    const session = await auth();
+
+    if (!session || !session.user?.id)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
     const {
       userId,
       createdAt,
@@ -47,8 +53,17 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    await Order.create({
+    //create razorpay order
+    const razorpayOrder = await razorpay.orders.create({
+      amount: Math.ceil(amount * 100),
+      currency: "INR",
+      receipt: `receipt_${Date.now()}`,
+    });
+
+    // add razorpay details to order schema
+    const newOrder = await Order.create({
       userId,
+      razorpayOrderID: razorpayOrder.id,
       createdAt,
       items,
       amount,
@@ -65,7 +80,11 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(
-      { message: "Order placed successfully" },
+      {
+        orderId: newOrder._id,
+        orderAmount: amount,
+        message: "Order placed successfully",
+      },
       { status: 200 }
     );
   } catch (error) {
@@ -75,18 +94,4 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
-}
-
-export async function GET() {
-  const session = await auth();
-
-  if (!session || !session.user?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  await connectDB();
-
-  const res = await Order.find({ userId: session.user?.id });
-
-  console.log(res);
-  return NextResponse.json(res, { status: 200 });
 }

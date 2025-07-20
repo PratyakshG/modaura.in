@@ -57,7 +57,7 @@ const CartPage = () => {
 
     const totalAmt =
       subTotal - discount + (deliveryCharge ? deliveryCharge : 0);
-    setTotalAmount(totalAmt);
+    setTotalAmount(Math.ceil(totalAmt));
   }, [
     cart,
     subTotal,
@@ -74,7 +74,9 @@ const CartPage = () => {
       const pincodeServiceable = await fetch(
         `/api/delhivery/pincode-check/?pincode=${pincode}`
       );
-      const deliveryAvailable = await pincodeServiceable.json();
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const deliveryAvailable: any = await pincodeServiceable.json();
       if (deliveryAvailable.delivery_codes.length == 0) {
         setDeliveryPossible(false);
         return;
@@ -97,10 +99,8 @@ const CartPage = () => {
         `/api/delhivery/shipping-cost/?pincode=${pincode}&paymentMode=${paymentMethod}`
       );
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const shippingCostData: any = await shippingCostResponse.json();
-      console.log("shipping cost", shippingCostData);
-      setDeliveryCharge(shippingCostData[0]?.total_amount);
+      const shippingCostData = await shippingCostResponse.json();
+      setDeliveryCharge(Math.ceil(shippingCostData[0]?.total_amount));
     };
 
     handleDelivery();
@@ -234,18 +234,10 @@ const CartPage = () => {
                 </div>
               </div>
             ))}
-            <div className="w-full flex items-end justify-end">
-              <Link
-                href="/checkout"
-                className="bg-darkTeal px-5 py-2 text-ivory rounded-full"
-              >
-                Proceed to Checkout
-              </Link>
-            </div>
           </div>
 
           {/* Subtotal Section */}
-          <div className="lg:w-1/3 sticky top-0 bg-white h-fit p-5 rounded-2xl shadow-lg">
+          <div className="lg:w-1/3 sticky top-0 bg-white h-fit mb-5 p-5 rounded-2xl shadow-lg">
             <ul className="*:flex flex flex-col *:justify-between gap-3 w-full">
               <li>
                 <p>Subtotal</p>
@@ -361,6 +353,28 @@ const CartPage = () => {
                   Note: COD might incur additional delivery charges
                 </span>
               </div>
+            )}
+
+            {session.status === "authenticated" ? (
+              <div className="w-full flex items-end justify-end pt-5">
+                <Link
+                  href="/checkout"
+                  className="bg-darkTeal px-5 py-2 text-ivory rounded-full"
+                >
+                  Proceed to Checkout
+                </Link>
+              </div>
+            ) : (
+              <>
+                <div className="w-full flex items-end justify-end">
+                  <Link
+                    href="/login"
+                    className="bg-neutral-400 hover:bg-darkTeal px-5 py-2 text-ivory rounded-full transition"
+                  >
+                    Login to Checkout
+                  </Link>
+                </div>
+              </>
             )}
           </div>
         </div>
