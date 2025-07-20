@@ -25,13 +25,19 @@ const Footer = () => {
           <div className="flex flex-col xl:space-y-2">
             <h4 className="text-lg lg:text-xl font-semibold uppercase">Info</h4>
             <ul className="text-sm lg:text-base space-y-1 xl:space-y-2 *:hover:underline-offset-2 *:hover:underline *:w-fit">
-              <li>About Us</li>
-              <li>Privacy Policy</li>
-              <li>Terms Of Service</li>
-              <li>Refund Policy</li>
-              <li>FAQ&apos;s</li>
+              <li>
+                <Link href="/about">About Us</Link>
+              </li>
+              <li>
+                <Link href="/policy/privacyPolicy">Privacy Policy</Link>
+              </li>
+              <li>
+                <Link href="/policy/termsOfService">Terms Of Service</Link>
+              </li>
+              <li>
+                <Link href="/policy/refundPolicy">Refund Policy</Link>
+              </li>
               <li>Shipping Policy</li>
-              <li>Track Order</li>
             </ul>
           </div>
 
@@ -40,10 +46,9 @@ const Footer = () => {
               Contact Us
             </h4>
             <div>
-              <p className="font-semibold">Modaura E-commerce Pvt. Ltd.</p>
-              <p>support@modaura.in</p>
-              <p>Whatsapp +91 9876543210</p>
-              <p>XYZ Delhi - 110003</p>
+              <p>Email: modaura.in@gmail.com</p>
+              <p>Whatsapp: +91 8882300527</p>
+              <p>Laxminagar, Delhi - 110092</p>
               <p>India</p>
             </div>
           </div>
@@ -74,7 +79,7 @@ const Footer = () => {
         </div>
 
         <div className="text-sm lg:text-base">
-          © 2025, Modaura Jewellery. All rights reserved
+          © 2025, Modaura. All rights reserved
         </div>
       </div>
     </footer>
