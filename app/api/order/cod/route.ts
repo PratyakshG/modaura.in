@@ -52,6 +52,8 @@ export async function POST(request: NextRequest) {
       createdAt,
       items,
       amount,
+      paymentMode: "COD",
+      paymentStatus: "pending",
       address: {
         name,
         phone_number,

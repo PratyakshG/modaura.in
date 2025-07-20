@@ -25,8 +25,8 @@ const OrderSchema = new Schema<orderTypes>({
     enum: ["pending", "completed", "failed"],
     default: "pending",
   },
-  razorpayOrderId: { type: String },
-  razorpayPaymentId: { type: String },
+  razorpayOrderId: { type: String, required: false },
+  razorpayPaymentId: { type: String, required: false },
   address: {
     name: String,
     phone_number: String,
