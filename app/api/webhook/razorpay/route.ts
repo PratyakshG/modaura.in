@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
           paymentStatus: "completed",
         }
       );
+      console.log(order);
     }
 
     return NextResponse.json({ received: true });

@@ -64,7 +64,7 @@ const CheckoutPage = () => {
     },
   });
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const onSubmit = async (data: AddressType) => {
     const cart = useCartStore.getState().cart;
