@@ -329,7 +329,7 @@ const CartPage = () => {
                       id="COD"
                       value="COD"
                       name="payment-method"
-                      defaultChecked
+                      defaultChecked={paymentMethod === "COD" && true}
                       onChange={(e) => setPaymentMethod(e.target.value)}
                     />
                     <label htmlFor="COD">Cash On Delivery</label>
@@ -341,6 +341,7 @@ const CartPage = () => {
                       id="Pre-paid"
                       value="Pre-paid"
                       name="payment-method"
+                      defaultChecked={paymentMethod === "Pre-paid" && true}
                       onChange={(e) => setPaymentMethod(e.target.value)}
                     />
                     <label htmlFor="Pre-paid">
