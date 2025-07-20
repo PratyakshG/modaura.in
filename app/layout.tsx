@@ -10,6 +10,7 @@ import { DM_Sans, Geist, Geist_Mono, Urbanist } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -74,6 +75,7 @@ export default function RootLayout({
             <Toaster />
           </ImageKitProvider>
         </SessionProvider>
+        <Analytics />
       </body>
     </html>
   );
