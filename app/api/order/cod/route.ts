@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    await Order.create({
+    const newOrder = await Order.create({
       userId,
       createdAt,
       items,
@@ -67,7 +67,11 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(
-      { message: "Order placed successfully" },
+      {
+        orderId: newOrder._id,
+        orderAmount: amount,
+        message: "Order placed successfully",
+      },
       { status: 200 }
     );
   } catch (error) {

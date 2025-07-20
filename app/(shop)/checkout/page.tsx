@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -20,6 +20,7 @@ import {
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import useDeliveryStore from "@/app/stores/useDeliveryStore";
+import { toast } from "sonner";
 
 const addressSchema = z.object({
   name: z.string().min(1, {
@@ -64,7 +65,7 @@ const CheckoutPage = () => {
     },
   });
 
-  // const router = useRouter();
+  const router = useRouter();
 
   const onSubmit = async (data: AddressType) => {
     const cart = useCartStore.getState().cart;
@@ -84,9 +85,39 @@ const CheckoutPage = () => {
       }),
     });
 
+    const { orderId, orderAmount } = await res.json();
+
+    console.log(orderId);
+    console.log(orderAmount);
+
+    if (paymentMethod === "Pre-paid") {
+      try {
+        const options = {
+          key: process.env.RAZORPAY_KEY_ID,
+          amount: totalAmount,
+          currency: "INR",
+          name: "Modaura",
+          description: ``,
+          order_id: orderId,
+          handler: function () {
+            toast("Payment successful!");
+            router.push("/orders");
+          },
+          prefill: {
+            email: session.data?.user.email,
+          },
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     if (res.ok) {
-      // router.push("/order/payment");
-      console.log(res.json());
+      console.log("order placed");
     }
   };
 

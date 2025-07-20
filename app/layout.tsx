@@ -9,7 +9,7 @@ import { SessionProvider } from "next-auth/react";
 import { DM_Sans, Geist, Geist_Mono, Urbanist } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,6 +56,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${satoshi.variable} ${urbanist.variable} ${melodrama.variable} ${dmSans.variable} bg-ivory antialiased relative flex flex-col items-center w-screen min-h-dvh`}
       >
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="lazyOnload"
+        />
         <SessionProvider>
           <ImageKitProvider
             urlEndpoint={process.env.NEXT_IMAGEKIT_PUBLIC_URL_ENDPOINT}
