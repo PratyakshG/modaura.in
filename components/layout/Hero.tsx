@@ -8,20 +8,23 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 
-import img1 from "@/public/images/M-1.jpg";
-import img2 from "@/public/images/M-2.jpg";
-import img3 from "@/public/images/M-3.jpg";
-import img4 from "@/public/images/M-4.jpg";
-import img5 from "@/public/images/M-5.jpg";
-
 import Autoplay from "embla-carousel-autoplay";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import { useEffect, useState } from "react";
+import { desktopCarousel, mobileCarousel } from "@/constants/data";
 
 const Hero = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const [width, setWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (!api) {
@@ -54,30 +57,43 @@ const Hero = () => {
           }}
           className="w-full aspect-square lg:aspect-[2/1] max-h-[80vh] bg-neutral-300 rounded-lg lg:rounded-4xl overflow-hidden"
         >
-          <CarouselContent className="w-full h-full -ml-0 *:flex *:items-center *:justify-center">
-            <CarouselItem className="basis-full h-full pl-0">
-              <Image
-                src={img1}
-                alt="img1"
-                className="h-auto w-full object-cover"
-              />
-            </CarouselItem>
-            <CarouselItem className="basis-full pl-0 relative">
-              <Image
-                src={img2}
-                alt="img1"
-                className="h-auto w-full object-top object-cover"
-              />
-            </CarouselItem>
-            <CarouselItem className="basis-full pl-0">
-              <Image src={img3} alt="img1" className="object-cover" />
-            </CarouselItem>
-            <CarouselItem className="basis-full pl-0">
-              <Image src={img4} alt="img1" className="object-cover" />
-            </CarouselItem>
-            <CarouselItem className="basis-full pl-0">
-              <Image src={img5} alt="img1" className="object-cover" />
-            </CarouselItem>
+          {/* desktop carousel */}
+          <CarouselContent className="w-full h-full -ml-0 *:flex *:items-center *:justify-center z-10">
+            {width > 768 ? (
+              <>
+                {desktopCarousel.map((item, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="basis-full h-full pl-0"
+                  >
+                    <Image
+                      src={item}
+                      alt="img1"
+                      width={1000}
+                      height={1000}
+                      className="h-auto w-full object-cover"
+                    />
+                  </CarouselItem>
+                ))}
+              </>
+            ) : (
+              <>
+                {mobileCarousel.map((item, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="basis-full h-full pl-0"
+                  >
+                    <Image
+                      src={item}
+                      alt="img1"
+                      width={500}
+                      height={500}
+                      className="h-auto w-full object-cover"
+                    />
+                  </CarouselItem>
+                ))}
+              </>
+            )}
           </CarouselContent>
         </Carousel>
 
