@@ -7,7 +7,7 @@ const FAQs = [
   {
     query: "How do I contact your customer service?",
     answer:
-      "You can reach out to us via Email at modaura@service.com or Whatsapp at +91 9876543210.",
+      "You can reach out to us via Email at modaura@service.com or Whatsapp at +91 8882300527.",
   },
   {
     query: "When will my product get delivered?",

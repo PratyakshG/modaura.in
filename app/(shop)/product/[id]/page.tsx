@@ -199,13 +199,13 @@ const Page = ({
               <li className="text-sm text-center">
                 <h5>
                   Flat <span className="font-bold">10 %</span> off on purchases
-                  over Rs. 1499
+                  over Rs. 1499/-
                 </h5>
               </li>
               <li className="text-sm text-center">
                 <h5>
                   Free <span className="font-bold">delivery</span> on purchases
-                  over Rs. 999
+                  over Rs. 999/-
                 </h5>
               </li>
             </ul>
@@ -215,10 +215,7 @@ const Page = ({
           <div>
             <h3 className="font-semibold text-lg">Product Details</h3>
             <p className="text-sm tracking-wide">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-              voluptatibus, cumque, voluptates, quibusdam quisquam voluptatibus
-              cumque voluptates quibusdam quisquam voluptatibus cumque
-              voluptates quibusdam.
+              Product Description
             </p>
           </div>
 
