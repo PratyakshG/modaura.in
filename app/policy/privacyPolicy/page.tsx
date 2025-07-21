@@ -25,8 +25,7 @@ const PrivacyPolicyPage = () => {
           our Service or parts of our Service.
         </li>
         <li>
-          <strong>Company:</strong> Modaura Private Limited, Building Number 59,
-          Okhla Phase 3 Delhi - 110020.
+          <strong>Company:</strong> Modaura, Laxminagar, Delhi - 110092.
         </li>
         <li>
           <strong>Cookies:</strong> Small files stored on your device that hold
@@ -41,7 +40,7 @@ const PrivacyPolicyPage = () => {
           individual.
         </li>
         <li>
-          <strong>Service:</strong> Refers to the website https://modaura.co.in/
+          <strong>Service:</strong> Refers to the website https://modaura.in
         </li>
         <li>
           <strong>Service Provider:</strong> A third party who processes data on
@@ -120,7 +119,7 @@ const PrivacyPolicyPage = () => {
       <p className="mt-2">
         📧 Email:{" "}
         <a
-          href="mailto:queries@modaura.co.in"
+          href="mailto:modaura.in@gmail.com"
           className="text-blue-600 underline"
         >
           modaura.in@gmail.com

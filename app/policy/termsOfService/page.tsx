@@ -15,7 +15,7 @@ const TermsOfServicePage = () => {
         <br />
         <p>
           By accessing this website we assume you accept these terms and
-          conditions. Do not continue to use https://modaura.co.in/ if you do
+          conditions. Do not continue to use https://modaura.in if you do
           not agree to take all of the terms and conditions stated on this page.
         </p>
         <br />

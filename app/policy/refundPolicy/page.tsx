@@ -61,9 +61,7 @@ const RefundPolicyPage = () => {
         </p>
         <br />
         <p>
-          For defective and wrong. You can do so by clicking on
-          &apos;Return&apos; under the &apos;My Orders&apos; section of the
-          Modaura.com Website and follow the instructions to upload the images.
+          For defective and/or wrong. You can do so by sending an email to modaura.in@gmail.com and share the images with us of the defective product.
           Please keep in mind the following–You need to share the images,
           unboxing video for wrong product with fully packed condition.
         </p>
@@ -76,7 +74,7 @@ const RefundPolicyPage = () => {
         <p>
           You must send us a video of the original labels and tags intact box.
           If the video is not shared as per the mentioned details we will be not
-          able to cater any further request.
+          able to entertain any further request.
         </p>
         <br />
         <p>
@@ -92,7 +90,7 @@ const RefundPolicyPage = () => {
           kindly get in touch with us on{" "}
           <a
             className="text-blue-600 underline"
-            href="mailto:queries@modaura.com"
+            href="mailto:modaura.in@gmail.com"
           >
             modaura.in@gmail.com
           </a>{" "}
