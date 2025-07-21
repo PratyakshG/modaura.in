@@ -94,6 +94,7 @@ const CheckoutPage = () => {
       },
       body: JSON.stringify({
         userId: session.data?.user.id,
+        email: session.data?.user.email,
         createdAt: new Date(),
         items: cart,
         amount: totalAmount,
@@ -101,11 +102,14 @@ const CheckoutPage = () => {
       }),
     });
 
-    const { dbOrderId, razorpayOrderId, orderAmount } = await res.json();
+    const { dbOrderId, razorpayOrderId, orderAmount, paymentStatus, email } =
+      await res.json();
 
     console.log(dbOrderId);
     console.log(orderAmount);
     console.log(razorpayOrderId);
+    console.log(paymentStatus);
+    console.log(email);
 
     if (paymentMethod === "Pre-paid") {
       try {
@@ -116,9 +120,13 @@ const CheckoutPage = () => {
           name: "Modaura",
           description: `Modaura Pre-paid order`,
           order_id: razorpayOrderId,
-          handler: function () {
+          handler: async function () {
+            setCart([]);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            updateCart();
             toast("Payment successful!");
-            router.push("/");
+            console.log("payment done pre-paid");
+            router.replace("/");
           },
           prefill: {
             email: session.data?.user.email,
@@ -134,10 +142,7 @@ const CheckoutPage = () => {
     }
 
     if (res.ok) {
-      setCart([]);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      updateCart();
-      console.log("order placed");
+      console.log("order placed", res.body);
     }
   };
 

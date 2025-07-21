@@ -33,6 +33,7 @@ export interface CartItems {
 export interface orderTypes {
   _id: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
+  email: string;
   createdAt: Date;
   items: [CartItems & productTypes];
   amount: number;

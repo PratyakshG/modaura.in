@@ -8,6 +8,11 @@ const OrderSchema = new Schema<orderTypes>({
     ref: "User",
     required: true,
   },
+  email: {
+    type: String,
+    ref: "User",
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

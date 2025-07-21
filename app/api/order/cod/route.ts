@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
 
     const {
       userId,
+      email,
       createdAt,
       items,
       amount,
@@ -29,6 +30,7 @@ export async function POST(request: NextRequest) {
 
     if (
       !userId ||
+      !email ||
       !createdAt ||
       !items ||
       !amount ||
@@ -49,6 +51,7 @@ export async function POST(request: NextRequest) {
 
     const newOrder = await Order.create({
       userId,
+      email,
       createdAt,
       items,
       amount,
@@ -71,6 +74,7 @@ export async function POST(request: NextRequest) {
         dbOrderId: newOrder._id,
         orderAmount: amount,
         message: "Order placed successfully",
+        email: newOrder.email,
       },
       { status: 200 }
     );

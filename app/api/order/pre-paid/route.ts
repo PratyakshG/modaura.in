@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
 
     const {
       userId,
+      email,
       createdAt,
       items,
       amount,
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
 
     if (
       !userId ||
+      !email ||
       !createdAt ||
       !items ||
       !amount ||
@@ -63,12 +65,13 @@ export async function POST(request: NextRequest) {
     // add razorpay details to order schema
     const newOrder = await Order.create({
       userId,
-      razorpayOrderId: razorpayOrder.id,
+      email,
       createdAt,
       items,
       amount,
       paymentMode: "Pre-paid",
       paymentStatus: "pending",
+      razorpayOrderId: razorpayOrder.id,
       address: {
         name,
         phone_number,
@@ -81,11 +84,17 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log("New Order Created:", newOrder._id);
+
+    await newOrder.save();
+
     return NextResponse.json(
       {
         dbOrderId: newOrder._id,
         razorpayOrderId: razorpayOrder.id,
         orderAmount: amount,
+        paymentStatus: newOrder.paymentStatus,
+        email: newOrder.email,
       },
       { status: 200 }
     );
