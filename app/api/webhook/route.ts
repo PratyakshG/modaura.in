@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 
         try {
           const mail = await transporter.sendMail({
-            from: '"Modaura" <no-reply@modaura.in',
+            from: process.env.EMAIL_FROM,
             to: order.email,
             subject: "Payment Confirmation - Modaura",
             text: `
@@ -76,12 +76,15 @@ Thank you for your purchase!
 
 Order Details:
 - Order ID: ${order._id.toString()}
-- Product: ${order.items
-              .map(
-                (item: { name: string; quantity: number }) =>
-                  `${item.name} x ${item.quantity}`
-              )
-              .join("\n")}
+
+- Products: 
+${order.items
+  .map(
+    (item: { name: string; quantity: number }) =>
+      `${item.name} x ${item.quantity}`
+  )
+  .join("\n")}
+  
 - Price: Rs. ${order.amount}
 
 Your products will be delivered in 3 - 7 business days.
