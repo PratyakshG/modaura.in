@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
 import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
+import crypto from "crypto";
+import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,6 +34,44 @@ export async function POST(req: NextRequest) {
           paymentStatus: "completed",
         }
       );
+
+      if (order) {
+        // Send email only after payment is confirmed
+        const transporter = nodemailer.createTransport({
+          host: process.env.MAILTRAP_HOST,
+          port: Number(process.env.MAILTRAP_PORT),
+          auth: {
+            user: process.env.MAILTRAP_USER,
+            pass: process.env.MAILTRAP_PASS,
+          },
+        });
+
+        await transporter.sendMail({
+          from: '"Modaura" <modaura.in@gmail.com>',
+          to: order.userId.email,
+          subject: "Payment Confirmation - Modaura",
+          text: `
+Thank you for your purchase!
+
+Order Details:
+- Order ID: ${order._id.toString()}
+- Product: ${order.items
+            .map(
+              (item: { name: string; quantity: number }) =>
+                `${item.name} x ${item.quantity}`
+            )
+            .join("\n")}
+- Price: Rs. ${order.amount}
+
+Your products will be delivered in 3 - 7 business days.
+For any queries, please contact us at
+Email: modaura.in@gmail.com or Whatsapp: +91 8882300527
+
+Thank you for shopping with Modaura!
+          `.trim(),
+        });
+      }
+
       console.log(order);
     }
 
