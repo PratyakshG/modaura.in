@@ -9,7 +9,13 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.text();
+    console.log(body);
     const signature = req.headers.get("x-razorpay-signature");
+
+    if (!signature) {
+      console.error("❌ Missing Razorpay signature header");
+      return NextResponse.json({ error: "Missing signature" }, { status: 400 });
+    }
 
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_WEBHOOK_SECRET!)
