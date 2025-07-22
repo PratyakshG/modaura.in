@@ -57,22 +57,32 @@ const CartPage = () => {
       );
     setDiscount(discount);
 
-    const cartTotal = subTotal - discount
+    const cartTotal = subTotal - discount;
 
-    if(cartTotal > 1499){
-      if(promoCode === 'MODLAUNCH10'){
-        const totalAmt = cartTotal * 0.9
+    if (cartTotal > 1499) {
+      if (promoCode === "MODLAUNCH10") {
+        const totalAmt = cartTotal * 0.81;
         setTotalAmount(Math.ceil(totalAmt));
-      } else{
-        
+      } else {
+        const totalAmt = cartTotal * 0.9;
+        setTotalAmount(Math.ceil(totalAmt));
       }
-    } else if(cartTotal > 999 && cartTotal < 1499){
-
+    } else if (cartTotal > 999 && cartTotal < 1499) {
+      if (promoCode === "MODLAUNCH10") {
+        const totalAmt = cartTotal * 0.9;
+        setTotalAmount(Math.ceil(totalAmt));
+      } else {
+        setTotalAmount(Math.ceil(cartTotal));
+      }
+    } else {
+      if (promoCode === "MODLAUNCH10") {
+        const totalAmt = cartTotal * 0.9 + deliveryCharge;
+        setTotalAmount(Math.ceil(totalAmt));
+      } else {
+        const totalAmt = cartTotal + (deliveryCharge ? deliveryCharge : 0);
+        setTotalAmount(Math.ceil(totalAmt));
+      }
     }
-
-    const totalAmt =
-      cartTotal + (deliveryCharge ? deliveryCharge : 0);
-    setTotalAmount(Math.ceil(totalAmt));
   }, [
     cart,
     subTotal,
@@ -271,7 +281,16 @@ const CartPage = () => {
               </li>
               <li>
                 <p>Delivery</p>
-                <p className="">Rs. {deliveryCharge ? deliveryCharge : 0}</p>
+                {subTotal - discount > 999 ? (
+                  <div className="flex gap-2">
+                    <span className="text-green-600 font-semibold">Free</span>
+                    <span className="line-through">
+                      Rs. {deliveryCharge ? deliveryCharge : 0}
+                    </span>
+                  </div>
+                ) : (
+                  <p className="">Rs. {deliveryCharge ? deliveryCharge : 0}</p>
+                )}
               </li>
             </ul>
             <div className="flex items-center justify-between font-semibold py-4 border-t border-b border-dotted border-neutral-500">
@@ -291,15 +310,20 @@ const CartPage = () => {
                   }}
                   placeholder="Enter promo code"
                 />
-                <button
+
+                {/* <button
                   type="submit"
                   className="px-5 text-nowrap bg-darkTeal rounded-full text-white"
                 >
                   Apply Code
-                </button>
+                </button> */}
               </div>
-
-              {promoCode}
+              {promoCode === "MODLAUNCH10" && (
+                <p className="text-green-600 font-semibold text-sm">
+                  Extra 10% discount applied{" "}
+                  <span className="text-black-1 font-normal">(excluding delivery charges)</span>
+                </p>
+              )}
             </div>
             <div className="pt-4">
               <span className="text-sm">

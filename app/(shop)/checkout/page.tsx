@@ -262,7 +262,7 @@ const CheckoutPage = () => {
           <div className="w-full flex justify-end">
             {loading ? (
               <Button className="bg-darkTeal opacity-80 font-urbanist hover:opacity-100">
-                <Loader className="animate-spin" />
+                <Loader className="animate-spin" /> Please Wait
               </Button>
             ) : (
               <Button
