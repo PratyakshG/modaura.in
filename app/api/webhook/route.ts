@@ -5,11 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
-  console.log("webhook called");
+  // console.log("webhook called");
 
   try {
     const body = await req.text();
-    console.log(body);
+    // console.log(body);
     const signature = req.headers.get("x-razorpay-signature");
 
     if (!signature) {
@@ -28,12 +28,12 @@ export async function POST(req: NextRequest) {
     }
 
     const event = JSON.parse(body);
-    console.log("Received event:", event);
+    // console.log("Received event:", event);
     await connectDB();
 
     if (event.event === "payment.captured") {
       const payment = event.payload.payment.entity;
-      console.log("payment", payment);
+      // console.log("payment", payment);
 
       const order = await Order.findOneAndUpdate(
         {
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Order not found" }, { status: 404 });
       }
 
-      console.log("Order found:", order._id, order.email);
+      // console.log("Order found:", order._id, order.email);
 
       if (order) {
         // console.log("order :", order);
