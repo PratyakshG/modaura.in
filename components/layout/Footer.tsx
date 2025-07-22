@@ -37,7 +37,9 @@ const Footer = () => {
               <li>
                 <Link href="/policy/refundPolicy">Refund Policy</Link>
               </li>
-              <li>Shipping Policy</li>
+              <li>
+                <Link href="/policy/shippingPolicy">Shipping Policy</Link>
+              </li>
             </ul>
           </div>
 

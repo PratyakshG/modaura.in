@@ -57,13 +57,27 @@ const CartPage = () => {
       );
     setDiscount(discount);
 
+    const cartTotal = subTotal - discount
+
+    if(cartTotal > 1499){
+      if(promoCode === 'MODLAUNCH10'){
+        const totalAmt = cartTotal * 0.9
+        setTotalAmount(Math.ceil(totalAmt));
+      } else{
+        
+      }
+    } else if(cartTotal > 999 && cartTotal < 1499){
+
+    }
+
     const totalAmt =
-      subTotal - discount + (deliveryCharge ? deliveryCharge : 0);
+      cartTotal + (deliveryCharge ? deliveryCharge : 0);
     setTotalAmount(Math.ceil(totalAmt));
   }, [
     cart,
     subTotal,
     deliveryCharge,
+    promoCode,
     setSubTotal,
     setDiscount,
     setTotalAmount,
