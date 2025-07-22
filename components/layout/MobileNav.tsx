@@ -187,6 +187,10 @@ const MobileNav = () => {
                         <Link href="/profile">Profile</Link>
                       </DropdownMenuItem>
 
+                      <DropdownMenuItem>
+                        <Link href="/orders">Orders</Link>
+                      </DropdownMenuItem>
+
                       <DropdownMenuItem
                         onClick={() => {
                           logout();

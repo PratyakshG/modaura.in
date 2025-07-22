@@ -65,14 +65,14 @@ const Page = () => {
                         className="rounded"
                       />
                       <div>
-                        <li className="font-semibold text-lg">{item.name}</li>
+                        <li className="font-semibold md:text-lg max-sm:leading-4">{item.name}</li>
                         <li>quantity : {item.quantity}</li>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="text-right">
+                <div className="text-right text-sm md:text-base">
                   <li>Amount : {order.amount}</li>
                   <li>Payment Mode : {order.paymentMode}</li>
                   <li>
