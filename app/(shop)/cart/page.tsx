@@ -4,6 +4,7 @@ import useAmountStore from "@/app/stores/useAmountStore";
 import useCartStore from "@/app/stores/useCartStore";
 import useDeliveryStore from "@/app/stores/useDeliveryStore";
 import { Input } from "@/components/ui/input";
+import { Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,6 +34,7 @@ const CartPage = () => {
     setTotalAmount,
   } = useAmountStore();
 
+  const [loading, setLoading] = useState<boolean>(false);
   const [promoCode, setPromoCode] = useState<string>("");
   const [deliveryPossible, setDeliveryPossible] = useState<boolean>(false);
   const session = useSession();
@@ -70,6 +72,7 @@ const CartPage = () => {
   // function to find serviceable pincode and their shipping costs
   useEffect(() => {
     const findPincode = async () => {
+      setLoading(true);
       //api to fetch if delivery is possible at a pincode
       const pincodeServiceable = await fetch(
         `/api/delhivery/pincode-check/?pincode=${pincode}`
@@ -90,10 +93,12 @@ const CartPage = () => {
     } else {
       setDeliveryPossible(false);
     }
+    setLoading(false);
   }, [pincode]);
 
   //function to calculate shipping cost to a pincode
   useEffect(() => {
+    setLoading(true);
     const handleDelivery = async () => {
       const shippingCostResponse = await fetch(
         `/api/delhivery/shipping-cost/?pincode=${pincode}&paymentMode=${paymentMethod}`
@@ -104,9 +109,11 @@ const CartPage = () => {
     };
 
     handleDelivery();
+    setLoading(false);
   }, [paymentMethod, setDeliveryCharge, pincode]);
 
   const handleUpdateCart = async () => {
+    setLoading(true);
     if (session.data?.user) {
       //retrieve the latest cart state to remove the delay in updation to the API
       const cart = useCartStore.getState().cart;
@@ -120,6 +127,7 @@ const CartPage = () => {
       });
     }
     console.log(cart);
+    setLoading(false);
   };
 
   return (
@@ -330,7 +338,11 @@ const CartPage = () => {
                       value="COD"
                       name="payment-method"
                       defaultChecked={paymentMethod === "COD" && true}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      onChange={(e) => {
+                        setLoading(true);
+                        setPaymentMethod(e.target.value);
+                        setLoading(false);
+                      }}
                     />
                     <label htmlFor="COD">Cash On Delivery</label>
                   </div>
@@ -342,7 +354,11 @@ const CartPage = () => {
                       value="Pre-paid"
                       name="payment-method"
                       defaultChecked={paymentMethod === "Pre-paid" && true}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      onChange={(e) => {
+                        setLoading(true);
+                        setPaymentMethod(e.target.value);
+                        setLoading(false);
+                      }}
                     />
                     <label htmlFor="Pre-paid">
                       Pre-paid (UPI / Net Banking / Card)
@@ -363,12 +379,20 @@ const CartPage = () => {
                     Enter Pincode To Proceed To Checkout
                   </span>
                 ) : (
-                  <Link
-                    href="/checkout"
-                    className="bg-darkTeal px-5 py-2 text-ivory rounded-full"
-                  >
-                    Proceed to Checkout
-                  </Link>
+                  <>
+                    {loading ? (
+                      <button className="bg-darkTeal px-5 py-2 text-ivory rounded-full">
+                        <Loader className="animate-spin" />
+                      </button>
+                    ) : (
+                      <Link
+                        href="/checkout"
+                        className="bg-darkTeal px-5 py-2 text-ivory rounded-full"
+                      >
+                        Proceed to Checkout
+                      </Link>
+                    )}
+                  </>
                 )}
               </div>
             ) : (

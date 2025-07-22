@@ -3,12 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import useAmountStore from "@/app/stores/useAmountStore";
 import useCartStore from "@/app/stores/useCartStore";
+import useDeliveryStore from "@/app/stores/useDeliveryStore";
+import PaymentSuccess from "@/components/layout/PaymentSuccess";
 import {
   Form,
   FormControl,
@@ -19,8 +20,8 @@ import {
 } from "@/components/ui/form";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import useDeliveryStore from "@/app/stores/useDeliveryStore";
-import { toast } from "sonner";
+import { useState } from "react";
+import { Loader } from "lucide-react";
 
 const addressSchema = z.object({
   name: z.string().min(1, {
@@ -53,10 +54,12 @@ type AddressType = z.infer<typeof addressSchema>;
 
 const CheckoutPage = () => {
   const session = useSession();
-  const { cart, setCart } = useCartStore();
-  const { subTotal, discount, totalAmount } = useAmountStore();
+  const { cart } = useCartStore();
+  const { subTotal, discount, totalAmount, setPaymentSuccess } =
+    useAmountStore();
   const { pincode } = useDeliveryStore();
   const { deliveryCharge, paymentMethod } = useDeliveryStore();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const form = useForm<AddressType>({
     resolver: zodResolver(addressSchema),
@@ -65,27 +68,10 @@ const CheckoutPage = () => {
     },
   });
 
-  const router = useRouter();
-
-  const updateCart = async () => {
-    if (session.data?.user) {
-      //retrieve the latest cart state to remove the delay in updation to the API
-      const cart = useCartStore.getState().cart;
-
-      await fetch("/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cartItems: cart }),
-      });
-    }
-    console.log(cart);
-  };
-
   const onSubmit = async (data: AddressType) => {
+    setLoading(true);
     const cart = useCartStore.getState().cart;
-    console.log(session.data?.user.id);
+    // console.log(session.data?.user.id);
 
     const res = await fetch(`/api/order/${paymentMethod.toLowerCase()}`, {
       method: "POST",
@@ -102,14 +88,8 @@ const CheckoutPage = () => {
       }),
     });
 
-    const { dbOrderId, razorpayOrderId, orderAmount, paymentStatus, email } =
-      await res.json();
-
-    console.log(dbOrderId);
-    console.log(orderAmount);
-    console.log(razorpayOrderId);
-    console.log(paymentStatus);
-    console.log(email);
+    //get razorpay id from api response
+    const { razorpayOrderId } = await res.json();
 
     if (paymentMethod === "Pre-paid") {
       try {
@@ -121,12 +101,7 @@ const CheckoutPage = () => {
           description: `Modaura Pre-paid order`,
           order_id: razorpayOrderId,
           handler: async function () {
-            setCart([]);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            updateCart();
-            toast("Payment successful!");
-            console.log("payment done pre-paid");
-            router.replace("/");
+            setPaymentSuccess(true);
           },
           prefill: {
             email: session.data?.user.email,
@@ -139,11 +114,18 @@ const CheckoutPage = () => {
       } catch (error) {
         console.log(error);
       }
+
+      return;
     }
 
-    if (res.ok) {
-      console.log("order placed", res.body);
+    if (paymentMethod === "COD") {
+      if (res.ok) {
+        console.log("order placed", res.body);
+        setPaymentSuccess(true);
+      }
     }
+
+    setLoading(false);
   };
 
   return (
@@ -164,11 +146,7 @@ const CheckoutPage = () => {
               <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-white"
-                    placeholder="Full Name"
-                    {...field}
-                  />
+                  <Input className="bg-white" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -183,11 +161,7 @@ const CheckoutPage = () => {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input
-                      className="bg-white"
-                      placeholder="9876543210"
-                      {...field}
-                    />
+                    <Input className="bg-white" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -203,8 +177,8 @@ const CheckoutPage = () => {
                     <Input
                       className="bg-white"
                       defaultValue={pincode}
-                      placeholder="234567"
                       {...field}
+                      readOnly
                     />
                   </FormControl>
                   <FormMessage />
@@ -220,11 +194,7 @@ const CheckoutPage = () => {
               <FormItem>
                 <FormLabel>Area/Street</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-white"
-                    placeholder="Hazratganj"
-                    {...field}
-                  />
+                  <Input className="bg-white" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -239,11 +209,7 @@ const CheckoutPage = () => {
                 <FormItem>
                   <FormLabel>City/District/Town</FormLabel>
                   <FormControl>
-                    <Input
-                      className="bg-white"
-                      placeholder="Lucknow"
-                      {...field}
-                    />
+                    <Input className="bg-white" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -257,11 +223,7 @@ const CheckoutPage = () => {
                 <FormItem>
                   <FormLabel>State</FormLabel>
                   <FormControl>
-                    <Input
-                      className="bg-white"
-                      placeholder="Uttar Pradesh"
-                      {...field}
-                    />
+                    <Input className="bg-white" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -276,7 +238,7 @@ const CheckoutPage = () => {
               <FormItem>
                 <FormLabel>Locality</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" placeholder="park" {...field} />
+                  <Input className="bg-white" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -290,11 +252,7 @@ const CheckoutPage = () => {
               <FormItem>
                 <FormLabel>Landmark</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-white"
-                    placeholder="near xyz building"
-                    {...field}
-                  />
+                  <Input className="bg-white" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -302,14 +260,20 @@ const CheckoutPage = () => {
           />
 
           <div className="w-full flex justify-end">
-            <Button
-              type="submit"
-              className="bg-darkTeal opacity-80 font-urbanist hover:opacity-100"
-            >
-              {paymentMethod === "Pre-paid"
-                ? "Proceed to Payment"
-                : "Place Order"}
-            </Button>
+            {loading ? (
+              <Button className="bg-darkTeal opacity-80 font-urbanist hover:opacity-100">
+                <Loader className="animate-spin" />
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                className="bg-darkTeal opacity-80 font-urbanist hover:opacity-100"
+              >
+                {paymentMethod === "Pre-paid"
+                  ? "Proceed to Payment"
+                  : "Place Order"}
+              </Button>
+            )}
           </div>
         </form>
       </Form>
@@ -361,6 +325,8 @@ const CheckoutPage = () => {
           </div>
         </div>
       </div>
+
+      <PaymentSuccess />
     </section>
   );
 };
