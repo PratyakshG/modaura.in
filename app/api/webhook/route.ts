@@ -54,8 +54,8 @@ export async function POST(req: NextRequest) {
       console.log("Order found:", order._id, order.email);
 
       if (order) {
-        console.log("order :", order);
-        console.log("order email:", order.email);
+        // console.log("order :", order);
+        // console.log("order email:", order.email);
         // Send email only after payment is confirmed
         const transporter = nodemailer.createTransport({
           host: process.env.MAILTRAP_HOST,
