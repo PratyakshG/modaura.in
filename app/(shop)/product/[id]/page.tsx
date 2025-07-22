@@ -34,7 +34,7 @@ const Page = ({
   // const { cart, updateQuantity } = useCartStore();
   // const session = useSession();
   const [product, setProduct] = useState<productTypes>();
-  
+
   const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
@@ -215,7 +215,7 @@ const Page = ({
           <div>
             <h3 className="font-semibold text-lg">Product Details</h3>
             <p className="text-sm tracking-wide">
-              Product Description
+              Category: {product?.category}
             </p>
           </div>
 
@@ -227,11 +227,17 @@ const Page = ({
               <AccordionTrigger>
                 <div className="flex items-center space-x-2">
                   <MdCancel size={20} className="text-red-600" />
-                  <span className="font-semibold">Cancellation Policies</span>
+                  <span className="font-semibold">
+                    Exchange / Return Policies
+                  </span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                Yes. It adheres to the WAI-ARIA design pattern.
+                Exchange or Returns are valid to 7 days from the date of
+                delivery.
+              </AccordionContent>
+              <AccordionContent>
+                Read our Refund Policy for more information.
               </AccordionContent>
             </AccordionItem>
 
@@ -243,7 +249,16 @@ const Page = ({
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                Yes. It adheres to the WAI-ARIA design pattern.
+                All orders will be delivered within 3 - 7 business days.
+                <br />
+                (Depending on the location.)
+              </AccordionContent>
+              <AccordionContent>
+                Shipping or Delivery Charges are non-refundable in all cases.
+              </AccordionContent>
+              <AccordionContent>
+                As soon as your order is processed, you will recieve a link to
+                track you order.
               </AccordionContent>
             </AccordionItem>
           </Accordion>

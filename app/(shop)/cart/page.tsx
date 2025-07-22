@@ -354,7 +354,7 @@ const CartPage = () => {
               <>
                 {deliveryPossible ? (
                   <div className="text-green-600 font-semibold text-sm">
-                    Delivery in 4-7 business days
+                    Delivery in 3-7 business days
                   </div>
                 ) : (
                   <div className="text-red-400 font-semibold text-sm">
