@@ -50,8 +50,10 @@ const Navbar = () => {
               <div className="absolute top-6 bg-ivory border px-4 py-6 rounded-lg opacity-0 hover:opacity-100 peer-hover:opacity-100 invisible hover:visible peer-hover:visible transition-all duration-300 ease-in-out shadow-xl">
                 <ul className="space-y-2 cursor-auto *:cursor-pointer text-black-1 *:hover:text-darkTeal *:tracking-wide">
                   {homePageSections.map((item, _) => (
-                    <li onClick={() => ScrollIntoView(item.sectionId)} key={_}>
-                      {item.section}s
+                    <li key={_}>
+                      <Link href={`/productByCategory/${item.section}`}>
+                        {item.section}s
+                      </Link>
                     </li>
                   ))}
                 </ul>

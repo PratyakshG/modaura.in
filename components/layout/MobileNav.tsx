@@ -50,13 +50,6 @@ const MobileNav = () => {
   const session = useSession();
   const router = useRouter();
 
-  // const ScrollIntoView = (id: string) => {
-  //   const element = document.getElementById(id);
-  //   if (element) {
-  //     element.scrollIntoView({ behavior: "smooth", block: "center" });
-  //   }
-  // };
-
   const ScrollIntoView = (id: string) => {
     if (typeof window === "undefined") return; // SSR safety
     const el = document.getElementById(id);
@@ -93,12 +86,12 @@ const MobileNav = () => {
                         className="py-1 pl-3"
                         onClick={() => setOpen(false)}
                       >
-                        <span
-                          onClick={() => ScrollIntoView(category.sectionId)}
+                        <Link
+                          href={`/productByCategory/${category.section}`}
                           className="text-lg"
                         >
-                          {category.section}
-                        </span>
+                          {category.section}s
+                        </Link>
                       </AccordionContent>
                     ))}
                   </AccordionItem>
