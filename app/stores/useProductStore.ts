@@ -2,6 +2,7 @@
 
 import { productTypes } from "@/types/index";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface ProductStateTypes {
   products: Array<productTypes>;
@@ -13,29 +14,36 @@ interface ProductStateTypes {
   setLoading: (status: boolean) => void;
 }
 
-const useProductStore = create<ProductStateTypes>((set) => ({
-  products: [],
-  loading: true,
+const useProductStore = create(
+  persist<ProductStateTypes>(
+    (set) => ({
+      products: [],
+      loading: true,
 
-  setLoading: (status) => set({ loading: status }),
+      setLoading: (status) => set({ loading: status }),
 
-  // Set all products at once
-  setProducts: (items) => set({ products: items }),
+      // Set all products at once
+      setProducts: (items) => set({ products: items }),
 
-  // Add a single product
-  addProduct: (product) =>
-    set((state) => ({
-      products: [...state.products, product],
-    })),
+      // Add a single product
+      addProduct: (product) =>
+        set((state) => ({
+          products: [...state.products, product],
+        })),
 
-  // Remove a product by ID
-  removeProduct: (productId) =>
-    set((state) => ({
-      products: state.products.filter((item: any) => item.id !== productId),
-    })),
+      // Remove a product by ID
+      removeProduct: (productId) =>
+        set((state) => ({
+          products: state.products.filter((item: any) => item.id !== productId),
+        })),
 
-  // Clear all products
-  clearProducts: () => set({ products: [] }),
-}));
+      // Clear all products
+      clearProducts: () => set({ products: [] }),
+    }),
+    {
+      name: "productStore",
+    }
+  )
+);
 
 export default useProductStore;
