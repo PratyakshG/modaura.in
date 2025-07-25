@@ -279,6 +279,14 @@ const CartPage = () => {
                 <p>Discount</p>
                 <p className="text-green-600">- Rs. {discount}</p>
               </li>
+              {promoCode === "MODLAUNCH10" && (
+                <li>
+                  <p>Promo Discount</p>
+                  <p className="text-green-600">
+                    - Rs. {subTotal - discount + deliveryCharge - totalAmount}
+                  </p>
+                </li>
+              )}
               <li>
                 <p>Delivery</p>
                 {subTotal - discount > 999 ? (
@@ -321,7 +329,9 @@ const CartPage = () => {
               {promoCode === "MODLAUNCH10" && (
                 <p className="text-green-600 font-semibold text-sm">
                   Extra 10% discount applied{" "}
-                  <span className="text-black-1 font-normal">(excluding delivery charges)</span>
+                  <span className="text-black-1 font-normal">
+                    (excluding delivery charges)
+                  </span>
                 </p>
               )}
             </div>

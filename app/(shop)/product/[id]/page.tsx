@@ -121,13 +121,13 @@ const Page = ({
         </div>
 
         {/* Description of the product */}
-        <div className="w-full flex flex-col space-y-5">
+        <div className="w-full flex flex-col space-y-3 lg:space-y-5">
           <ul className="*:tracking-wide space-y-2 lg:space-y-5">
             <li className="flex flex-col">
-              <span className="font-semibold text-2xl lg:text-4xl">
+              <span className="font-medium text-2xl lg:text-4xl capitalize tracking-tight">
                 {product?.name}
               </span>
-              <span className="font-medium text-neutral-500">
+              <span className="text-sm lg:text-base text-neutral-500">
                 {product?.description}
               </span>
             </li>
@@ -167,7 +167,7 @@ const Page = ({
             </button>
           </div> */}
 
-          <div className="w-full space-y-2">
+          <div className="w-full">
             {product && (
               <AddToCartButton
                 _id={product?._id}
