@@ -55,7 +55,7 @@ const Hero = () => {
             loop: true,
             align: "start",
           }}
-          className="w-full aspect-square lg:aspect-[2/1] max-h-[80vh] bg-neutral-300 rounded-lg lg:rounded-4xl overflow-hidden"
+          className="w-full aspect-square lg:aspect-[2/1] max-h-[80vh] rounded-lg lg:rounded-4xl overflow-hidden"
         >
           {/* desktop carousel */}
           <CarouselContent className="w-full h-full -ml-0 *:flex *:items-center *:justify-center z-10">
