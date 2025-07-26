@@ -179,6 +179,7 @@ const Page = ({
                   sellingPrice: 0,
                 }}
                 images={[]}
+                details=""
               />
             )}
 
@@ -214,9 +215,7 @@ const Page = ({
           {/* Product Details */}
           <div>
             <h3 className="font-semibold text-lg">Product Details</h3>
-            <p className="text-sm tracking-wide">
-              Category: {product?.category}
-            </p>
+            <p className="text-sm tracking-wide">{product?.details}</p>
           </div>
 
           <Accordion

@@ -16,6 +16,7 @@ export interface productTypes {
   name: string;
   category: string;
   description: string;
+  details: string;
   price: {
     mrp: number;
     sellingPrice: number;

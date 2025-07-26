@@ -8,6 +8,7 @@ export async function POST(request: NextRequest) {
       name,
       category,
       description,
+      details,
       price: { mrp, sellingPrice },
       images,
     } = await request.json();
@@ -16,6 +17,7 @@ export async function POST(request: NextRequest) {
       !name ||
       !category ||
       !description ||
+      !details ||
       !mrp ||
       !sellingPrice ||
       !images
@@ -41,6 +43,7 @@ export async function POST(request: NextRequest) {
       name,
       category,
       description,
+      details,
       price: {
         mrp,
         sellingPrice,
@@ -110,7 +113,7 @@ export async function PUT(request: NextRequest) {
   try {
     await connectDB();
     const body = await request.json();
-    const { id, name, category, description, price, images } = body;
+    const { id, name, category, description, details, price, images } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -121,7 +124,7 @@ export async function PUT(request: NextRequest) {
 
     const updatedProduct = await Products.findByIdAndUpdate(
       id,
-      { name, category, description, price, images },
+      { name, category, description, details, price, images },
       { new: true }
     );
 

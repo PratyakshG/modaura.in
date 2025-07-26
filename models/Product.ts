@@ -16,6 +16,10 @@ const ProductSchema = new Schema<productTypes>(
       type: String,
       required: true,
     },
+    details: {
+      type: String,
+      required: true,
+    },
     price: {
       mrp: {
         type: Number,
