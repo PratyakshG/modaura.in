@@ -35,8 +35,9 @@ const Popular = () => {
                     name={item.name}
                     images={item.images}
                     price={item.price}
-                    category={""}
-                    description={""}
+                    category=""
+                    description=""
+                    details=""
                   />
                 </CarouselItem>
               ))}

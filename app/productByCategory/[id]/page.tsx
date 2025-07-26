@@ -33,8 +33,9 @@ const CategoryProduct = ({ params }: { params: Promise<{ id: string }> }) => {
             name={item.name}
             images={item.images}
             price={item.price}
-            category={""}
-            description={""}
+            category=""
+            description=""
+            details=""
           />
         ))}
       </div>
