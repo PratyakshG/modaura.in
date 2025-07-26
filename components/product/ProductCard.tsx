@@ -51,8 +51,9 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
       <AddToCartButton
         _id={_id}
         name={name}
-        category={""}
-        description={""}
+        category=""
+        description=""
+        details=""
         price={{
           mrp: 0,
           sellingPrice: 0,
