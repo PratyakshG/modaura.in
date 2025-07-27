@@ -61,20 +61,22 @@ const CartPage = () => {
 
     if (cartTotal > 1499) {
       if (promoCode === "MODLAUNCH10") {
-        const totalAmt = cartTotal * 0.81;
+        const totalAmt = cartTotal * 0.81 + deliveryCharge;
         setTotalAmount(Math.ceil(totalAmt));
       } else {
-        const totalAmt = cartTotal * 0.9;
+        const totalAmt = cartTotal * 0.9 + deliveryCharge;
         setTotalAmount(Math.ceil(totalAmt));
       }
-    } else if (cartTotal > 999 && cartTotal < 1499) {
-      if (promoCode === "MODLAUNCH10") {
-        const totalAmt = cartTotal * 0.9;
-        setTotalAmount(Math.ceil(totalAmt));
-      } else {
-        setTotalAmount(Math.ceil(cartTotal));
-      }
-    } else {
+    }
+    // else if (cartTotal > 999 && cartTotal < 1499) {
+    //   if (promoCode === "MODLAUNCH10") {
+    //     const totalAmt = cartTotal * 0.9;
+    //     setTotalAmount(Math.ceil(totalAmt));
+    //   } else {
+    //     setTotalAmount(Math.ceil(cartTotal));
+    //   }
+    // }
+    else {
       if (promoCode === "MODLAUNCH10") {
         const totalAmt = cartTotal * 0.9 + deliveryCharge;
         setTotalAmount(Math.ceil(totalAmt));
@@ -123,16 +125,19 @@ const CartPage = () => {
   //function to calculate shipping cost to a pincode
   useEffect(() => {
     setLoading(true);
-    const handleDelivery = async () => {
-      const shippingCostResponse = await fetch(
-        `/api/delhivery/shipping-cost/?pincode=${pincode}&paymentMode=${paymentMethod}`
-      );
+    // const handleDelivery = async () => {
+    //   const shippingCostResponse = await fetch(
+    //     `/api/delhivery/shipping-cost/?pincode=${pincode}&paymentMode=${paymentMethod}`
+    //   );
 
-      const shippingCostData = await shippingCostResponse.json();
-      setDeliveryCharge(Math.ceil(shippingCostData[0]?.total_amount));
-    };
+    //   const shippingCostData = await shippingCostResponse.json();
+    //   setDeliveryCharge(Math.ceil(shippingCostData[0]?.total_amount));
+    // };
 
-    handleDelivery();
+    // handleDelivery();
+
+    if (paymentMethod === "COD") setDeliveryCharge(50);
+    if (paymentMethod === "Pre-paid") setDeliveryCharge(0);
     setLoading(false);
   }, [paymentMethod, setDeliveryCharge, pincode]);
 
@@ -289,15 +294,20 @@ const CartPage = () => {
               )}
               <li>
                 <p>Delivery</p>
-                {subTotal - discount > 999 ? (
+                {/* {subTotal - discount > 999 ? (
                   <div className="flex gap-2">
                     <span className="text-green-600 font-semibold">Free</span>
                     <span className="line-through">
-                      Rs. {deliveryCharge ? deliveryCharge : 0}
+                    Rs. {deliveryCharge ? deliveryCharge : 0}
                     </span>
-                  </div>
+                    </div>
+                    ) : (
+                      <p className="">Rs. {deliveryCharge ? deliveryCharge : 0}</p>
+                      )} */}
+                {paymentMethod === "COD" ? (
+                  <span className="">Rs. {deliveryCharge}</span>
                 ) : (
-                  <p className="">Rs. {deliveryCharge ? deliveryCharge : 0}</p>
+                  <p className="text-green-600 font-semibold">Free</p>
                 )}
               </li>
             </ul>
