@@ -64,7 +64,6 @@ const homePageSections = [
 
 const mobileCarousel = [
   "/images/Rakhi-sale-M.jpg",
-  "/images/M-1.jpg",
   "/images/M-2.jpg",
   "/images/M-3.jpg",
   "/images/M-4.jpg",
@@ -73,11 +72,16 @@ const mobileCarousel = [
 
 const desktopCarousel = [
   "/images/Rakhi-sale-D.jpg",
-  "/images/D-1.jpg",
   "/images/D-2.jpg",
   "/images/D-3.jpg",
   "/images/D-4.jpg",
   "/images/D-5.jpg",
+];
+
+const quickIcons = [
+  "/images/anti-tarnish.png",
+  "/images/delivery.png",
+  "/images/return.png",
 ];
 
 export {
@@ -87,4 +91,5 @@ export {
   homePageSections,
   mobileCarousel,
   desktopCarousel,
+  quickIcons,
 };

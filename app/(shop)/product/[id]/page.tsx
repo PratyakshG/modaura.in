@@ -1,9 +1,10 @@
 "use client";
 
 import { Image } from "@imagekit/next";
+import NextImage from "next/image";
 import { MdCancel, MdLocalShipping } from "react-icons/md";
 
-import { FAQs } from "@/constants/data";
+import { FAQs, quickIcons } from "@/constants/data";
 
 import AddToCartButton from "@/components/AddToCartButton";
 import Popular from "@/components/layout/Popular";
@@ -103,8 +104,8 @@ const Page = ({
                       key={index}
                       src={image}
                       alt="product image"
-                      width={300}
-                      height={300}
+                      width={2000}
+                      height={2000}
                       className="object-cover aspect-square size-full xl:w-[540px]"
                     />
                   </CarouselItem>
@@ -216,6 +217,20 @@ const Page = ({
           <div>
             <h3 className="font-semibold text-lg">Product Details</h3>
             <p className="text-sm tracking-wide">{product?.details}</p>
+          </div>
+
+          {/* Quick Icons */}
+          <div className="w-full flex justify-between">
+            {quickIcons.map((item, _) => (
+              <NextImage
+                key={_}
+                src={item}
+                alt="icon"
+                width={1000}
+                height={1000}
+                className="w-[30%]"
+              />
+            ))}
           </div>
 
           <Accordion
