@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import useCartStore from "./stores/useCartStore";
 import useProductStore from "./stores/useProductStore";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import tarnishBanner from "../public/images/tarnish-banner.jpg";
 
 const Home = () => {
   const { setProducts, setLoading } = useProductStore();
@@ -47,6 +49,14 @@ const Home = () => {
       <Hero />
       <Popular />
       <Latest />
+      <Image
+        src={tarnishBanner}
+        alt=""
+        width={1440}
+        height={300}
+        loading="lazy"
+        className="rounded-md lg:rounded-xl shadow-md"
+      />
 
       {homePageSections.map((item, index) => (
         <HomePageSection

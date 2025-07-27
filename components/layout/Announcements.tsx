@@ -4,8 +4,8 @@ const Announcements = () => {
   return (
     <>
       {/* Announcement or Offers */}
-      <div className="w-full flex items-center justify-center border-b border-neutral-400 py-2 text-center text-ivory bg-darkTeal text-sm font-urbanist">
-        Free Delivery on purchases over Rs 999/-
+      <div className="w-full flex items-center justify-center py-2 text-center text-ivory bg-darkTeal text-sm font-dmSans">
+        Free Delivery on pre-paid orders!!!
       </div>
     </>
   );

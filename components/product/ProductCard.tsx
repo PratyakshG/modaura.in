@@ -17,8 +17,8 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
           <Image
             src={images && images[0]}
             alt="product"
-            width={300}
-            height={300}
+            width={1000}
+            height={1000}
             responsive={false}
             loading="lazy"
             className={`object-cover transition-all hover:scale-120 duration-150 ease-in-out absolute`}
