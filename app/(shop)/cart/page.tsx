@@ -60,30 +60,23 @@ const CartPage = () => {
     const cartTotal = subTotal - discount;
 
     if (cartTotal > 1499) {
-      if (promoCode === "MODLAUNCH10") {
-        const totalAmt = cartTotal * 0.81 + deliveryCharge;
-        setTotalAmount(Math.ceil(totalAmt));
+      if (promoCode === "RAKHI5") {
+        const totalAmt = cartTotal * 0.855 + deliveryCharge;
+        setTotalAmount(Math.round(totalAmt));
       } else {
         const totalAmt = cartTotal * 0.9 + deliveryCharge;
-        setTotalAmount(Math.ceil(totalAmt));
+        setTotalAmount(Math.round(totalAmt));
       }
-    }
-    // else if (cartTotal > 999 && cartTotal < 1499) {
-    //   if (promoCode === "MODLAUNCH10") {
-    //     const totalAmt = cartTotal * 0.9;
-    //     setTotalAmount(Math.ceil(totalAmt));
-    //   } else {
-    //     setTotalAmount(Math.ceil(cartTotal));
-    //   }
-    // }
-    else {
-      if (promoCode === "MODLAUNCH10") {
-        const totalAmt = cartTotal * 0.9 + deliveryCharge;
-        setTotalAmount(Math.ceil(totalAmt));
+    } else if (cartTotal > 999 && cartTotal < 1499) {
+      if (promoCode === "RAKHI5") {
+        const totalAmt = cartTotal * 0.95;
+        setTotalAmount(Math.round(totalAmt));
       } else {
-        const totalAmt = cartTotal + (deliveryCharge ? deliveryCharge : 0);
-        setTotalAmount(Math.ceil(totalAmt));
+        setTotalAmount(Math.round(cartTotal));
       }
+    } else {
+      const totalAmt = cartTotal + (deliveryCharge ? deliveryCharge : 0);
+      setTotalAmount(Math.round(totalAmt));
     }
   }, [
     cart,
@@ -280,30 +273,43 @@ const CartPage = () => {
                 <p>Subtotal</p>
                 <p>Rs. {subTotal}</p>
               </li>
+
               <li>
                 <p>Discount</p>
                 <p className="text-green-600">- Rs. {discount}</p>
               </li>
-              {promoCode === "MODLAUNCH10" && (
+
+              {promoCode === "RAKHI5" && (
+                <>
+                  {subTotal - discount > 1499 ? (
+                    <li>
+                      <p>Promo Discount</p>
+                      <p className="text-green-600 font-medium">
+                        - Rs. {Math.round((subTotal - discount) * 0.045)}
+                      </p>
+                    </li>
+                  ) : (
+                    <li>
+                      <p>Promo Discount</p>
+                      <p className="text-green-600 font-medium">
+                        - Rs. {Math.round((subTotal - discount) * 0.05)}
+                      </p>
+                    </li>
+                  )}
+                </>
+              )}
+
+              {subTotal - discount > 1499 && (
                 <li>
-                  <p>Promo Discount</p>
-                  <p className="text-green-600">
-                    - Rs. {subTotal - discount + deliveryCharge - totalAmount}
+                  <p>Additional Discount</p>
+                  <p className="text-green-600 font-medium">
+                    - Rs. {Math.round((subTotal - discount) * 0.1)}
                   </p>
                 </li>
               )}
+
               <li>
                 <p>Delivery</p>
-                {/* {subTotal - discount > 999 ? (
-                  <div className="flex gap-2">
-                    <span className="text-green-600 font-semibold">Free</span>
-                    <span className="line-through">
-                    Rs. {deliveryCharge ? deliveryCharge : 0}
-                    </span>
-                    </div>
-                    ) : (
-                      <p className="">Rs. {deliveryCharge ? deliveryCharge : 0}</p>
-                      )} */}
                 {paymentMethod === "COD" ? (
                   <span className="">Rs. {deliveryCharge}</span>
                 ) : (
@@ -336,12 +342,19 @@ const CartPage = () => {
                   Apply Code
                 </button> */}
               </div>
-              {promoCode === "MODLAUNCH10" && (
+
+              {promoCode === "RAKHI5" && (
                 <p className="text-green-600 font-semibold text-sm">
-                  Extra 10% discount applied{" "}
+                  Extra 5% discount applied{" "}
                   <span className="text-black-1 font-normal">
                     (excluding delivery charges)
                   </span>
+                </p>
+              )}
+
+              {promoCode.length > 0 && promoCode !== "RAKHI5" && (
+                <p className="text-red-600 font-semibold text-sm">
+                  Invalid coupon code
                 </p>
               )}
             </div>
