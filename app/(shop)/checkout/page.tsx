@@ -55,8 +55,18 @@ type AddressType = z.infer<typeof addressSchema>;
 const CheckoutPage = () => {
   const session = useSession();
   const { cart } = useCartStore();
-  const { subTotal, discount, totalAmount, setPaymentSuccess } =
-    useAmountStore();
+  const {
+    subTotal,
+    discount,
+    totalAmount,
+    promoCode,
+    promoDiscount,
+    additionalDiscount,
+    setPaymentSuccess,
+    setPromoCode,
+    setPromoDiscount,
+    setAdditionalDiscount,
+  } = useAmountStore();
   const { pincode } = useDeliveryStore();
   const { deliveryCharge, paymentMethod } = useDeliveryStore();
   const [loading, setLoading] = useState<boolean>(false);
@@ -126,17 +136,20 @@ const CheckoutPage = () => {
     }
 
     setLoading(false);
+    setPromoCode("");
+    setPromoDiscount(0);
+    setAdditionalDiscount(0);
   };
 
   return (
-    <section className="w-full flex max-md:flex-col-reverse max-md:gap-10 items-start justify-between font-urbanist">
+    <section className="w-full flex max-md:flex-col-reverse max-md:gap-10 items-start justify-between">
       {/* section to display all the details of the customer */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-5 max-md:w-full w-1/2"
         >
-          <h1 className="font-semibold max-md:text-lg text-3xl">
+          <h1 className="font-medium max-md:text-lg text-4xl">
             Address Details
           </h1>
           <FormField
@@ -307,15 +320,35 @@ const CheckoutPage = () => {
           <ul className="*:flex flex flex-col *:justify-between *:max-md:text-sm max-md:gap-2 gap-3 w-full">
             <li>
               <p>Price ({cart.length} items)</p>
-              <p>₹ {subTotal}</p>
+              <p>Rs. {subTotal}</p>
             </li>
+
             <li>
               <p>Discount</p>
-              <p className="text-green-600">- ₹ {discount}</p>
+              <p className="text-green-600">- Rs. {discount}</p>
             </li>
+
+            {promoDiscount > 0 && (
+              <li>
+                Promo Discount
+                <span className="font-medium text-green-600">
+                  - Rs. {promoDiscount}
+                </span>
+              </li>
+            )}
+
+            {additionalDiscount > 0 && (
+              <li>
+                Additional Discount
+                <span className="font-medium text-green-600">
+                  - Rs. {additionalDiscount}{" "}
+                </span>
+              </li>
+            )}
+
             <li>
               <p>Delivery ({paymentMethod})</p>
-              <p>₹ {deliveryCharge}</p>
+              <p>Rs. {deliveryCharge}</p>
             </li>
           </ul>
 
@@ -323,6 +356,13 @@ const CheckoutPage = () => {
             <span>Total</span>
             <span className="">Rs. {totalAmount}</span>
           </div>
+
+          {promoDiscount > 0 && (
+            <div className="flex items-center justify-between py-2">
+              <span>Coupon Code Applied</span>
+              <span className="font-medium text-green-600"> {promoCode}</span>
+            </div>
+          )}
         </div>
       </div>
 

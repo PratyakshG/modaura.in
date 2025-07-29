@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface AmountStateTypes {
+type AmountStateTypes = {
   subTotal: number;
   discount: number;
   totalAmount: number;
@@ -11,25 +11,45 @@ interface AmountStateTypes {
   setDiscount: (value: number) => void;
   setTotalAmount: (value: number) => void;
   setPaymentSuccess: (value: boolean) => void;
-}
 
-const useAmountStore = create(
-  persist<AmountStateTypes>(
+  promoCode: string;
+  setPromoCode: (value: string) => void;
+
+  promoDiscount: number;
+  setPromoDiscount: (value: number) => void;
+
+  additionalDiscount: number;
+  setAdditionalDiscount: (value: number) => void;
+};
+
+const useAmountStore = create<AmountStateTypes>()(
+  persist(
     (set) => ({
       subTotal: 0,
-      discount: 0,
-      totalAmount: 0,
-      paymentSuccess: false,
-
       setSubTotal: (value) => set({ subTotal: value }),
 
+      discount: 0,
       setDiscount: (value) => set({ discount: value }),
 
+      totalAmount: 0,
       setTotalAmount: (value) => set({ totalAmount: value }),
 
+      paymentSuccess: false,
       setPaymentSuccess: (value) => set({ paymentSuccess: value }),
+
+      promoCode: "",
+      setPromoCode: (value) => set({ promoCode: value }),
+
+      promoDiscount: 0,
+      setPromoDiscount: (value) => set({ promoDiscount: value }),
+
+      additionalDiscount: 0,
+      setAdditionalDiscount: (value) => set({ additionalDiscount: value }),
     }),
-    { name: "modauraCartPrice" }
+
+    {
+      name: "modauraCartPrice",
+    }
   )
 );
 

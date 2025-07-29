@@ -5,12 +5,12 @@ import HomePageSection from "@/components/layout/HomePageSections";
 import Latest from "@/components/layout/Latest";
 import Popular from "@/components/layout/Popular";
 import { homePageSections } from "@/constants/data";
-import { useEffect } from "react";
-import useCartStore from "./stores/useCartStore";
-import useProductStore from "./stores/useProductStore";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useEffect } from "react";
 import tarnishBanner from "../public/images/tarnish-banner.jpg";
+import useCartStore from "./stores/useCartStore";
+import useProductStore from "./stores/useProductStore";
 
 const Home = () => {
   const { setProducts, setLoading } = useProductStore();
@@ -35,12 +35,13 @@ const Home = () => {
 
     async function getCartItems() {
       const res = await fetch("/api/cart");
-
+      
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data: any = await res.json();
-      console.log(data.cartItems);
+      console.log("cart", data.cartItems);
       setCart([...data.cartItems]);
     }
+
     getCartItems();
   }, [setCart, session]);
 
@@ -55,7 +56,7 @@ const Home = () => {
         width={1440}
         height={300}
         loading="lazy"
-        className="rounded-md lg:rounded-xl shadow-md"
+        className="w-full rounded-md lg:rounded-xl shadow-md"
       />
 
       {homePageSections.map((item, index) => (

@@ -29,13 +29,19 @@ const CartPage = () => {
     subTotal,
     discount,
     totalAmount,
+    promoCode,
+    promoDiscount,
+    additionalDiscount,
     setSubTotal,
     setDiscount,
     setTotalAmount,
+    setPromoCode,
+    setPromoDiscount,
+    setAdditionalDiscount,
   } = useAmountStore();
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [promoCode, setPromoCode] = useState<string>("");
+  // const [promoCode, setPromoCode] = useState<string>("");
   const [deliveryPossible, setDeliveryPossible] = useState<boolean>(false);
   const session = useSession();
 
@@ -59,33 +65,46 @@ const CartPage = () => {
 
     const cartTotal = subTotal - discount;
 
+    //cartTotal exceeds 1499/-
     if (cartTotal > 1499) {
+      const disc = cartTotal * 0.1;
+      setAdditionalDiscount(Math.round(disc));
       if (promoCode === "RAKHI5") {
-        const totalAmt = cartTotal * 0.855 + deliveryCharge;
-        setTotalAmount(Math.round(totalAmt));
-      } else {
-        const totalAmt = cartTotal * 0.9 + deliveryCharge;
-        setTotalAmount(Math.round(totalAmt));
-      }
-    } else if (cartTotal > 999 && cartTotal < 1499) {
-      if (promoCode === "RAKHI5") {
-        const totalAmt = cartTotal * 0.95;
-        setTotalAmount(Math.round(totalAmt));
-      } else {
-        setTotalAmount(Math.round(cartTotal));
+        const amt = Math.round((cartTotal - additionalDiscount) * 0.05);
+        console.log("amt", amt);
+        setPromoDiscount(amt);
       }
     } else {
-      const totalAmt = cartTotal + (deliveryCharge ? deliveryCharge : 0);
-      setTotalAmount(Math.round(totalAmt));
+      setAdditionalDiscount(0);
     }
+
+    //cartTotal exceeds 999/-
+    if (cartTotal > 999 && cartTotal <= 1499 && promoCode === "RAKHI5") {
+      setPromoDiscount(Math.round(cartTotal * 0.05));
+    }
+
+    const finalAmount =
+      cartTotal - promoDiscount - additionalDiscount + deliveryCharge;
+    setTotalAmount(Math.round(finalAmount));
+
+    if (promoCode !== "RAKHI5" || cartTotal <= 999) {
+      setPromoDiscount(0);
+    }
+
+    // console.log(promoDiscount, additionalDiscount);
   }, [
     cart,
     subTotal,
     deliveryCharge,
     promoCode,
+    promoDiscount,
+    additionalDiscount,
     setSubTotal,
+    setPromoCode,
     setDiscount,
     setTotalAmount,
+    setPromoDiscount,
+    setAdditionalDiscount,
   ]);
 
   // function to find serviceable pincode and their shipping costs
@@ -148,7 +167,7 @@ const CartPage = () => {
         body: JSON.stringify({ cartItems: cart }),
       });
     }
-    console.log(cart);
+    // console.log(cart);
     setLoading(false);
   };
 
@@ -276,34 +295,23 @@ const CartPage = () => {
 
               <li>
                 <p>Discount</p>
-                <p className="text-green-600">- Rs. {discount}</p>
+                <p className="text-green-600 font-medium">- Rs. {discount}</p>
               </li>
 
-              {promoCode === "RAKHI5" && (
-                <>
-                  {subTotal - discount > 1499 ? (
-                    <li>
-                      <p>Promo Discount</p>
-                      <p className="text-green-600 font-medium">
-                        - Rs. {Math.round((subTotal - discount) * 0.045)}
-                      </p>
-                    </li>
-                  ) : (
-                    <li>
-                      <p>Promo Discount</p>
-                      <p className="text-green-600 font-medium">
-                        - Rs. {Math.round((subTotal - discount) * 0.05)}
-                      </p>
-                    </li>
-                  )}
-                </>
-              )}
-
-              {subTotal - discount > 1499 && (
+              {additionalDiscount > 0 && (
                 <li>
                   <p>Additional Discount</p>
                   <p className="text-green-600 font-medium">
-                    - Rs. {Math.round((subTotal - discount) * 0.1)}
+                    - Rs. {additionalDiscount}
+                  </p>
+                </li>
+              )}
+
+              {promoCode === "RAKHI5" && promoDiscount > 0 && (
+                <li>
+                  <p>Promo Discount</p>
+                  <p className="text-green-600 font-medium">
+                    - Rs. {promoDiscount}
                   </p>
                 </li>
               )}
@@ -317,10 +325,12 @@ const CartPage = () => {
                 )}
               </li>
             </ul>
+
             <div className="flex items-center justify-between font-semibold py-4 border-t border-b border-dotted border-neutral-500">
               <span>Total</span>
               <span>Rs. {totalAmount}</span>
             </div>
+
             <div className="flex flex-col gap-2 pt-5">
               <span className="text-sm">Do you have a promotional code?</span>
               <div className="flex bg-gray-200 rounded-full">
@@ -332,6 +342,7 @@ const CartPage = () => {
                     e.preventDefault();
                     setPromoCode(e.target.value);
                   }}
+                  defaultValue={promoCode ?? promoCode}
                   placeholder="Enter promo code"
                 />
 
@@ -343,7 +354,7 @@ const CartPage = () => {
                 </button> */}
               </div>
 
-              {promoCode === "RAKHI5" && (
+              {promoCode === "RAKHI5" && promoDiscount > 0 && (
                 <p className="text-green-600 font-semibold text-sm">
                   Extra 5% discount applied{" "}
                   <span className="text-black-1 font-normal">
@@ -352,12 +363,13 @@ const CartPage = () => {
                 </p>
               )}
 
-              {promoCode.length > 0 && promoCode !== "RAKHI5" && (
-                <p className="text-red-600 font-semibold text-sm">
-                  Invalid coupon code
+              {promoCode.length > 0 && promoDiscount <= 0 && (
+                <p className="text-red-600 font-semibold text-sm capitalize">
+                  Invalid coupon code or coupon inapplicable
                 </p>
               )}
             </div>
+
             <div className="pt-4">
               <span className="text-sm">
                 Enter pincode to check delivery options

@@ -27,8 +27,8 @@ const getProduct = async (_id: mongoose.Types.ObjectId) => {
   }
 };
 
-const useCartStore = create(
-  persist<CartStateTypes>(
+const useCartStore = create<CartStateTypes>()(
+  persist(
     (set) => ({
       cart: [],
 

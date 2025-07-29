@@ -11,8 +11,8 @@ interface DeliveryStateTypes {
   setPaymentMethod: (value: string) => void;
 }
 
-const useDeliveryStore = create(
-  persist<DeliveryStateTypes>(
+const useDeliveryStore = create<DeliveryStateTypes>()(
+  persist(
     (set) => ({
       pincode: "",
       deliveryCharge: 0,
@@ -23,7 +23,9 @@ const useDeliveryStore = create(
       setDeliveryCharge: (value) => set({ deliveryCharge: value }),
       setPaymentMethod: (value) => set({ paymentMethod: value }),
     }),
-    { name: "deliveryStorage" }
+    {
+      name: "deliveryStorage",
+    }
   )
 );
 
