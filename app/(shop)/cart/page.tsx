@@ -1,8 +1,8 @@
 "use client";
 
-import useAmountStore from "@/app/stores/useAmountStore";
 import useCartStore from "@/app/stores/useCartStore";
 import useDeliveryStore from "@/app/stores/useDeliveryStore";
+import CartSubTotalSection from "@/components/layout/CartSubTotalSection";
 import { Input } from "@/components/ui/input";
 import { Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -15,97 +15,55 @@ import { toast } from "sonner";
 
 const CartPage = () => {
   const { cart, removeFromCart, updateQuantity } = useCartStore();
-
   const {
     pincode,
-    deliveryCharge,
     paymentMethod,
     setPincode,
     setDeliveryCharge,
     setPaymentMethod,
   } = useDeliveryStore();
 
-  const {
-    subTotal,
-    discount,
-    totalAmount,
-    promoCode,
-    promoDiscount,
-    additionalDiscount,
-    setSubTotal,
-    setDiscount,
-    setTotalAmount,
-    setPromoCode,
-    setPromoDiscount,
-    setAdditionalDiscount,
-  } = useAmountStore();
-
   const [loading, setLoading] = useState<boolean>(false);
   // const [promoCode, setPromoCode] = useState<string>("");
   const [deliveryPossible, setDeliveryPossible] = useState<boolean>(false);
   const session = useSession();
 
-  //cart actions
+  const handleUpdateCart = async () => {
+    setLoading(true);
+    if (session.data?.user) {
+      //retrieve the latest cart state to remove the delay in updation to the API
+      const cart = useCartStore.getState().cart;
+
+      await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cartItems: cart }),
+      });
+    }
+    // console.log(cart);
+    setLoading(false);
+  };
+
+  //function to calculate shipping cost to a pincode
   useEffect(() => {
-    if (cart.length > 0) {
-      const cartSubTotal = cart.reduce(
-        (acc, product) => acc + product.price.mrp * product.quantity,
-        0
-      );
-      setSubTotal(cartSubTotal);
-    }
+    setLoading(true);
+    // const handleDelivery = async () => {
+    //   const shippingCostResponse = await fetch(
+    //     `/api/delhivery/shipping-cost/?pincode=${pincode}&paymentMode=${paymentMethod}`
+    //   );
 
-    const discount =
-      subTotal -
-      cart.reduce(
-        (acc, product) => acc + product.price.sellingPrice * product.quantity,
-        0
-      );
-    setDiscount(discount);
+    //   const shippingCostData = await shippingCostResponse.json();
+    //   setDeliveryCharge(Math.ceil(shippingCostData[0]?.total_amount));
+    // };
 
-    const cartTotal = subTotal - discount;
+    // handleDelivery();
 
-    //cartTotal exceeds 1499/-
-    if (cartTotal > 1499) {
-      const disc = cartTotal * 0.1;
-      setAdditionalDiscount(Math.round(disc));
-      if (promoCode === "RAKHI5") {
-        const amt = Math.round((cartTotal - additionalDiscount) * 0.05);
-        console.log("amt", amt);
-        setPromoDiscount(amt);
-      }
-    } else {
-      setAdditionalDiscount(0);
-    }
-
-    //cartTotal exceeds 999/-
-    if (cartTotal > 999 && cartTotal <= 1499 && promoCode === "RAKHI5") {
-      setPromoDiscount(Math.round(cartTotal * 0.05));
-    }
-
-    const finalAmount =
-      cartTotal - promoDiscount - additionalDiscount + deliveryCharge;
-    setTotalAmount(Math.round(finalAmount));
-
-    if (promoCode !== "RAKHI5" || cartTotal <= 999) {
-      setPromoDiscount(0);
-    }
-
-    // console.log(promoDiscount, additionalDiscount);
-  }, [
-    cart,
-    subTotal,
-    deliveryCharge,
-    promoCode,
-    promoDiscount,
-    additionalDiscount,
-    setSubTotal,
-    setPromoCode,
-    setDiscount,
-    setTotalAmount,
-    setPromoDiscount,
-    setAdditionalDiscount,
-  ]);
+    if (paymentMethod === "COD") setDeliveryCharge(50);
+    if (paymentMethod === "Pre-paid") setDeliveryCharge(0);
+    setLoading(false);
+  }, [paymentMethod, setDeliveryCharge, pincode]);
 
   // function to find serviceable pincode and their shipping costs
   useEffect(() => {
@@ -133,43 +91,6 @@ const CartPage = () => {
     }
     setLoading(false);
   }, [pincode]);
-
-  //function to calculate shipping cost to a pincode
-  useEffect(() => {
-    setLoading(true);
-    // const handleDelivery = async () => {
-    //   const shippingCostResponse = await fetch(
-    //     `/api/delhivery/shipping-cost/?pincode=${pincode}&paymentMode=${paymentMethod}`
-    //   );
-
-    //   const shippingCostData = await shippingCostResponse.json();
-    //   setDeliveryCharge(Math.ceil(shippingCostData[0]?.total_amount));
-    // };
-
-    // handleDelivery();
-
-    if (paymentMethod === "COD") setDeliveryCharge(50);
-    if (paymentMethod === "Pre-paid") setDeliveryCharge(0);
-    setLoading(false);
-  }, [paymentMethod, setDeliveryCharge, pincode]);
-
-  const handleUpdateCart = async () => {
-    setLoading(true);
-    if (session.data?.user) {
-      //retrieve the latest cart state to remove the delay in updation to the API
-      const cart = useCartStore.getState().cart;
-
-      await fetch("/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cartItems: cart }),
-      });
-    }
-    // console.log(cart);
-    setLoading(false);
-  };
 
   return (
     <>
@@ -260,7 +181,7 @@ const CartPage = () => {
                       onClick={async () => {
                         updateQuantity(product._id, product.quantity + 1);
                         await new Promise((resolve) =>
-                          setTimeout(resolve, 1000)
+                          setTimeout(resolve, 500)
                         );
                         handleUpdateCart();
                         toast(`${product.name} quantity is increased`);
@@ -274,7 +195,7 @@ const CartPage = () => {
                     className="cursor-pointer font-medium opacity-60 hover:opacity-100 transition max-sm:text-xs"
                     onClick={async () => {
                       removeFromCart(product._id);
-                      await new Promise((resolve) => setTimeout(resolve, 1000));
+                      await new Promise((resolve) => setTimeout(resolve, 500));
                       handleUpdateCart();
                     }}
                   >
@@ -287,88 +208,7 @@ const CartPage = () => {
 
           {/* Subtotal Section */}
           <div className="lg:w-1/3 sticky top-0 bg-white h-fit mb-5 p-5 rounded-2xl shadow-lg">
-            <ul className="*:flex flex flex-col *:justify-between gap-3 w-full">
-              <li>
-                <p>Subtotal</p>
-                <p>Rs. {subTotal}</p>
-              </li>
-
-              <li>
-                <p>Discount</p>
-                <p className="text-green-600 font-medium">- Rs. {discount}</p>
-              </li>
-
-              {additionalDiscount > 0 && (
-                <li>
-                  <p>Additional Discount</p>
-                  <p className="text-green-600 font-medium">
-                    - Rs. {additionalDiscount}
-                  </p>
-                </li>
-              )}
-
-              {promoCode === "RAKHI5" && promoDiscount > 0 && (
-                <li>
-                  <p>Promo Discount</p>
-                  <p className="text-green-600 font-medium">
-                    - Rs. {promoDiscount}
-                  </p>
-                </li>
-              )}
-
-              <li>
-                <p>Delivery</p>
-                {paymentMethod === "COD" ? (
-                  <span className="">Rs. {deliveryCharge}</span>
-                ) : (
-                  <p className="text-green-600 font-semibold">Free</p>
-                )}
-              </li>
-            </ul>
-
-            <div className="flex items-center justify-between font-semibold py-4 border-t border-b border-dotted border-neutral-500">
-              <span>Total</span>
-              <span>Rs. {totalAmount}</span>
-            </div>
-
-            <div className="flex flex-col gap-2 pt-5">
-              <span className="text-sm">Do you have a promotional code?</span>
-              <div className="flex bg-gray-200 rounded-full">
-                <input
-                  type="text"
-                  name="apply promo code"
-                  className="py-2 w-full rounded-full pl-5 placeholder:text-sm focus:outline-none"
-                  onChange={(e) => {
-                    e.preventDefault();
-                    setPromoCode(e.target.value);
-                  }}
-                  defaultValue={promoCode ?? promoCode}
-                  placeholder="Enter promo code"
-                />
-
-                {/* <button
-                  type="submit"
-                  className="px-5 text-nowrap bg-darkTeal rounded-full text-white"
-                >
-                  Apply Code
-                </button> */}
-              </div>
-
-              {promoCode === "RAKHI5" && promoDiscount > 0 && (
-                <p className="text-green-600 font-semibold text-sm">
-                  Extra 5% discount applied{" "}
-                  <span className="text-black-1 font-normal">
-                    (excluding delivery charges)
-                  </span>
-                </p>
-              )}
-
-              {promoCode.length > 0 && promoDiscount <= 0 && (
-                <p className="text-red-600 font-semibold text-sm capitalize">
-                  Invalid coupon code or coupon inapplicable
-                </p>
-              )}
-            </div>
+            <CartSubTotalSection setLoading={setLoading} />
 
             <div className="pt-4">
               <span className="text-sm">
@@ -380,19 +220,20 @@ const CartPage = () => {
                   placeholder="enter pincode"
                   defaultValue={pincode}
                   onChange={(e) => {
+                    setLoading(true);
                     setTimeout(() => {
                       setPincode(e.target.value);
-                    }, 1000);
+                      setLoading(false);
+                    }, 500);
                   }}
                 />
               </div>
             </div>
+
             {pincode.length > 0 && pincode.length !== 6 && (
-              <>
-                <span className="text-red-500 text-sm">
-                  Error : please enter 6 digit pincode
-                </span>
-              </>
+              <span className="text-red-500 text-sm">
+                Error : please enter 6 digit pincode
+              </span>
             )}
 
             {pincode.length === 6 && (
@@ -423,8 +264,10 @@ const CartPage = () => {
                       defaultChecked={paymentMethod === "COD" && true}
                       onChange={(e) => {
                         setLoading(true);
-                        setPaymentMethod(e.target.value);
-                        setLoading(false);
+                        setTimeout(() => {
+                          setPaymentMethod(e.target.value);
+                          setLoading(false);
+                        }, 500);
                       }}
                     />
                     <label htmlFor="COD">Cash On Delivery</label>
@@ -439,8 +282,10 @@ const CartPage = () => {
                       defaultChecked={paymentMethod === "Pre-paid" && true}
                       onChange={(e) => {
                         setLoading(true);
-                        setPaymentMethod(e.target.value);
-                        setLoading(false);
+                        setTimeout(() => {
+                          setPaymentMethod(e.target.value);
+                          setLoading(false);
+                        }, 500);
                       }}
                     />
                     <label htmlFor="Pre-paid">
@@ -464,8 +309,9 @@ const CartPage = () => {
                 ) : (
                   <>
                     {loading ? (
-                      <button className="bg-darkTeal px-5 py-2 text-ivory rounded-full">
-                        <Loader className="animate-spin" />
+                      <button className="bg-darkTeal px-5 py-2 text-ivory rounded-full flex items-center justify-center gap-2">
+                        <span>Loading</span>
+                        <Loader className="animate-spin size-5" />
                       </button>
                     ) : (
                       <Link

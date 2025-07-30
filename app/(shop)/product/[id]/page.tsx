@@ -206,11 +206,13 @@ const Page = ({
               </li>
               <li className="text-sm text-center">
                 <h5>
-                  Free <span className="font-bold">delivery</span> on purchases
-                  over Rs. 999/-
+                  Use <span className="font-bold">RAKHI5</span> on purchases
+                  over Rs. 999/- and get extra{" "}
+                  <span className="font-bold">5% off</span>
                 </h5>
               </li>
             </ul>
+            <span className="place-self-end text-xs">*T&C applied</span>
           </div>
 
           {/* Product Details */}
@@ -241,17 +243,14 @@ const Page = ({
               <AccordionTrigger>
                 <div className="flex items-center space-x-2">
                   <MdCancel size={20} className="text-red-600" />
-                  <span className="font-semibold">
-                    Exchange / Return Policies
-                  </span>
+                  <span className="font-semibold">Return Policies</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                Exchange or Returns are valid to 7 days from the date of
-                delivery.
+                1. Returns are valid to 7 days from the date of delivery.
               </AccordionContent>
               <AccordionContent>
-                Read our Refund Policy for more information.
+                2. Read our Refund Policy for more information.
               </AccordionContent>
             </AccordionItem>
 
@@ -264,15 +263,14 @@ const Page = ({
               </AccordionTrigger>
               <AccordionContent>
                 All orders will be delivered within 3 - 7 business days.
-                <br />
                 (Depending on the location.)
               </AccordionContent>
               <AccordionContent>
                 Shipping or Delivery Charges are non-refundable in all cases.
               </AccordionContent>
               <AccordionContent>
-                As soon as your order is processed, you will recieve a link to
-                track you order.
+                A tracking link will be sent to your Whatsapp or SMS as soon as
+                your order is processed.
               </AccordionContent>
             </AccordionItem>
           </Accordion>

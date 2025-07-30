@@ -38,7 +38,7 @@ const Navbar = () => {
     <nav className="hidden lg:block sticky top-0 z-10">
       {/* Announcements */}
 
-      <div className="h-[10dvh] flex justify-center items-center px-10 py-3 sticky top-0 z-10 bg-ivory font-urbanist">
+      <div className="h-[10dvh] flex justify-center items-center px-10 py-3 sticky top-0 z-10 bg-ivory font-satoshi">
         <div className="w-1/3">
           <ul className="flex space-x-5 text-black-1 text-sm uppercase *:hover:text-darkTeal tracking-wide">
             <li className="relative cursor-pointer">
