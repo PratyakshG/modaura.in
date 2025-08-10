@@ -1,8 +1,3 @@
-import Announcements from "@/components/layout/Announcements";
-import Footer from "@/components/layout/Footer";
-import MobileNav from "@/components/layout/MobileNav";
-import Navbar from "@/components/layout/Navbar";
-import { Toaster } from "@/components/ui/sonner";
 import { ImageKitProvider } from "@imagekit/next";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
@@ -10,6 +5,11 @@ import { SessionProvider } from "next-auth/react";
 import { DM_Sans, Urbanist } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
+import { Toaster } from "sonner";
+import Announcements from "./components/layout/Announcements";
+import Footer from "./components/layout/Footer";
+import MobileNav from "./components/layout/MobileNav";
+import Navbar from "./components/layout/Navbar";
 import "./globals.css";
 
 const urbanist = Urbanist({
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   description: "Modaura - Artificial Jewellery",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

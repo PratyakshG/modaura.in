@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -9,7 +9,7 @@ import { z } from "zod";
 import useAmountStore from "@/app/stores/useAmountStore";
 import useCartStore from "@/app/stores/useCartStore";
 import useDeliveryStore from "@/app/stores/useDeliveryStore";
-import PaymentSuccess from "@/components/layout/PaymentSuccess";
+import PaymentSuccess from "../../components/layout/PaymentSuccess";
 import {
   Form,
   FormControl,
@@ -17,7 +17,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "../../components/ui/form";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";

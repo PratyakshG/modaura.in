@@ -10,17 +10,17 @@ import { VscAccount } from "react-icons/vsc";
 
 import { logout } from "@/lib/actions";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { homePageSections } from "@/constants/data";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
 import { LuShoppingBag } from "react-icons/lu";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../components/ui/dropdown-menu";
 
 const Navbar = () => {
   const { cart } = useCartStore();
@@ -123,15 +123,18 @@ const Navbar = () => {
                         <Link href="/orders">Orders</Link>
                       </DropdownMenuItem>
 
-                      <DropdownMenuItem
-                        onClick={() => {
-                          logout().then(() => {
-                            toast("You have been logged out");
-                          });
-                          router.refresh();
-                        }}
-                      >
-                        Sign Out
+                      <DropdownMenuItem>
+                        <button
+                          onClick={() => {
+                            logout();
+                            toast.success("You have been logged out");
+                            router.refresh();
+                            // router.push("/login");
+                            // signOut().then(() => {});
+                          }}
+                        >
+                          Sign Out
+                        </button>
                       </DropdownMenuItem>
                       <DropdownMenuArrow />
                     </DropdownMenuContent>

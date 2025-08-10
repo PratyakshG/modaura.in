@@ -9,21 +9,21 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "../../components/ui/drawer";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../../components/ui/dropdown-menu";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "../../components/ui/accordion";
 
 import logo from "@/public/logo-color.svg";
 import Image from "next/image";
@@ -43,6 +43,7 @@ import { FaFacebook, FaInstagram } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { VscAccount } from "react-icons/vsc";
 import { Separator } from "../ui/separator";
+import { toast } from "sonner";
 
 const MobileNav = () => {
   const { cart } = useCartStore();
@@ -187,6 +188,7 @@ const MobileNav = () => {
                       <DropdownMenuItem
                         onClick={() => {
                           logout();
+                          toast.success("You have been logged out")
                           router.refresh();
                         }}
                       >

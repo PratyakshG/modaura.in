@@ -6,20 +6,20 @@ import { MdCancel, MdLocalShipping } from "react-icons/md";
 
 import { FAQs, quickIcons } from "@/constants/data";
 
-import AddToCartButton from "@/components/AddToCartButton";
-import Popular from "@/components/layout/Popular";
+import AddToCartButton from "../../../components/AddToCartButton";
+import Popular from "../../../components/layout/Popular";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "../../../components/ui/accordion";
 import {
   Carousel,
   CarouselApi,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
+} from "../../../components/ui/carousel";
 import { productTypes } from "@/types/index";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import mongoose from "mongoose";

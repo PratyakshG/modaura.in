@@ -1,10 +1,11 @@
 import useCartStore from "@/app/stores/useCartStore";
+import { productTypes } from "@/types/index";
 import { Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { BiCart } from "react-icons/bi";
 import { toast } from "sonner";
-import { productTypes } from "../types/index";
+
 
 const AddToCartButton = ({ _id, name }: productTypes) => {
   const { addToCart } = useCartStore();
@@ -37,7 +38,7 @@ const AddToCartButton = ({ _id, name }: productTypes) => {
           toast(`${name} is added to cart.`);
           setLoading(false);
         }}
-        className="w-full flex items-center justify-center gap-2 bg-darkTeal text-ivory rounded-lg lg:rounded-xl py-3 lg:py-3 lg:px-4 hover:opacity-90 transition-all duration-200 ease-in-out cursor-pointer"
+        className="w-full flex items-center justify-center gap-2 bg-darkTeal text-ivory text-sm md:text-base rounded-md lg:rounded-xl py-2.5 md:py-3 lg:px-4 hover:opacity-90 transition-all duration-200 ease-in-out cursor-pointer"
       >
         {!loading ? (
           <>

@@ -3,11 +3,12 @@
 import { productTypes } from "@/types/index";
 import { Image } from "@imagekit/next";
 import Link from "next/link";
-import AddToCartButton from "../AddToCartButton";
+import AddToCartButton from "../../components/AddToCartButton";
+
 
 const ProductCard = ({ _id, name, price, images }: productTypes) => {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2">
+    <div className="max-w-[300px] h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2">
       <Link
         href={`/product/${_id}`}
         className="w-full h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2"
@@ -28,9 +29,9 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
           {/* <IoMdHeartEmpty className="absolute right-2 top-2 lg:right-5 lg:top-5 border size-6 p-1 lg:size-8 rounded-full bg-white opacity-70 text-darkTeal hover:opacity-100 transition-all duration-200" /> */}
         </div>
 
-        <div className="flex flex-col items-center justify-center">
+        <div className="w-full flex flex-col items-center justify-center">
           {/* title of the product */}
-          <h3 className="text-sm lg:text-base lg:leading-tight font-light truncate">
+          <h3 className="w-full text-center text-sm lg:text-base lg:leading-tight font-light truncate">
             {name ? name : "Product Name"}
           </h3>
           {/* cost of the product */}

@@ -1,9 +1,9 @@
 "use client";
 
-import Hero from "@/components/layout/Hero";
-import HomePageSection from "@/components/layout/HomePageSections";
-import Latest from "@/components/layout/Latest";
-import Popular from "@/components/layout/Popular";
+import Hero from "./components/layout/Hero";
+import HomePageSection from "./components/layout/HomePageSections";
+import Latest from "./components/layout/Latest";
+import Popular from "./components/layout/Popular";
 import { homePageSections } from "@/constants/data";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import tarnishBanner from "../public/images/tarnish-banner.jpg";
 import useCartStore from "./stores/useCartStore";
 import useProductStore from "./stores/useProductStore";
+// import { fetchProducts } from "@/lib/helper";
 
 const Home = () => {
   const { setProducts, setLoading } = useProductStore();
@@ -18,13 +19,13 @@ const Home = () => {
   const session = useSession();
 
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchAllProducts() {
       const res = await fetch(`/api/products?all=true`);
       const data = await res.json();
       setProducts(data);
     }
 
-    fetchProducts();
+    fetchAllProducts();
 
     setLoading(false);
   }, [setProducts, setLoading]);
@@ -35,7 +36,7 @@ const Home = () => {
 
     async function getCartItems() {
       const res = await fetch("/api/cart");
-      
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data: any = await res.json();
       console.log("cart", data.cartItems);

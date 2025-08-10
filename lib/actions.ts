@@ -7,6 +7,10 @@ export const login = async () => {
 };
 
 export const logout = async () => {
-  await signOut({ redirect: true, redirectTo: "/login" });
+  await signOut({
+    redirect: true,
+    redirectTo: "/login",
+  });
+
   console.log("user logged out");
 };

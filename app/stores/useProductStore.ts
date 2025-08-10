@@ -14,8 +14,8 @@ interface ProductStateTypes {
   setLoading: (status: boolean) => void;
 }
 
-const useProductStore = create(
-  persist<ProductStateTypes>(
+const useProductStore = create<ProductStateTypes>()(
+  persist(
     (set) => ({
       products: [],
       loading: true,

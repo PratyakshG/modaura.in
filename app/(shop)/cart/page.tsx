@@ -2,8 +2,8 @@
 
 import useCartStore from "@/app/stores/useCartStore";
 import useDeliveryStore from "@/app/stores/useDeliveryStore";
-import CartSubTotalSection from "@/components/layout/CartSubTotalSection";
-import { Input } from "@/components/ui/input";
+import CartSubTotalSection from "../../components/layout/CartSubTotalSection";
+import { Input } from "../../components/ui/input";
 import { Loader } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
