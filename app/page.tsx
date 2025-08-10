@@ -10,25 +10,25 @@ import Image from "next/image";
 import { useEffect } from "react";
 import tarnishBanner from "../public/images/tarnish-banner.jpg";
 import useCartStore from "./stores/useCartStore";
-import useProductStore from "./stores/useProductStore";
+// import useProductStore from "./stores/useProductStore";
 // import { fetchProducts } from "@/lib/helper";
 
 const Home = () => {
-  const { setProducts, setLoading } = useProductStore();
+  // const { setProducts, setLoading } = useProductStore();
   const { setCart } = useCartStore();
   const session = useSession();
 
-  useEffect(() => {
-    async function fetchAllProducts() {
-      const res = await fetch(`/api/products?all=true`);
-      const data = await res.json();
-      setProducts(data);
-    }
+  // useEffect(() => {
+  //   async function fetchAllProducts() {
+  //     const res = await fetch(`/api/products?all=true`);
+  //     const data = await res.json();
+  //     setProducts(data);
+  //   }
 
-    fetchAllProducts();
+  //   fetchAllProducts();
 
-    setLoading(false);
-  }, [setProducts, setLoading]);
+  //   setLoading(false);
+  // }, [setProducts, setLoading]);
 
   //function to fetch cart items
   useEffect(() => {
