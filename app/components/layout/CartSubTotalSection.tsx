@@ -56,9 +56,7 @@ const CartSubTotalSection = ({
     }
 
     //cartTotal exceeds 999/-
-    if (promoCode === "RAKHI5" && cartTotal > 999) {
-      setPromoDiscount(Math.round((cartTotal - additionalDiscount) * 0.05));
-    } else if (promoCode === "THANKS10") {
+    if (promoCode === "THANKS10") {
       setPromoDiscount(Math.round((cartTotal - additionalDiscount) * 0.1));
     } else {
       setPromoDiscount(0);
@@ -105,15 +103,14 @@ const CartSubTotalSection = ({
             </li>
           )}
 
-          {(promoCode === "RAKHI5" || promoCode === "THANKS10") &&
-            promoDiscount > 0 && (
-              <li>
-                <p>Promo Discount</p>
-                <p className="text-green-600 font-medium">
-                  - Rs. {promoDiscount}
-                </p>
-              </li>
-            )}
+          {promoCode === "THANKS10" && promoDiscount > 0 && (
+            <li>
+              <p>Promo Discount</p>
+              <p className="text-green-600 font-medium">
+                - Rs. {promoDiscount}
+              </p>
+            </li>
+          )}
 
           <li>
             <p>Delivery</p>
@@ -131,7 +128,7 @@ const CartSubTotalSection = ({
         </div>
 
         <div className="flex flex-col gap-2 pt-5">
-          <span className="text-sm">Do you have a promotional code?</span>
+          <span className="text-sm">Do you have a promo code?</span>
           <div className="flex bg-gray-200 rounded-full">
             <input
               type="text"
@@ -149,15 +146,6 @@ const CartSubTotalSection = ({
               placeholder="Enter promo code"
             />
           </div>
-
-          {promoCode === "RAKHI5" && promoDiscount > 0 && (
-            <p className="text-green-600 font-semibold text-sm">
-              Extra 5% discount applied{" "}
-              <span className="text-black-1 font-normal">
-                (excluding delivery charges)
-              </span>
-            </p>
-          )}
 
           {promoCode === "THANKS10" && promoDiscount > 0 && (
             <p className="text-green-600 font-semibold text-sm">

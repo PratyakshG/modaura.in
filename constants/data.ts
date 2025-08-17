@@ -63,7 +63,7 @@ const homePageSections = [
 ];
 
 const mobileCarousel = [
-  "/images/Rakhi-sale-M.jpg",
+  "/images/monsoon_sale_M.jpg",
   "/images/M-2.jpg",
   "/images/M-3.jpg",
   "/images/M-4.jpg",
@@ -71,7 +71,7 @@ const mobileCarousel = [
 ];
 
 const desktopCarousel = [
-  "/images/Rakhi-sale-D.jpg",
+  "/images/monsoon_sale_D.jpg",
   "/images/D-2.jpg",
   "/images/D-3.jpg",
   "/images/D-4.jpg",
