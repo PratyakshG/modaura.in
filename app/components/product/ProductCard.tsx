@@ -31,7 +31,7 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
 
         <div className="w-full flex flex-col items-center justify-center">
           {/* title of the product */}
-          <h3 className="w-full text-center text-sm lg:text-base lg:leading-tight font-light truncate">
+          <h3 className="w-[calc(100dvw/2-30px)] md:w-[200px] lg:w-[250px] 2xl:w-[300px] text-center text-sm lg:text-base lg:leading-tight font-light truncate">
             {name ? name : "Product Name"}
           </h3>
           {/* cost of the product */}
