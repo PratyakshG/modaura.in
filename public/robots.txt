@@ -1,0 +1,54 @@
+User-agent: *
+
+Disallow: /wp-includes/*
+Disallow: */wp-content/plugins/
+Disallow: */wp-content/themes/
+Disallow: /wp-json/
+Disallow: /wp-login.php
+Disallow: /wp-register.php
+Disallow: */comments/
+Disallow: /trackback/
+Disallow: /watch?v=rlGgaCrPkyI
+Disallow: /Main/getreviewdetails
+Disallow: /archives/
+Disallow: /search/
+Disallow: /blog/?/login.html/*
+Disallow: */amp/
+Disallow: *?amp
+Disallow: *.html
+Disallow: *.json
+Disallow: */2019/
+Disallow: */2018/
+Disallow: *_ajax
+Disallow: /index.php/*
+Disallow: *-ajax
+Disallow: */wp-admin/
+Disallow: *portal.thesagenext.com/*
+Disallow: */partnership_form.html
+Disallow: /wp-signup.php/*
+Disallow: *.js?cb=
+Disallow: /pressrelease/*
+Disallow: /cdn-cgi/rum?
+Disallow: /*?srsltid
+Disallow: /fizzfx*
+Disallow: /fizfx/*
+
+Disallow: */ip.php
+Disallow: */reseller
+Disallow: /faqs/
+Disallow: /svr2.thesagenext.com/*
+Disallow: /pmsvr9055.thesagenext.com/
+Disallow: /main/refresh_enc
+Disallow: /customer-reviews
+Disallow: */feed
+Disallow: */author/
+
+
+Disallow: /*.css$
+Disallow: /*?*
+
+Sitemap: https://www.thesagenext.com/sitemap.xml
+
+Sitemap: https://www.thesagenext.com/blog/sitemap.xml
+
+Sitemap: https://www.thesagenext.com/support/sitemap.xml

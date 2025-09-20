@@ -8,9 +8,9 @@ const Footer = () => {
       <div className="w-screen h-full bg-beige flex flex-col items-start justify-start mt-16 px-5 lg:px-10 pt-4 lg:pt-8 pb-16 lg:pb-24 font-dmSans tracking-wide space-y-10">
         <div className="flex flex-col lg:flex-row w-full items-start lg:justify-between space-y-4">
           <div className="flex flex-col xl:space-y-2">
-            <h4 className="text-lg lg:text-xl font-semibold uppercase">
+            <h2 className="text-lg lg:text-xl font-semibold uppercase">
               All Jewellery
-            </h4>
+            </h2>
             <ul className="text-sm lg:text-base space-y-1 xl:space-y-2 *:hover:underline-offset-2 *:hover:underline *:w-fit">
               {homePageSections.map((item, index) => (
                 <li key={index}>
@@ -23,7 +23,7 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col xl:space-y-2">
-            <h4 className="text-lg lg:text-xl font-semibold uppercase">Info</h4>
+            <h2 className="text-lg lg:text-xl font-semibold uppercase">Info</h2>
             <ul className="text-sm lg:text-base space-y-1 xl:space-y-2 *:hover:underline-offset-2 *:hover:underline *:w-fit">
               <li>
                 <Link href="/about">About Us</Link>
@@ -44,9 +44,9 @@ const Footer = () => {
           </div>
 
           <div className="[&_p]:text-sm lg:[&_p]:text-base xl:space-y-2">
-            <h4 className="text-lg lg:text-xl font-semibold uppercase">
+            <h2 className="text-lg lg:text-xl font-semibold uppercase">
               Contact Us
-            </h4>
+            </h2>
             <div>
               <p>Email: modaura.in@gmail.com</p>
               <p>Whatsapp: +91 8882300527</p>
@@ -80,8 +80,8 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="text-sm lg:text-base">
-          © 2025, Modaura. All rights reserved
+        <div className="text-sm lg:text-base flex gap-1">
+          <span>© 2025,</span> <h1>Modaura</h1>
         </div>
       </div>
     </footer>

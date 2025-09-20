@@ -76,7 +76,7 @@ const Page = ({
                   key={image}
                   src={image}
                   loading="lazy"
-                  alt="product image"
+                  alt={product.name}
                   width={300}
                   height={300}
                   className="object-cover aspect-square cursor-pointer size-16 lg:size-20"
@@ -123,25 +123,25 @@ const Page = ({
 
         {/* Description of the product */}
         <div className="w-full flex flex-col space-y-3 lg:space-y-5">
-          <ul className="*:tracking-wide space-y-2 lg:space-y-5">
-            <li className="flex flex-col">
-              <span className="font-medium text-2xl lg:text-4xl capitalize tracking-tight">
+          <div className="*:tracking-wide space-y-2 lg:space-y-5">
+            <div className="flex flex-col">
+              <h2 className="font-medium text-2xl lg:text-4xl capitalize tracking-tight">
                 {product?.name}
-              </span>
-              <span className="text-sm lg:text-base text-neutral-500">
+              </h2>
+              <h3 className="text-sm lg:text-base text-neutral-500">
                 {product?.description}
-              </span>
-            </li>
-            <li className="font-medium">No Reviews</li>
-            <li className="font-bold flex items-baseline space-x-3">
+              </h3>
+            </div>
+            <span className="font-medium">No Reviews</span>
+            <div className="font-bold flex items-baseline space-x-3">
               <span className="text-black-1 text-2xl">
                 Rs. {product?.price.sellingPrice}
               </span>
               <span className="text-darkTeal text-lg line-through">
                 Rs. {product?.price.mrp}
               </span>
-            </li>
-          </ul>
+            </div>
+          </div>
 
           {/* Quantity of the product */}
           {/* <div className="w-full flex h-full *:border *:border-darkTeal">
@@ -202,13 +202,6 @@ const Page = ({
                 <h5>
                   Flat <span className="font-bold">10 %</span> off on purchases
                   over Rs. 1499/-
-                </h5>
-              </li>
-              <li className="text-sm text-center">
-                <h5>
-                  Use <span className="font-bold">RAKHI5</span> on purchases
-                  over Rs. 999/- and get extra{" "}
-                  <span className="font-bold">5% off</span>
                 </h5>
               </li>
             </ul>
