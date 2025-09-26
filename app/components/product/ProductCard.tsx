@@ -5,7 +5,6 @@ import { Image } from "@imagekit/next";
 import Link from "next/link";
 import AddToCartButton from "../../components/AddToCartButton";
 
-
 const ProductCard = ({ _id, name, price, images }: productTypes) => {
   return (
     <div className="max-w-[300px] h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2">
@@ -20,7 +19,6 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
             alt="product"
             width={1000}
             height={1000}
-            responsive={false}
             loading="lazy"
             className={`object-cover transition-all hover:scale-120 duration-150 ease-in-out absolute`}
           />

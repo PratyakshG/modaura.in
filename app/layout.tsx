@@ -33,7 +33,7 @@ const melodrama = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Modaura | Tarnished Artificial Jewellery - Shop Now",
+  title: "Modaura | Anti-Tarnished Artificial Jewellery - Shop Now",
   description:
     "Shop for the latest collection of tarnished artificial jewelry at MODAURA. Premium, elegant and affordable designs, for everyday and office.",
   keywords:
