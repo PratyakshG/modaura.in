@@ -62,20 +62,11 @@ const homePageSections = [
   },
 ];
 
-const mobileCarousel = [
-  "/images/monsoon_sale_M.jpg",
-  "/images/M-2.jpg",
-  "/images/M-3.jpg",
-  "/images/M-4.jpg",
-  "/images/M-5.jpg",
-];
-
-const desktopCarousel = [
-  "/images/monsoon_sale_D.jpg",
-  "/images/D-2.jpg",
-  "/images/D-3.jpg",
-  "/images/D-4.jpg",
-  "/images/D-5.jpg",
+const homeScreenCarousel = [
+  { mobile: "/images/M-2.jpg", desktop: "/images/D-2.jpg" },
+  { mobile: "/images/M-3.jpg", desktop: "/images/D-3.jpg" },
+  { mobile: "/images/M-4.jpg", desktop: "/images/D-4.jpg" },
+  { mobile: "/images/M-5.jpg", desktop: "/images/D-5.jpg" },
 ];
 
 const quickIcons = [
@@ -89,7 +80,6 @@ export {
   latestProducts,
   popularProducts,
   homePageSections,
-  mobileCarousel,
-  desktopCarousel,
   quickIcons,
+  homeScreenCarousel,
 };

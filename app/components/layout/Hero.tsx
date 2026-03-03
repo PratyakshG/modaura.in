@@ -10,21 +10,28 @@ import Image from "next/image";
 
 import Autoplay from "embla-carousel-autoplay";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
-import { useEffect, useState } from "react";
-import { desktopCarousel, mobileCarousel } from "@/constants/data";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { homeScreenCarousel } from "@/constants/data";
 
 const Hero = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
-  const [width, setWidth] = useState<number>(0);
+  const [width, setWidth] = useState<number | undefined>(undefined);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const handleResize = () => setWidth(window.innerWidth);
+  //   handleResize();
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
+
+  useLayoutEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  });
 
   useEffect(() => {
     if (!api) {
@@ -59,34 +66,17 @@ const Hero = () => {
         >
           {/* desktop carousel */}
           <CarouselContent className="w-full h-full -ml-0 *:flex *:items-center *:justify-center z-10">
-            {width > 768 ? (
+            {width && (
               <>
-                {desktopCarousel.map((item, index) => (
+                {homeScreenCarousel.map((item, index) => (
                   <CarouselItem
                     key={index}
                     className="basis-full h-full pl-0"
                   >
                     <Image
-                      src={item}
+                      src={width < 768 ? item.mobile : item.desktop}
                       alt="img1"
                       width={2000}
-                      height={1000}
-                      className="h-auto w-full object-cover"
-                    />
-                  </CarouselItem>
-                ))}
-              </>
-            ) : (
-              <>
-                {mobileCarousel.map((item, index) => (
-                  <CarouselItem
-                    key={index}
-                    className="basis-full h-full pl-0"
-                  >
-                    <Image
-                      src={item}
-                      alt="img1"
-                      width={1000}
                       height={1000}
                       className="h-auto w-full object-cover"
                     />
