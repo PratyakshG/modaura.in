@@ -24,11 +24,11 @@ import { useState } from "react";
 import { Loader } from "lucide-react";
 
 const addressSchema = z.object({
-  name: z.string().min(1, {
-    message: "name is required",
+  name: z.string({ error: "Full Name is Required" }).min(3, {
+    message: "Full Name is required",
   }),
   phone_number: z
-    .string()
+    .string({ error: "Phone Number is Required" })
     .min(10, {
       message: "phone number must be 10 digits",
     })
@@ -36,16 +36,16 @@ const addressSchema = z.object({
       message: "phone number must be 10 digits",
     }),
   pincode: z
-    .string()
+    .string({ error: "Pincode is Required" })
     .min(6, {
       message: "pincode must be of 6 digits",
     })
     .max(6, {
       message: "pincode must be of 6 digits",
     }),
-  street: z.string(),
-  city: z.string(),
-  state: z.string(),
+  street: z.string({ error: "Street is Required" }),
+  city: z.string({ error: "City is Required" }),
+  state: z.string({ error: "State is Required" }),
   locality: z.string().optional(),
   landmark: z.string().optional(),
 });
@@ -184,7 +184,7 @@ const CheckoutPage = () => {
               control={form.control}
               name="pincode"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="h-fit">
                   <FormLabel>Pincode</FormLabel>
                   <FormControl>
                     <Input

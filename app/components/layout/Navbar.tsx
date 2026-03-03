@@ -47,10 +47,10 @@ const Navbar = () => {
                 <IoIosArrowDown />
               </span>
 
-              <div className="absolute top-6 bg-ivory border px-4 py-6 rounded-lg opacity-0 hover:opacity-100 peer-hover:opacity-100 invisible hover:visible peer-hover:visible transition-all duration-300 ease-in-out shadow-xl">
-                <ul className="space-y-2 cursor-auto *:cursor-pointer text-black-1 *:hover:text-darkTeal *:tracking-wide">
+              <div className="absolute top-6 bg-ivory border py-6 rounded-lg opacity-0 hover:opacity-100 peer-hover:opacity-100 invisible hover:visible peer-hover:visible transition-all duration-300 ease-in-out shadow-xl w-[120px]">
+                <ul className="space-y-3 cursor-auto *:cursor-pointer text-black-1 *:hover:text-darkTeal *:hover:font-semibold *:tracking-wide">
                   {homePageSections.map((item, _) => (
-                    <li key={_}>
+                    <li key={_} className="px-4 transition-all">
                       <Link href={`/productByCategory/${item.section}`}>
                         {item.section}s
                       </Link>
