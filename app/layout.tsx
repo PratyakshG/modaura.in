@@ -35,9 +35,23 @@ const melodrama = localFont({
 export const metadata: Metadata = {
   title: "Modaura | Anti-Tarnished Artificial Jewellery - Shop Now",
   description:
-    "Shop for the latest collection of tarnished artificial jewelry at MODAURA. Premium, elegant and affordable designs, for everyday and office.",
-  keywords:
-    "jewelry, anti-tarnished, artificial jewelry, fashion jewelry, online store, earrings, necklaces, bracelets, rings",
+    "Shop for the latest collection of anti-tarnished artificial jewelry at MODAURA. Premium, elegant and affordable designs, for everyday and office.",
+  keywords: [
+    "jewelry",
+    "anti-tarnished",
+    "anti-tarnished jewelry",
+    "artificial jewelry",
+    "trending jewelry",
+    "fashion jewelry",
+    "online store",
+    "earrings",
+    "necklaces",
+    "bracelets",
+    "rings",
+  ],
+  alternates: {
+    canonical: "https://www.modaura.in",
+  },
 };
 
 export default async function RootLayout({
