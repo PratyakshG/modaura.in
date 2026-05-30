@@ -122,7 +122,7 @@ const Page = ({
                   className={`object-cover aspect-square cursor-pointer size-16 lg:size-20 ${selectedImage === index ? "opacity-100" : "opacity-40"} transition-all duration-200 rounded-md`}
                   onMouseEnter={() => {
                     api?.scrollTo(index, false);
-                    setSelectedImage(api?.selectedScrollSnap());
+                    setSelectedImage(api?.selectedScrollSnap() ?? 0);
                   }}
                 />
               ))}
