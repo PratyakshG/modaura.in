@@ -22,6 +22,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           provider: account?.provider,
           password: "", // Empty because it's OAuth
           isAdmin: false,
+          cartItems: [],
         });
       }
 
@@ -36,6 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       if (dbUser) {
         token.id = dbUser._id.toString();
+        token.isAdmin = dbUser.isAdmin || false;
       }
       return token;
     },
@@ -43,6 +45,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user && token) {
         session.user.id = token.id as string;
+        (session.user as any).isAdmin = token.isAdmin as boolean;
       }
       return session;
     },

@@ -13,7 +13,7 @@ const CategoryProduct = ({ params }: { params: Promise<{ id: string }> }) => {
 
   useEffect(() => {
     const items = products.filter(
-      (product) => product.category.toUpperCase() === id.toUpperCase()
+      (product) => product.category.toUpperCase() === id.toUpperCase(),
     );
 
     setData(items);
@@ -28,7 +28,7 @@ const CategoryProduct = ({ params }: { params: Promise<{ id: string }> }) => {
         <div className="w-full text-end lg:text-lg">{data.length} products</div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 items-center justify-items-center gap-5 lg:gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 items-center justify-items-center gap-5 lg:gap-12">
         {data.map((item) => (
           <ProductCard
             key={item._id.toString()}
@@ -36,9 +36,6 @@ const CategoryProduct = ({ params }: { params: Promise<{ id: string }> }) => {
             name={item.name}
             images={item.images}
             price={item.price}
-            category=""
-            description=""
-            details=""
           />
         ))}
       </div>

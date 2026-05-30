@@ -32,11 +32,22 @@ const Page = ({
   params: Promise<{ id: mongoose.Types.ObjectId }>;
 }) => {
   const { id } = use(params);
+
   // const { cart, updateQuantity } = useCartStore();
   // const session = useSession();
-  const [product, setProduct] = useState<productTypes>();
 
+  const [product, setProduct] = useState<productTypes>();
   const [api, setApi] = useState<CarouselApi>();
+
+  const [selectedImage, setSelectedImage] = useState(
+    api?.selectedScrollSnap() ?? 0,
+  );
+
+  useEffect(() => {
+    if (!api) return;
+
+    api?.on("scroll", () => setSelectedImage(api?.selectedScrollSnap()));
+  }, [api]);
 
   useEffect(() => {
     async function getProduct() {
@@ -66,27 +77,10 @@ const Page = ({
 
   return (
     <>
-      <div className="w-full md:h-[600px] max-sm:flex-col flex items-start lg:justify-between relative overflow-scroll mt-5 gap-5 xl:gap-10">
+      <div className="w-full max-sm:flex-col flex items-start lg:justify-between relative overflow-scroll mt-5 gap-5 xl:gap-10">
         {/* Images of the product */}
-        <div className="w-full sm:max-w-max sm:sticky sm:top-0">
-          <div className="w-full flex max-lg:flex-col-reverse max-lg:gap-2 lg:space-x-2.5">
-            <div className="flex lg:flex-col space-x-2 xl:space-y-2 overflow-scroll">
-              {product?.images.map((image, index) => (
-                <Image
-                  key={image}
-                  src={image}
-                  loading="lazy"
-                  alt={product.name}
-                  width={300}
-                  height={300}
-                  className="object-cover aspect-square cursor-pointer size-16 lg:size-20"
-                  onMouseEnter={() => {
-                    api?.scrollTo(index, true);
-                  }}
-                />
-              ))}
-            </div>
-
+        <div className="w-full sm:max-w-max">
+          <div className="w-full flex flex-col items-center gap-2">
             <Carousel
               setApi={setApi}
               opts={{
@@ -98,7 +92,10 @@ const Page = ({
             >
               <CarouselContent className="-ml-0 aspect-square">
                 {product?.images.map((image, index) => (
-                  <CarouselItem className="pl-0 basis-full" key={index}>
+                  <CarouselItem
+                    className="pl-0 basis-full"
+                    key={index}
+                  >
                     <Image
                       loading="lazy"
                       key={index}
@@ -112,6 +109,24 @@ const Page = ({
                 ))}
               </CarouselContent>
             </Carousel>
+
+            <div className="flex gap-2 overflow-x-scroll">
+              {product?.images.map((image, index) => (
+                <Image
+                  key={image}
+                  src={image}
+                  loading="lazy"
+                  alt={product.name}
+                  width={300}
+                  height={300}
+                  className={`object-cover aspect-square cursor-pointer size-16 lg:size-20 ${selectedImage === index ? "opacity-100" : "opacity-40"} transition-all duration-200 rounded-md`}
+                  onMouseEnter={() => {
+                    api?.scrollTo(index, false);
+                    setSelectedImage(api?.selectedScrollSnap());
+                  }}
+                />
+              ))}
+            </div>
 
             {/* <Image
               src={displayImage}
@@ -173,14 +188,6 @@ const Page = ({
               <AddToCartButton
                 _id={product?._id}
                 name={product.name}
-                category={""}
-                description={""}
-                price={{
-                  mrp: 0,
-                  sellingPrice: 0,
-                }}
-                images={[]}
-                details=""
               />
             )}
 
@@ -235,7 +242,10 @@ const Page = ({
             <AccordionItem value="item-1">
               <AccordionTrigger>
                 <div className="flex items-center space-x-2">
-                  <MdCancel size={20} className="text-red-600" />
+                  <MdCancel
+                    size={20}
+                    className="text-red-600"
+                  />
                   <span className="font-semibold">Return Policies</span>
                 </div>
               </AccordionTrigger>
@@ -250,7 +260,10 @@ const Page = ({
             <AccordionItem value="item-2">
               <AccordionTrigger>
                 <div className="flex items-center space-x-2">
-                  <MdLocalShipping size={20} className="text-darkTeal" />
+                  <MdLocalShipping
+                    size={20}
+                    className="text-darkTeal"
+                  />
                   <span className="font-semibold">Shipping & Returns</span>
                 </div>
               </AccordionTrigger>
@@ -283,7 +296,10 @@ const Page = ({
           className="space-y-2 *:border-b *:border-neutral-400"
         >
           {FAQs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
+            <AccordionItem
+              key={index}
+              value={`item-${index}`}
+            >
               <AccordionTrigger className="flex-row-reverse justify-end">
                 <span className="font-medium">{faq.query}</span>
               </AccordionTrigger>

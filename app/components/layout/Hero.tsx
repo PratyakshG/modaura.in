@@ -76,8 +76,8 @@ const Hero = () => {
                     <Image
                       src={width < 768 ? item.mobile : item.desktop}
                       alt="img1"
-                      width={2000}
-                      height={1000}
+                      width={1600}
+                      height={900}
                       className="h-auto w-full object-cover"
                     />
                   </CarouselItem>

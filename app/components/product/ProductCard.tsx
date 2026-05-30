@@ -1,45 +1,55 @@
-"use client";
-
-import { productTypes } from "@/types/index";
 import { Image } from "@imagekit/next";
+import { ObjectId } from "mongoose";
 import Link from "next/link";
 import AddToCartButton from "../../components/AddToCartButton";
+// import { IoMdHeartEmpty } from "react-icons/io";
 
-const ProductCard = ({ _id, name, price, images }: productTypes) => {
+type productCardTypes = {
+  _id: ObjectId;
+  name: string;
+  price: {
+    mrp: number;
+    sellingPrice: number;
+  };
+  images: string[];
+};
+
+const ProductCard = ({ _id, name, price, images }: productCardTypes) => {
   return (
-    <div className="max-w-[300px] h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2">
+    <div className="w-full h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2">
       <Link
         href={`/product/${_id}`}
         className="w-full h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2"
       >
-        <div className="size-[calc(100dvw/2-30px)] md:size-[200px] lg:size-[250px] 2xl:size-[300px] bg-neutral-200 rounded-lg lg:rounded-xl overflow-hidden flex items-center justify-center cursor-pointer transition-all duration-200 ease-in-out relative">
+        <div className="h-full w-full bg-neutral-200 overflow-clip cursor-pointer transition-all duration-200 ease-in-out relative aspect-square">
           {/* image of the product */}
           <Image
             src={images && images[0]}
             alt="product"
-            width={1000}
-            height={1000}
+            width={300}
+            height={300}
             loading="lazy"
-            className={`object-cover transition-all hover:scale-120 duration-150 ease-in-out absolute`}
+            className={`object-cover transition-all hover:scale-150 duration-300 ease-in-out h-full w-full`}
           />
 
           {/* wishlist feature */}
-          {/* <IoMdHeartEmpty className="absolute right-2 top-2 lg:right-5 lg:top-5 border size-6 p-1 lg:size-8 rounded-full bg-white opacity-70 text-darkTeal hover:opacity-100 transition-all duration-200" /> */}
+          {/* <IoMdHeartEmpty className="absolute right-2 top-2 lg:right-5 lg:top-5 border hover:border-darkTeal size-6 p-1.5 lg:size-8 rounded-full bg-white text-darkTeal hover:bg-darkTeal hover:text-white transition-all duration-200" /> */}
         </div>
 
-        <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full flex flex-col text-left">
           {/* title of the product */}
-          <h3 className="w-[calc(100dvw/2-30px)] md:w-[200px] lg:w-[250px] 2xl:w-[300px] text-center text-sm lg:text-base lg:leading-tight font-light truncate">
+          <h3 className="text-sm lg:leading-tight truncate uppercase">
             {name ? name : "Product Name"}
           </h3>
+
           {/* cost of the product */}
           <div className="flex items-baseline space-x-1 lg:space-x-2 leading-tight">
-            <h2 className="font-bold text-sm lg:text-lg">
+            <h2 className="font-bold text-sm">
               {price?.sellingPrice
                 ? `Rs. ${price.sellingPrice}`
                 : "Selling Price"}
             </h2>
-            <h3 className="text-xs lg:text-base line-through text-neutral-600">
+            <h3 className="text-sm line-through text-neutral-600">
               {price?.mrp ? `Rs. ${price.mrp}` : "Cost Price"}
             </h3>
           </div>
@@ -50,14 +60,6 @@ const ProductCard = ({ _id, name, price, images }: productTypes) => {
       <AddToCartButton
         _id={_id}
         name={name}
-        category=""
-        description=""
-        details=""
-        price={{
-          mrp: 0,
-          sellingPrice: 0,
-        }}
-        images={[]}
       />
     </div>
   );

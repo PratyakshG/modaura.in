@@ -1,21 +1,18 @@
 import { CartItems, productTypes } from "@/types/index";
-import mongoose from "mongoose";
+import { ObjectId } from "mongoose";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface CartStateTypes {
   cart: Array<CartItems & productTypes>;
   setCart: (cartItems: Array<CartItems & productTypes>) => void;
-  addToCart: (_id: mongoose.Types.ObjectId) => void;
-  removeFromCart: (productId: mongoose.Types.ObjectId) => void;
-  updateQuantity: (
-    productId: mongoose.Types.ObjectId,
-    quantity: number
-  ) => void;
+  addToCart: (_id: ObjectId) => void;
+  removeFromCart: (productId: ObjectId) => void;
+  updateQuantity: (productId: ObjectId, quantity: number) => void;
   clearCart: () => void;
 }
 
-const getProduct = async (_id: mongoose.Types.ObjectId) => {
+const getProduct = async (_id: ObjectId) => {
   try {
     const res = await fetch(`/api/products?id=${_id}`);
     if (!res.ok) throw new Error("Failed to fetch product");
@@ -43,7 +40,7 @@ const useCartStore = create<CartStateTypes>()(
                 cart: state.cart.map((item) =>
                   item._id === product?._id
                     ? { ...item, quantity: item.quantity + 1 }
-                    : item
+                    : item,
                 ),
               };
             } else {
@@ -61,14 +58,14 @@ const useCartStore = create<CartStateTypes>()(
       updateQuantity: (_id, quantity) =>
         set((state) => ({
           cart: state.cart.map((item) =>
-            item._id === _id ? { ...item, quantity } : item
+            item._id === _id ? { ...item, quantity } : item,
           ),
         })),
 
       clearCart: () => set({ cart: [] }),
     }),
-    { name: "cartStorage" }
-  )
+    { name: "cartStorage" },
+  ),
 );
 
 export default useCartStore;

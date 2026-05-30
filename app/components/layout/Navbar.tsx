@@ -13,6 +13,7 @@ import { logout } from "@/lib/actions";
 import { homePageSections } from "@/constants/data";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { useRouter } from "next/navigation";
+import { useLayoutEffect } from "react";
 import { LuShoppingBag } from "react-icons/lu";
 import { toast } from "sonner";
 import {
@@ -23,9 +24,24 @@ import {
 } from "../../components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const { cart } = useCartStore();
+  const { cart, setCart } = useCartStore();
   const session = useSession();
   const router = useRouter();
+
+  useLayoutEffect(() => {
+    if (!session.data?.user) return;
+
+    async function getCartItems() {
+      const res = await fetch("/api/cart");
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const data: any = await res.json();
+      console.log("cart", data.cartItems);
+      setCart([...data.cartItems]);
+    }
+
+    getCartItems();
+  }, [setCart, session]);
 
   const ScrollIntoView = (id: string) => {
     window.scrollTo({
@@ -50,7 +66,10 @@ const Navbar = () => {
               <div className="absolute top-6 bg-ivory border py-6 rounded-lg opacity-0 hover:opacity-100 peer-hover:opacity-100 invisible hover:visible peer-hover:visible transition-all duration-300 ease-in-out shadow-xl w-[120px]">
                 <ul className="space-y-3 cursor-auto *:cursor-pointer text-black-1 *:hover:text-darkTeal *:hover:font-semibold *:tracking-wide">
                   {homePageSections.map((item, _) => (
-                    <li key={_} className="px-4 transition-all">
+                    <li
+                      key={_}
+                      className="px-4 transition-all"
+                    >
                       <Link href={`/productByCategory/${item.section}`}>
                         {item.section}s
                       </Link>
@@ -79,7 +98,11 @@ const Navbar = () => {
         {/* Logo */}
         <div className="w-1/3 flex items-center justify-center">
           <Link href="/">
-            <Image src={logo} alt="logo" className="h-7" />
+            <Image
+              src={logo}
+              alt="logo"
+              className="h-7"
+            />
           </Link>
         </div>
 
@@ -88,10 +111,10 @@ const Navbar = () => {
             <li className="relative">
               <Link href="/cart">
                 <LuShoppingBag className="size-auto lg:size-6 stroke-darkTeal" />
+                <div className="absolute -top-2 -right-2 size-5 flex items-center justify-center bg-roseGold rounded-full p-1 shadow-md">
+                  <span className="text-[12px] text-ivory">{cart.length}</span>
+                </div>
               </Link>
-              <div className="absolute -top-2 -right-2 size-5 flex items-center justify-center bg-roseGold rounded-full p-1 shadow-md">
-                <span className="text-[12px] text-ivory">{cart.length}</span>
-              </div>
             </li>
 
             {/* 

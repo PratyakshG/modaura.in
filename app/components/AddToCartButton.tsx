@@ -1,13 +1,17 @@
 import useCartStore from "@/app/stores/useCartStore";
-import { productTypes } from "@/types/index";
 import { Loader } from "lucide-react";
+import { ObjectId } from "mongoose";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { BiCart } from "react-icons/bi";
 import { toast } from "sonner";
 
+interface AddToCartBtnTypes {
+  _id: ObjectId;
+  name: string;
+}
 
-const AddToCartButton = ({ _id, name }: productTypes) => {
+const AddToCartButton = ({ _id, name }: AddToCartBtnTypes) => {
   const { addToCart } = useCartStore();
   const [loading, setLoading] = useState(false);
   const session = useSession();
@@ -38,11 +42,11 @@ const AddToCartButton = ({ _id, name }: productTypes) => {
           toast(`${name} is added to cart.`);
           setLoading(false);
         }}
-        className="w-full flex items-center justify-center gap-2 bg-darkTeal text-ivory text-sm md:text-base rounded-md lg:rounded-xl py-2.5 md:py-3 lg:px-4 hover:opacity-90 transition-all duration-200 ease-in-out cursor-pointer"
+        className="w-full flex items-center justify-center gap-2 border border-darkTeal text-xs lg:text-sm hover:bg-darkTeal hover:text-ivory py-2.5 md:py-3 lg:px-4 duration-200 ease-in-out cursor-pointer transition-all uppercase rounded-md"
       >
         {!loading ? (
           <>
-            <BiCart size={16} /> Add To Cart
+            Add To Cart <BiCart size={16} />
           </>
         ) : (
           <>

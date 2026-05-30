@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
   await User.findOneAndUpdate(
     { email: session.user.email },
-    { cartItems: cartItems }
+    { cartItems: cartItems },
   );
 
   return NextResponse.json(cartItems);
