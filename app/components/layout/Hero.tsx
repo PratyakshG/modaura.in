@@ -19,13 +19,6 @@ const Hero = () => {
   const [count, setCount] = useState(0);
   const [width, setWidth] = useState<number | undefined>(undefined);
 
-  // useEffect(() => {
-  //   const handleResize = () => setWidth(window.innerWidth);
-  //   handleResize();
-  //   window.addEventListener("resize", handleResize);
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, []);
-
   useLayoutEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     handleResize();

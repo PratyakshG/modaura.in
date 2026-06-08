@@ -20,7 +20,7 @@ const Popular = () => {
           <span className="font-semibold">Popular</span> Collection
         </h3>
 
-        <div className="self-center grid grid-cols-2 lg:grid-cols-4 gap-5 lg:mt-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5">
           {items.slice(0, 4).map((item) => (
             <ProductCard
               key={item._id.toString()}

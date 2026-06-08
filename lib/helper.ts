@@ -1,5 +1,3 @@
-// import useProductStore from "@/app/stores/useProductStore";
-
 export async function fetchAllProducts() {
   try {
     const res = await fetch(
@@ -7,7 +5,7 @@ export async function fetchAllProducts() {
       {
         method: "GET",
         cache: "no-store", // Ensures fresh data on each request
-      }
+      },
     );
 
     if (!res.ok) {

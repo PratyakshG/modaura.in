@@ -21,7 +21,7 @@ const ProductCard = ({ _id, name, price, images }: productCardTypes) => {
         href={`/product/${_id}`}
         className="w-full h-full flex flex-col items-center justify-center space-y-1 lg:space-y-2"
       >
-        <div className="h-full w-full bg-neutral-200 overflow-clip cursor-pointer transition-all duration-200 ease-in-out relative aspect-square">
+        <div className="h-full w-full bg-neutral-200 overflow-clip cursor-pointer transition-all duration-200 ease-in-out relative aspect-square rounded-md">
           {/* image of the product */}
           <Image
             src={images && images[0]}
@@ -38,7 +38,7 @@ const ProductCard = ({ _id, name, price, images }: productCardTypes) => {
 
         <div className="w-full flex flex-col text-left">
           {/* title of the product */}
-          <h3 className="text-sm lg:leading-tight truncate uppercase">
+          <h3 className="text-xs lg:text-sm lg:leading-tight truncate capitalize">
             {name ? name : "Product Name"}
           </h3>
 

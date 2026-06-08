@@ -1,16 +1,14 @@
+import { fetchAllProducts } from "@/lib/helper";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { DM_Sans, Urbanist } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
 import { Toaster } from "sonner";
-import Announcements from "./components/layout/Announcements";
 import Footer from "./components/layout/Footer";
-import MobileNav from "./components/layout/MobileNav";
-import Navbar from "./components/layout/Navbar";
+import Header from "./components/layout/Header";
 import Providers from "./components/Providers";
 import "./globals.css";
-import { fetchAllProducts } from "@/lib/helper";
 
 const urbanist = Urbanist({
   variable: "--font-urbanist",
@@ -71,9 +69,7 @@ export default async function RootLayout({
           strategy="lazyOnload"
         />
         <Providers products={allProducts}>
-          <Announcements />
-          <Navbar />
-          <MobileNav />
+          <Header />
           <main className="font-dmSans min-h-fit w-screen flex flex-col space-y-10 lg:space-y-16 px-5 lg:px-10 items-start justify-start">
             {children}
           </main>

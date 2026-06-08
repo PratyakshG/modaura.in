@@ -1,8 +1,15 @@
+"use client";
+
 import { homePageSections } from "@/constants/data";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaFacebook, FaInstagram } from "react-icons/fa6";
 
 const Footer = () => {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) return null;
+
   return (
     <footer>
       <div className="w-screen h-full bg-beige flex flex-col items-start justify-start mt-16 px-5 lg:px-10 pt-4 lg:pt-8 pb-16 lg:pb-24 font-dmSans tracking-wide space-y-10">

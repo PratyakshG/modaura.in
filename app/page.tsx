@@ -21,7 +21,7 @@ const Home = () => {
           Shop By <span className="font-semibold">Category</span>
         </h3>
 
-        <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-5 *:aspect-square *:h-full *:w-full *:bg-red-300 *:rounded-md *:overflow-clip">
+        <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5 *:aspect-square *:h-full *:w-full *:bg-red-300 *:rounded-md *:overflow-clip">
           <div>
             <Image
               src="/images/shop-for-rings.png"

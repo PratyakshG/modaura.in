@@ -9,6 +9,18 @@ export interface UserTypes {
   updatedAt?: Date;
   cartItems: [CartItems];
   isAdmin?: boolean;
+  addresses?: [Address];
+}
+
+export interface Address {
+  name: string;
+  phone_number: string;
+  pincode: string;
+  street: string;
+  city: string;
+  state: string;
+  locality?: string;
+  landmark?: string;
 }
 
 export interface productTypes {
@@ -52,4 +64,36 @@ export interface orderTypes {
     locality?: string;
     landmark?: string;
   };
+}
+
+export interface shipmentTypes {
+  _id?: ObjectId;
+  orderId: ObjectId;
+  trackingNumber: string;
+  carrier:
+    | "FedEx"
+    | "UPS"
+    | "DHL"
+    | "India Post"
+    | "Flipkart Logistics"
+    | "Delhivery";
+  status:
+    | "pending"
+    | "shipped"
+    | "in_transit"
+    | "out_for_delivery"
+    | "delivered"
+    | "cancelled";
+  estimatedDeliveryDate?: Date;
+  actualDeliveryDate?: Date;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    pincode: string;
+    country?: string;
+  };
+  notes?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

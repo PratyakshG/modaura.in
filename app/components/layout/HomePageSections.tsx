@@ -22,12 +22,12 @@ const HomePageSection = ({
       id={sectionId}
       className="w-full space-y-5"
     >
-      <div className="w-full flex flex-col space-y-3 lg:space-y-10 text-center">
-        <h3 className="text-xl lg:text-5xl tracking-tighter">
+      <div className="w-full flex flex-col space-y-3 lg:space-y-10">
+        <h3 className="text-3xl lg:text-5xl text-center tracking-tighter">
           Shop For <span className="font-semibold">{section}s</span>
         </h3>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:mt-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5">
           {items.slice(0, 4).map((item) => (
             <ProductCard
               key={item._id.toString()}

@@ -12,6 +12,7 @@ import { logout } from "@/lib/actions";
 
 import { homePageSections } from "@/constants/data";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
+import { LogOut, ShoppingBag, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect } from "react";
 import { LuShoppingBag } from "react-icons/lu";
@@ -51,10 +52,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="hidden lg:block sticky top-0 z-10">
+    <nav className="hidden lg:block sticky top-0 z-10 w-full">
       {/* Announcements */}
 
-      <div className="h-[10dvh] flex justify-center items-center px-10 py-3 sticky top-0 z-10 bg-ivory font-satoshi">
+      <div className="h-[10dvh] w-full flex justify-between items-center px-10 py-3 sticky top-0 z-10 bg-ivory font-satoshi">
         <div className="w-1/3">
           <ul className="flex space-x-5 text-black-1 text-sm uppercase *:hover:text-darkTeal tracking-wide">
             <li className="relative cursor-pointer">
@@ -101,7 +102,7 @@ const Navbar = () => {
             <Image
               src={logo}
               alt="logo"
-              className="h-7"
+              className="h-7 max-w-fit"
             />
           </Link>
         </div>
@@ -117,15 +118,13 @@ const Navbar = () => {
               </Link>
             </li>
 
-            {/* 
-              check for the current user from session in next-auth, if user is logged in, redirect to user profile else redirect to sign-in page
-            */}
+            {/* check for the current user from session in next-auth, if user is logged in, redirect to user profile else redirect to sign-in page */}
             <li>
               {session.data?.user ? (
                 <div className="font-dmSans flex items-center justify-center">
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex gap-2 items-center font-satoshi">
-                      {session.data?.user.image && (
+                    <DropdownMenuTrigger className="flex gap-2 items-center font-satoshi capitalize font-semibold text-neutral-500">
+                      {/* {session.data?.user.image && (
                         <Image
                           src={session.data.user.image}
                           alt="user-image"
@@ -133,21 +132,30 @@ const Navbar = () => {
                           height={25}
                           className="rounded-full"
                         />
-                      )}
-                      {session.data.user.name}
+                      )} */}
+                      {session.data.user.name?.split(" ")[0]}
                       <IoIosArrowDown />
                     </DropdownMenuTrigger>
+
                     <DropdownMenuContent>
-                      <DropdownMenuItem>
-                        <Link href="/profile">Profile</Link>
+                      <DropdownMenuItem asChild>
+                        <Link href="/profile">
+                          <User /> Profile
+                        </Link>
                       </DropdownMenuItem>
 
-                      <DropdownMenuItem>
-                        <Link href="/orders">Orders</Link>
+                      <DropdownMenuItem asChild>
+                        <Link href="/orders">
+                          <ShoppingBag /> Orders
+                        </Link>
                       </DropdownMenuItem>
 
-                      <DropdownMenuItem>
+                      <DropdownMenuItem
+                        asChild
+                        variant="destructive"
+                      >
                         <button
+                          className="w-full"
                           onClick={() => {
                             logout();
                             toast.success("You have been logged out");
@@ -156,7 +164,7 @@ const Navbar = () => {
                             // signOut().then(() => {});
                           }}
                         >
-                          Sign Out
+                          <LogOut /> Sign Out
                         </button>
                       </DropdownMenuItem>
                       <DropdownMenuArrow />
