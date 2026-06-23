@@ -7,8 +7,24 @@ import { z } from "zod";
 const ShipmentSchema = z.object({
   orderId: z.string().min(1, "Order ID is required"),
   trackingNumber: z.string().min(1, "Tracking number is required"),
-  carrier: z.enum(["FedEx", "UPS", "DHL", "India Post", "Flipkart Logistics", "Delhivery"]),
-  status: z.enum(["pending", "shipped", "in_transit", "out_for_delivery", "delivered", "cancelled"]).optional(),
+  carrier: z.enum([
+    "FedEx",
+    "UPS",
+    "DHL",
+    "India Post",
+    "Flipkart Logistics",
+    "Delhivery",
+  ]),
+  status: z
+    .enum([
+      "pending",
+      "shipped",
+      "in_transit",
+      "out_for_delivery",
+      "delivered",
+      "cancelled",
+    ])
+    .optional(),
   estimatedDeliveryDate: z.string().datetime().optional(),
   actualDeliveryDate: z.string().datetime().optional(),
   address: z.object({
@@ -57,11 +73,14 @@ export async function GET(req: NextRequest) {
           pages: Math.ceil(total / limit),
         },
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error fetching shipments:", error);
-    return NextResponse.json({ error: "Failed to fetch shipments" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch shipments" },
+      { status: 500 },
+    );
   }
 }
 
@@ -77,19 +96,30 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const validatedData = ShipmentSchema.parse(body);
 
-    const existingShipment = await Shipment.findOne({ trackingNumber: validatedData.trackingNumber });
+    const existingShipment = await Shipment.findOne({
+      trackingNumber: validatedData.trackingNumber,
+    });
     if (existingShipment) {
-      return NextResponse.json({ error: "Shipment with this tracking number already exists" }, { status: 409 });
+      return NextResponse.json(
+        { error: "Shipment with this tracking number already exists" },
+        { status: 409 },
+      );
     }
 
     const newShipment = await Shipment.create(validatedData);
 
-    return NextResponse.json({ shipment: newShipment, message: "Shipment created successfully" }, { status: 201 });
+    return NextResponse.json(
+      { shipment: newShipment, message: "Shipment created successfully" },
+      { status: 201 },
+    );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
     console.error("Error creating shipment:", error);
-    return NextResponse.json({ error: "Failed to create shipment" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create shipment" },
+      { status: 500 },
+    );
   }
 }

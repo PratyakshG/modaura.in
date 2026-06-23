@@ -123,8 +123,8 @@ const Navbar = () => {
               {session.data?.user ? (
                 <div className="font-dmSans flex items-center justify-center">
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex gap-2 items-center font-satoshi capitalize font-semibold text-neutral-500">
-                      {/* {session.data?.user.image && (
+                    <DropdownMenuTrigger className="flex gap-2 items-center font-satoshi capitalize">
+                      {session.data?.user.image && (
                         <Image
                           src={session.data.user.image}
                           alt="user-image"
@@ -132,7 +132,7 @@ const Navbar = () => {
                           height={25}
                           className="rounded-full"
                         />
-                      )} */}
+                      )}
                       {session.data.user.name?.split(" ")[0]}
                       <IoIosArrowDown />
                     </DropdownMenuTrigger>

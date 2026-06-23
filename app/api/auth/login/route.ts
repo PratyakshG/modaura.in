@@ -21,7 +21,11 @@ export async function POST(req: Request) {
   });
 
   const response = NextResponse.json({ user });
-  response.cookies.set("token", token, { httpOnly: true, secure: true });
+  response.cookies.set("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+  });
 
   return response;
 }

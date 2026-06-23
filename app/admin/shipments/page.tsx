@@ -35,6 +35,7 @@ export default function ShipmentsPage() {
       setShipments(data.shipments);
       setTotalPages(data.pagination.pages);
     } catch (e) {
+      console.log(e);
       toast.error("Failed to fetch shipments");
     } finally {
       setLoading(false);
@@ -58,6 +59,7 @@ export default function ShipmentsPage() {
       toast.success("Shipment deleted successfully");
       fetchShipments();
     } catch (e) {
+      console.log(e);
       toast.error("Failed to delete shipment");
     }
   };
@@ -128,24 +130,43 @@ export default function ShipmentsPage() {
             <table className="w-full">
               <thead className="bg-slate-100 border-b">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Tracking Number</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Carrier</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Created</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Actions</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Tracking Number
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Carrier
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Created
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {shipments.map((shipment) => (
-                  <tr key={shipment._id} className="border-b hover:bg-slate-50">
-                    <td className="px-6 py-3 font-mono text-sm">{shipment.trackingNumber}</td>
+                  <tr
+                    key={shipment._id}
+                    className="border-b hover:bg-slate-50"
+                  >
+                    <td className="px-6 py-3 font-mono text-sm">
+                      {shipment.trackingNumber}
+                    </td>
                     <td className="px-6 py-3">{shipment.carrier}</td>
                     <td className="px-6 py-3">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(shipment.status)}`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(shipment.status)}`}
+                      >
                         {shipment.status.replace(/_/g, " ")}
                       </span>
                     </td>
-                    <td className="px-6 py-3">{new Date(shipment.createdAt).toLocaleDateString()}</td>
+                    <td className="px-6 py-3">
+                      {new Date(shipment.createdAt).toLocaleDateString()}
+                    </td>
                     <td className="px-6 py-3 flex gap-2">
                       <Link
                         href={`/admin/shipments/${shipment._id}`}

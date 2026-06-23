@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { orderTypes } from "@/types/index";
+import { CartItems, orderTypes, productTypes } from "@/types/index";
 
 export default function OrderDetailsPage() {
   const params = useParams();
@@ -25,7 +25,7 @@ export default function OrderDetailsPage() {
         (data.order as Record<string, unknown>).paymentStatus as string,
       );
     } catch (e) {
-      toast.error("Failed to fetch order");
+      toast.error(`Failed to fetch order. Error: ${e}`);
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ export default function OrderDetailsPage() {
       toast.success("Order status updated");
       fetchOrder();
     } catch (e) {
-      toast.error("Failed to update order status");
+      toast.error(`Failed to update order status. Error: ${e}`);
     } finally {
       setUpdating(false);
     }
@@ -85,22 +85,24 @@ export default function OrderDetailsPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-xl font-bold mb-4">Order Items</h2>
             <div className="space-y-4">
-              {order.items?.map((item: any, index: number) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-start border-b pb-4"
-                >
-                  <div>
-                    <p className="font-semibold">{item.name || "Product"}</p>
-                    <p className="text-sm text-slate-600">
-                      Quantity: {item.quantity}
+              {order.items?.map(
+                (item: productTypes & CartItems, index: number) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-start border-b pb-4"
+                  >
+                    <div>
+                      <p className="font-semibold">{item.name || "Product"}</p>
+                      <p className="text-sm text-slate-600">
+                        Quantity: {item.quantity}
+                      </p>
+                    </div>
+                    <p className="font-semibold">
+                      ₹{item.price?.sellingPrice || "N/A"}
                     </p>
                   </div>
-                  <p className="font-semibold">
-                    ₹{item.price?.sellingPrice || "N/A"}
-                  </p>
-                </div>
-              ))}
+                ),
+              )}
             </div>
           </div>
 

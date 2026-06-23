@@ -42,6 +42,7 @@ export default function ProductsPage() {
       console.log("products", data.products);
       setTotalPages(data.pagination.pages);
     } catch (error) {
+      console.log(error);
       toast.error("Failed to fetch products");
     } finally {
       setLoading(false);
@@ -65,6 +66,7 @@ export default function ProductsPage() {
       toast.success("Product deleted successfully");
       fetchProducts();
     } catch (error) {
+      console.log(error);
       toast.error("Failed to delete product");
     }
   };
@@ -94,6 +96,7 @@ export default function ProductsPage() {
       setShowBulkUpload(false);
       fetchProducts();
     } catch (error) {
+      console.log(error);
       toast.error("Failed to upload CSV");
     }
   };

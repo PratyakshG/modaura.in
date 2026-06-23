@@ -35,6 +35,7 @@ export default function UsersPage() {
       setUsers(data.users);
       setTotalPages(data.pagination.pages);
     } catch (e) {
+      console.log(e);
       toast.error("Failed to fetch users");
     } finally {
       setLoading(false);
@@ -56,9 +57,12 @@ export default function UsersPage() {
 
       if (!res.ok) throw new Error("Failed to update");
 
-      toast.success(`User ${!currentStatus ? "promoted to" : "removed from"} admin`);
+      toast.success(
+        `User ${!currentStatus ? "promoted to" : "removed from"} admin`,
+      );
       fetchUsers();
     } catch (e) {
+      console.log(e);
       toast.error("Failed to update user");
     } finally {
       setUpdating(null);
@@ -70,7 +74,9 @@ export default function UsersPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold">Users</h1>
-          <p className="text-slate-600 mt-1">Manage user accounts and permissions</p>
+          <p className="text-slate-600 mt-1">
+            Manage user accounts and permissions
+          </p>
         </div>
       </div>
 
@@ -101,16 +107,29 @@ export default function UsersPage() {
             <table className="w-full">
               <thead className="bg-slate-100 border-b">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Name</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Role</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Joined</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Actions</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Email
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Role
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Joined
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user._id} className="border-b hover:bg-slate-50">
+                  <tr
+                    key={user._id}
+                    className="border-b hover:bg-slate-50"
+                  >
                     <td className="px-6 py-3">{user.name}</td>
                     <td className="px-6 py-3">{user.email}</td>
                     <td className="px-6 py-3">
@@ -124,10 +143,14 @@ export default function UsersPage() {
                         {user.isAdmin ? "Admin" : "User"}
                       </span>
                     </td>
-                    <td className="px-6 py-3">{new Date(user.createdAt).toLocaleDateString()}</td>
+                    <td className="px-6 py-3">
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </td>
                     <td className="px-6 py-3">
                       <button
-                        onClick={() => handleToggleAdmin(user._id, user.isAdmin)}
+                        onClick={() =>
+                          handleToggleAdmin(user._id, user.isAdmin)
+                        }
                         disabled={updating === user._id}
                         className="p-2 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 disabled:opacity-50"
                         title={user.isAdmin ? "Remove admin" : "Make admin"}

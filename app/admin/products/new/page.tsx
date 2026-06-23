@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface ProductFormData {
@@ -30,15 +30,23 @@ export default function NewProductPage() {
   });
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
 
     if (name.includes(".")) {
-      const [parent, child] = name.split(".");
+      const [parent, child] = name.split(".") as [
+        keyof ProductFormData,
+        string,
+      ];
       setFormData((prev) => ({
         ...prev,
-        [parent]: { ...(prev as any)[parent], [child]: isNaN(Number(value)) ? value : Number(value) },
+        [parent]: {
+          ...(prev[parent] as Record<string, unknown>),
+          [child]: isNaN(Number(value)) ? value : Number(value),
+        },
       }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -67,7 +75,12 @@ export default function NewProductPage() {
     setLoading(true);
 
     try {
-      if (!formData.name || !formData.category || !formData.description || !formData.details) {
+      if (
+        !formData.name ||
+        !formData.category ||
+        !formData.description ||
+        !formData.details
+      ) {
         toast.error("Please fill in all required fields");
         setLoading(false);
         return;
@@ -90,7 +103,8 @@ export default function NewProductPage() {
       toast.success("Product created successfully");
       router.push("/admin/products");
     } catch (error) {
-      toast.error("Failed to create product");
+      console.log(error);
+      toast.error(`Failed to create product.`);
     } finally {
       setLoading(false);
     }
@@ -99,12 +113,19 @@ export default function NewProductPage() {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-2">Add New Product</h1>
-      <p className="text-slate-600 mb-8">Create a new product in your catalog</p>
+      <p className="text-slate-600 mb-8">
+        Create a new product in your catalog
+      </p>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-8 max-w-2xl">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-lg shadow p-8 max-w-2xl"
+      >
         <div className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-2">Product Name *</label>
+            <label className="block text-sm font-medium mb-2">
+              Product Name *
+            </label>
             <input
               type="text"
               name="name"
@@ -128,7 +149,9 @@ export default function NewProductPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Description *</label>
+            <label className="block text-sm font-medium mb-2">
+              Description *
+            </label>
             <textarea
               name="description"
               value={formData.description}
@@ -164,7 +187,9 @@ export default function NewProductPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Selling Price *</label>
+              <label className="block text-sm font-medium mb-2">
+                Selling Price *
+              </label>
               <input
                 type="number"
                 name="price.sellingPrice"
@@ -196,7 +221,10 @@ export default function NewProductPage() {
             </div>
             <div className="space-y-2">
               {formData.images.map((image, index) => (
-                <div key={index} className="flex items-center justify-between bg-slate-100 p-2 rounded">
+                <div
+                  key={index}
+                  className="flex items-center justify-between bg-slate-100 p-2 rounded"
+                >
                   <span className="text-sm truncate">{image}</span>
                   <button
                     type="button"

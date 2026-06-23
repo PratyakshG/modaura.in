@@ -13,7 +13,11 @@ const ProductSchema = z.object({
     mrp: z.number().positive("MRP must be positive"),
     sellingPrice: z.number().positive("Selling price must be positive"),
   }),
-  images: z.string().transform((str) => (typeof str === "string" ? str.split(",").map((s) => s.trim()) : [])),
+  images: z
+    .string()
+    .transform((str) =>
+      typeof str === "string" ? str.split(",").map((s) => s.trim()) : [],
+    ),
 });
 
 function parseCSV(csv: string): string[][] {
@@ -42,7 +46,10 @@ export async function POST(req: NextRequest) {
       const rows = parseCSV(csv);
 
       if (rows.length < 2) {
-        return NextResponse.json({ error: "CSV must have headers and at least one data row" }, { status: 400 });
+        return NextResponse.json(
+          { error: "CSV must have headers and at least one data row" },
+          { status: 400 },
+        );
       }
 
       const headers = rows[0];
@@ -58,14 +65,20 @@ export async function POST(req: NextRequest) {
       const file = formData.get("file") as File;
 
       if (!file) {
-        return NextResponse.json({ error: "No file provided" }, { status: 400 });
+        return NextResponse.json(
+          { error: "No file provided" },
+          { status: 400 },
+        );
       }
 
       const csv = await file.text();
       const rows = parseCSV(csv);
 
       if (rows.length < 2) {
-        return NextResponse.json({ error: "CSV must have headers and at least one data row" }, { status: 400 });
+        return NextResponse.json(
+          { error: "CSV must have headers and at least one data row" },
+          { status: 400 },
+        );
       }
 
       const headers = rows[0];
@@ -86,7 +99,7 @@ export async function POST(req: NextRequest) {
 
     for (let i = 0; i < products.length; i++) {
       try {
-        const product = products[i] as Record<string, unknown>;
+        const product = products[i] as Record<string, string>;
 
         const validatedData = ProductSchema.parse({
           name: product.name,
@@ -95,12 +108,15 @@ export async function POST(req: NextRequest) {
           details: product.details,
           price: {
             mrp: parseFloat(product.mrp) || 0,
-            sellingPrice: parseFloat(product.sellingprice || product.selling_price) || 0,
+            sellingPrice:
+              parseFloat(product.sellingprice || product.selling_price) || 0,
           },
           images: product.images || "",
         });
 
-        const existingProduct = await Products.findOne({ name: validatedData.name });
+        const existingProduct = await Products.findOne({
+          name: validatedData.name,
+        });
         if (existingProduct) {
           results.failed.push({
             row: i + 2,
@@ -112,7 +128,8 @@ export async function POST(req: NextRequest) {
         const newProduct = await Products.create(validatedData);
         results.successful.push(newProduct);
       } catch (error) {
-        const errorMessage = error instanceof z.ZodError ? error.errors.map((e) => e.message).join(", ") : String(error);
+        const errorMessage =
+          error instanceof z.ZodError ? error.message : "error";
         results.failed.push({
           row: i + 2,
           error: errorMessage,
@@ -125,10 +142,13 @@ export async function POST(req: NextRequest) {
         message: `Bulk upload completed: ${results.successful.length} successful, ${results.failed.length} failed`,
         results,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error in bulk upload:", error);
-    return NextResponse.json({ error: "Failed to process bulk upload" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to process bulk upload" },
+      { status: 500 },
+    );
   }
 }

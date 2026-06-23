@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
 
   const isLoggedIn = !!session;
 
-  if (!isLoggedIn && req.nextUrl.pathname.startsWith("/dashboard")) {
+  if (!isLoggedIn && req.nextUrl.pathname.startsWith("/admin")) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 

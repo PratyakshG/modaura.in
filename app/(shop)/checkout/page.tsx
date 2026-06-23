@@ -20,8 +20,9 @@ import {
 } from "../../components/ui/form";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
+import { Address } from "@/types/index";
 
 const addressSchema = z.object({
   name: z.string({ error: "Full Name is Required" }).min(3, {
@@ -70,6 +71,11 @@ const CheckoutPage = () => {
   const { pincode } = useDeliveryStore();
   const { deliveryCharge, paymentMethod } = useDeliveryStore();
   const [loading, setLoading] = useState<boolean>(false);
+  const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
+    null,
+  );
+  const [loadingAddresses, setLoadingAddresses] = useState<boolean>(true);
 
   const form = useForm<AddressType>({
     resolver: zodResolver(addressSchema),
@@ -77,6 +83,57 @@ const CheckoutPage = () => {
       pincode: `${pincode}`,
     },
   });
+
+  // Fetch saved addresses on component mount
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        setLoadingAddresses(true);
+        const res = await fetch("/api/user/addresses");
+        if (res.ok) {
+          const data = await res.json();
+          setSavedAddresses(data.addresses || []);
+        }
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      } finally {
+        setLoadingAddresses(false);
+      }
+    };
+
+    if (session?.data?.user?.email) {
+      fetchAddresses();
+    }
+  }, [session?.data?.user?.email]);
+
+  // Handle address selection
+  const handleSelectAddress = (address: Address) => {
+    setSelectedAddressId(address._id.toString());
+    form.reset({
+      name: address.name,
+      phone_number: address.phone_number,
+      pincode: address.pincode,
+      street: address.street,
+      city: address.city,
+      state: address.state,
+      locality: address.locality || "",
+      landmark: address.landmark || "",
+    });
+  };
+
+  const handleClearSelection = () => {
+    setSelectedAddressId(null);
+    form.reset({
+      name: "",
+      phone_number: "",
+      pincode: pincode,
+      street: "",
+      city: "",
+      state: "",
+      locality: "",
+      landmark: "",
+    });
+  };
 
   const onSubmit = async (data: AddressType) => {
     setLoading(true);
@@ -152,6 +209,58 @@ const CheckoutPage = () => {
           <h1 className="font-medium max-md:text-lg text-4xl">
             Address Details
           </h1>
+
+          {/* Saved Addresses Section */}
+          {!loadingAddresses && savedAddresses.length > 0 && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h2 className="font-semibold mb-3 text-sm">
+                Select Saved Address
+              </h2>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {savedAddresses.map((address) => (
+                  <div
+                    key={address._id.toString()}
+                    onClick={() => handleSelectAddress(address)}
+                    className={`p-3 border rounded-lg cursor-pointer transition ${
+                      selectedAddressId === address._id.toString()
+                        ? "bg-blue-200 border-blue-500"
+                        : "bg-white border-gray-200 hover:border-blue-300"
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="radio"
+                        name="address-selection"
+                        checked={selectedAddressId === address._id.toString()}
+                        onChange={() => handleSelectAddress(address)}
+                        className="mt-1"
+                      />
+                      <div className="flex-1 text-sm">
+                        <p className="font-medium">{address.name}</p>
+                        <p className="text-gray-600">
+                          {address.street}
+                          {address.locality && `, ${address.locality}`}
+                        </p>
+                        <p className="text-gray-600">
+                          {address.city}, {address.state} - {address.pincode}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {selectedAddressId && (
+                <button
+                  type="button"
+                  onClick={handleClearSelection}
+                  className="mt-3 text-sm text-blue-600 hover:text-blue-800 underline"
+                >
+                  Use Different Address
+                </button>
+              )}
+            </div>
+          )}
+
           <FormField
             control={form.control}
             name="name"
@@ -159,7 +268,10 @@ const CheckoutPage = () => {
               <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" {...field} />
+                  <Input
+                    className="bg-white"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -174,7 +286,10 @@ const CheckoutPage = () => {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input className="bg-white" {...field} />
+                    <Input
+                      className="bg-white"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -207,7 +322,10 @@ const CheckoutPage = () => {
               <FormItem>
                 <FormLabel>Area/Street</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" {...field} />
+                  <Input
+                    className="bg-white"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -222,7 +340,10 @@ const CheckoutPage = () => {
                 <FormItem>
                   <FormLabel>City/District/Town</FormLabel>
                   <FormControl>
-                    <Input className="bg-white" {...field} />
+                    <Input
+                      className="bg-white"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -236,7 +357,10 @@ const CheckoutPage = () => {
                 <FormItem>
                   <FormLabel>State</FormLabel>
                   <FormControl>
-                    <Input className="bg-white" {...field} />
+                    <Input
+                      className="bg-white"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -251,7 +375,10 @@ const CheckoutPage = () => {
               <FormItem>
                 <FormLabel>Locality</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" {...field} />
+                  <Input
+                    className="bg-white"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -265,7 +392,10 @@ const CheckoutPage = () => {
               <FormItem>
                 <FormLabel>Landmark</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" {...field} />
+                  <Input
+                    className="bg-white"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

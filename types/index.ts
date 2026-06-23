@@ -13,6 +13,7 @@ export interface UserTypes {
 }
 
 export interface Address {
+  _id: ObjectId;
   name: string;
   phone_number: string;
   pincode: string;
@@ -94,6 +95,6 @@ export interface shipmentTypes {
     country?: string;
   };
   notes?: string;
-  createdAt?: Date;
+  createdAt: Date;
   updatedAt?: Date;
 }

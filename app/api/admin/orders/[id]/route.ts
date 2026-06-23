@@ -8,7 +8,10 @@ const OrderUpdateSchema = z.object({
   paymentStatus: z.enum(["pending", "completed", "failed"]).optional(),
 });
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const { isAdmin } = await checkAdminAuth();
     if (!isAdmin) {
@@ -26,11 +29,17 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     return NextResponse.json({ order }, { status: 200 });
   } catch (error) {
     console.error("Error fetching order:", error);
-    return NextResponse.json({ error: "Failed to fetch order" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch order" },
+      { status: 500 },
+    );
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const { isAdmin } = await checkAdminAuth();
     if (!isAdmin) {
@@ -43,18 +52,26 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const body = await req.json();
     const validatedData = OrderUpdateSchema.parse(body);
 
-    const order = await Order.findByIdAndUpdate(id, validatedData, { new: true });
+    const order = await Order.findByIdAndUpdate(id, validatedData, {
+      new: true,
+    });
 
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ order, message: "Order updated successfully" }, { status: 200 });
+    return NextResponse.json(
+      { order, message: "Order updated successfully" },
+      { status: 200 },
+    );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
     console.error("Error updating order:", error);
-    return NextResponse.json({ error: "Failed to update order" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update order" },
+      { status: 500 },
+    );
   }
 }

@@ -26,10 +26,13 @@ const userSchema = new Schema<UserTypes>(
       type: Boolean,
       default: false,
     },
+    addresses: {
+      type: [Object],
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 //pre() is a hook to process the password just before saving the user in the database.

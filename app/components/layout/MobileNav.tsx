@@ -35,6 +35,7 @@ import useCartStore from "@/app/stores/useCartStore";
 import { homePageSections } from "@/constants/data";
 import { logout } from "@/lib/actions";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
+import { LogOut, ShoppingBag, User } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -42,8 +43,8 @@ import { BsHandbagFill } from "react-icons/bs";
 import { FaFacebook, FaInstagram } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { VscAccount } from "react-icons/vsc";
-import { Separator } from "../ui/separator";
 import { toast } from "sonner";
+import { Separator } from "../ui/separator";
 
 const MobileNav = () => {
   const { cart } = useCartStore();
@@ -66,7 +67,11 @@ const MobileNav = () => {
     <nav className="block lg:hidden sticky top-0 z-10 bg-ivory">
       <div className="flex justify-between items-center px-4 py-4">
         <div className="w-1/3 relative flex items-center justify-start">
-          <Drawer direction="left" open={open} onOpenChange={setOpen}>
+          <Drawer
+            direction="left"
+            open={open}
+            onOpenChange={setOpen}
+          >
             <DrawerTrigger>
               <IoIosMenu className="size-5 text-darkTeal" />
             </DrawerTrigger>
@@ -75,8 +80,14 @@ const MobileNav = () => {
                 <IoClose size={24} />
               </DrawerClose>
               <DrawerHeader className="font-urbanist gap-2 *:text-lg *:font-normal *:text-ivory">
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="item-1" className="px-0">
+                <Accordion
+                  type="single"
+                  collapsible
+                >
+                  <AccordionItem
+                    value="item-1"
+                    className="px-0"
+                  >
                     <AccordionTrigger className="text-lg py-0 font-normal *:stroke-ivory justify-start items-center *:translate-0 gap-1">
                       Categories
                     </AccordionTrigger>
@@ -147,7 +158,11 @@ const MobileNav = () => {
 
         <div className="w-1/3 flex items-center justify-center">
           <Link href="/">
-            <Image src={logo} alt="logo" className="h-full" />
+            <Image
+              src={logo}
+              alt="logo"
+              className="h-full"
+            />
           </Link>
         </div>
 
@@ -155,7 +170,10 @@ const MobileNav = () => {
           <ul className="flex gap-4 text-black-1 items-center justify-center *:cursor-pointer">
             <li className="relative">
               <Link href="/cart">
-                <BsHandbagFill size={22} className="text-darkTeal" />
+                <BsHandbagFill
+                  size={22}
+                  className="text-darkTeal"
+                />
               </Link>
               <span className="absolute -top-1.5 -right-1.5 text-[10px] leading-2.5 bg-roseGold rounded-full p-1 text-ivory">
                 {cart.length}
@@ -176,23 +194,28 @@ const MobileNav = () => {
                         />
                       )}
                     </DropdownMenuTrigger>
+
                     <DropdownMenuContent>
-                      <DropdownMenuItem>
-                        <Link href="/profile">Profile</Link>
+                      <DropdownMenuItem asChild>
+                        <Link href="/profile">
+                          <User /> Profile
+                        </Link>
                       </DropdownMenuItem>
 
-                      <DropdownMenuItem>
-                        <Link href="/orders">Orders</Link>
+                      <DropdownMenuItem asChild>
+                        <Link href="/orders">
+                          <ShoppingBag /> Orders
+                        </Link>
                       </DropdownMenuItem>
 
                       <DropdownMenuItem
                         onClick={() => {
                           logout();
-                          toast.success("You have been logged out")
+                          toast.success("You have been logged out");
                           router.refresh();
                         }}
                       >
-                        Sign Out
+                        <LogOut /> Sign Out
                       </DropdownMenuItem>
                       <DropdownMenuArrow />
                     </DropdownMenuContent>

@@ -21,8 +21,22 @@ interface ShipmentFormData {
   notes: string;
 }
 
-const carriers = ["FedEx", "UPS", "DHL", "India Post", "Flipkart Logistics", "Delhivery"];
-const statuses = ["pending", "shipped", "in_transit", "out_for_delivery", "delivered", "cancelled"];
+const carriers = [
+  "FedEx",
+  "UPS",
+  "DHL",
+  "India Post",
+  "Flipkart Logistics",
+  "Delhivery",
+];
+const statuses = [
+  "pending",
+  "shipped",
+  "in_transit",
+  "out_for_delivery",
+  "delivered",
+  "cancelled",
+];
 
 export default function NewShipmentPage() {
   const router = useRouter();
@@ -44,19 +58,28 @@ export default function NewShipmentPage() {
     notes: "",
   });
 
+  type AddressKey = keyof ShipmentFormData["address"];
+  type ShipmentFormDataKey = keyof ShipmentFormData;
+
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
 
-    if (name.includes(".")) {
-      const [parent, child] = name.split(".");
+    if (name.startsWith("address.")) {
+      const addressKey = name.replace("address.", "") as AddressKey;
       setFormData((prev) => ({
         ...prev,
-        [parent]: { ...(prev as any)[parent], [child]: value },
+        address: {
+          ...prev.address,
+          [addressKey]: value,
+        },
       }));
     } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      const key = name as ShipmentFormDataKey;
+      setFormData((prev) => ({ ...prev, [key]: value }));
     }
   };
 
@@ -82,6 +105,7 @@ export default function NewShipmentPage() {
       toast.success("Shipment created successfully");
       router.push("/admin/shipments");
     } catch (error) {
+      console.log(error);
       toast.error("Failed to create shipment");
     } finally {
       setLoading(false);
@@ -93,11 +117,16 @@ export default function NewShipmentPage() {
       <h1 className="text-3xl font-bold mb-2">Create Shipment</h1>
       <p className="text-slate-600 mb-8">Create a new shipment record</p>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-8 max-w-2xl">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-lg shadow p-8 max-w-2xl"
+      >
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Order ID *</label>
+              <label className="block text-sm font-medium mb-2">
+                Order ID *
+              </label>
               <input
                 type="text"
                 name="orderId"
@@ -109,7 +138,9 @@ export default function NewShipmentPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Tracking Number *</label>
+              <label className="block text-sm font-medium mb-2">
+                Tracking Number *
+              </label>
               <input
                 type="text"
                 name="trackingNumber"
@@ -124,7 +155,9 @@ export default function NewShipmentPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Carrier *</label>
+              <label className="block text-sm font-medium mb-2">
+                Carrier *
+              </label>
               <select
                 name="carrier"
                 value={formData.carrier}
@@ -133,7 +166,10 @@ export default function NewShipmentPage() {
                 required
               >
                 {carriers.map((c) => (
-                  <option key={c} value={c}>
+                  <option
+                    key={c}
+                    value={c}
+                  >
                     {c}
                   </option>
                 ))}
@@ -148,7 +184,10 @@ export default function NewShipmentPage() {
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               >
                 {statuses.map((s) => (
-                  <option key={s} value={s}>
+                  <option
+                    key={s}
+                    value={s}
+                  >
                     {s.replace(/_/g, " ")}
                   </option>
                 ))}
@@ -158,7 +197,9 @@ export default function NewShipmentPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Est. Delivery Date</label>
+              <label className="block text-sm font-medium mb-2">
+                Est. Delivery Date
+              </label>
               <input
                 type="datetime-local"
                 name="estimatedDeliveryDate"
@@ -168,7 +209,9 @@ export default function NewShipmentPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Actual Delivery Date</label>
+              <label className="block text-sm font-medium mb-2">
+                Actual Delivery Date
+              </label>
               <input
                 type="datetime-local"
                 name="actualDeliveryDate"
@@ -180,7 +223,9 @@ export default function NewShipmentPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Delivery Address</label>
+            <label className="block text-sm font-medium mb-2">
+              Delivery Address
+            </label>
             <div className="space-y-3">
               <input
                 type="text"
